@@ -8,13 +8,14 @@ loader.load(strips,0,function(){
 });
 function init(){
     initBroadcast();
+    initHotBooks();
 }
 function initBroadcast(){
     var li="";
     var div="";
-    for(var i=0;i<books.length;i++){
+    for(var i=0;i<Tjbooks.length;i++){
         li+='<li data-target="#myCarousel" data-slide-to="'+i+'"></li>';
-        div+='<div class="item"><img src="'+books[i].imgsrc+'" alt="First slide"></div>';
+        div+='<div class="item"><img src="'+Tjbooks[i].imgsrc+'" alt="First slide"></div>';
     }
     $("#myCarousel .carousel-indicators").html(li);
     $("#myCarousel .carousel-inner").html(div);
@@ -23,4 +24,11 @@ function initBroadcast(){
     $('#carousel-ad').carousel({
         interval: 2000
       });
+}
+function initHotBooks(){
+    var html='';
+    for(var i=0;i<Hotbooks.length;i++){
+        html+='<li><img src="'+Hotbooks[i].imgsrc+'" class="module-slide-img" alt="'+Hotbooks[i].name+'"><p>'+Hotbooks[i].name+'</p></li>';
+    }
+    $(".hot .list-inline").html(html);
 }
