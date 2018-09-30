@@ -7,13 +7,13 @@ require.config({
         zoom:"../plugs/js/zoom"
     }
 });
-loadPlugs(['jquery','bootstrap','zoom'],init);
+loadJs(['jquery','bootstrap','zoom','config'],init);
 function init(){
-    require(['index','config'],function(index){
+    require(['index'],function(index){
         index.init();
     });
 }
-function loadPlugs(stripts,callback){
+function loadJs(stripts,callback){
     var i=0;
     if(i==stripts.length-1)
     {
@@ -25,6 +25,6 @@ function loadPlugs(stripts,callback){
         if (index > -1) {
             stripts.splice(index, 1);
         }
-        require([s],function(){loadPlugs(stripts,callback)});
+        require([s],function(){loadJs(stripts,callback)});
     }
 }

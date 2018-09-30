@@ -1,9 +1,7 @@
 define('index',function(){
-    var index=new function(){
-        this.init=function(){
-            initBroadcast();
-            initHotBooks();
-        }
+    function init(){
+        initBroadcast();
+        initHotBooks();
     }
     function initBroadcast(){
         var li="";
@@ -27,5 +25,7 @@ define('index',function(){
         }
         $(".hot .list-inline").html(html);
     }
-    return index;
+    return {
+        init:init
+    };
 });
