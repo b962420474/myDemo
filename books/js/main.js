@@ -4,13 +4,17 @@ require.config({
         bootstrap:"http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min",
         jquery:"../plugs/js/jquery",
         config:"config",
-        zoom:"../plugs/js/zoom"
+        zoom:"../plugs/js/zoom",
+        yxx:"../plugs/js/yxx",
+        other:"other"
     }
 });
-loadJs(['jquery','bootstrap','zoom','config'],init);
+loadJs(['jquery','bootstrap','yxx','zoom','config'],init);
 function init(){
     require(['index'],function(index){
-        index.init();
+        //index.init();
+        pageInit('other.html');
+        pageInit('other.html');
     });
 }
 function loadJs(stripts,callback){

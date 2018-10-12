@@ -1,12 +1,10 @@
 html {font-size: 100%; /*100 ÷ 16 × 100% = 625%*/}   
-
-.xx{}
 .page {
 	box-shadow: 0 200px #fff;
 	background-color: #f6f7f9;
 }
 .page-other{
-    display:none;
+    display:block;
 }
 .content {
     padding-bottom: .1px;
