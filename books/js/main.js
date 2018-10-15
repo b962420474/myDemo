@@ -13,8 +13,9 @@ loadJs(['jquery','bootstrap','yxx','zoom','config'],init);
 function init(){
     require(['index'],function(index){
         //index.init();
-        pageInit('other.html');
-        pageInit('other.html');
+        pageInit('other');
+        pageInit('other');
+        pageInit('other');
     });
 }
 function loadJs(stripts,callback){

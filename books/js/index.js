@@ -3,6 +3,9 @@ define('index',function(){
         initBroadcast();
         initHotBooks();
     }
+    function load(){
+        
+    }
     function initBroadcast(){
         var li="";
         var div="";
