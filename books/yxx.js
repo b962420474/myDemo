@@ -2,7 +2,7 @@ require(['config'],function(){
     loadJs(plugs,function(){
         require(["index"],function(index){
             index.init();
-            index.loade();
+            index.load();
         });
     });
 });

@@ -1,10 +1,15 @@
 define('index',function(){
     function init(){
-        initBroadcast();
-        initHotBooks();
+        
     }
     function load(){
-        
+        ajaxHandle("/data/config.js",'GET',null,function(){
+            initBroadcast();
+        })
+        ajaxHandle("/data/config.js",'GET',null,function(){
+            initHotBooks();
+            initrankBooks();
+        })
     }
     function initBroadcast(){
         var li="";
@@ -28,7 +33,22 @@ define('index',function(){
         }
         $(".hot .list-inline").html(html);
     }
+    function initrankBooks(){
+        var html='';
+        for(var i=0;i<Hotbooks.length;i++){
+            html+='<li><img src="'+Hotbooks[i].imgsrc+'" class="module-slide-img" alt="'+Hotbooks[i].name+'"><p>'+Hotbooks[i].name+'</p></li>';
+        }
+        $(".ranking .list-inline").html(html);
+    }
+    function initnewBooks(){
+        var html='';
+        for(var i=0;i<Hotbooks.length;i++){
+            html+='<li><img src="'+Hotbooks[i].imgsrc+'" class="module-slide-img" alt="'+Hotbooks[i].name+'"><p>'+Hotbooks[i].name+'</p></li>';
+        }
+        $(".ranking .list-inline").html(html);
+    }
     return {
-        init:init
+        init:init,
+        load:load
     };
 });

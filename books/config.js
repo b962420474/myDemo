@@ -9,5 +9,6 @@ require.config({
 var plugs=[
     'jquery',
     'bootstrap',
-    'zoom'
+    'zoom',
+    'common'
 ]
