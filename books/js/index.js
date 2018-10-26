@@ -3,13 +3,17 @@ define('index',function(){
         
     }
     function load(){
-        ajaxHandle("/data/config.js",'GET',null,function(){
+        $.getScript("/data/config.js",function(){
             initBroadcast();
-        })
-        ajaxHandle("/data/config.js",'GET',null,function(){
             initHotBooks();
-            initrankBooks();
-        })
+        });
+        // ajaxHandle("/data/config.js",'GET',null,function(){
+        //     initBroadcast();
+        // })
+        // ajaxHandle("/data/config.js",'GET',null,function(){
+        //     initHotBooks();
+        //     initrankBooks();
+        // })
     }
     function initBroadcast(){
         var li="";
