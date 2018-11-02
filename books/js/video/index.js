@@ -12,7 +12,8 @@ define(function(){
     function bind(){
         $('#video').on({
             waiting:function(){
-
+                console.log("waiting");
+                videoStatu('loading');
             },
             playing:function(){
 
@@ -43,9 +44,69 @@ define(function(){
                 console.log('start')
             },
         });
+        $(".videobtn").on({
+            click:function(e){
+                var ele=e.target;
+                var type=$(ele).data("type");
+                switch(type){
+                    case 'play':
+                        togglePlay();
+                        break;
+                    case 'next':
+                        togglePlay();
+                        break;
+                     case 'danmu':
+                        togglePlay();
+                        break;
+                    case 'pull':
+                        togglePlay();
+                        break;
+                }
+            }
+        });
     }
-    function showTip(){
+    function videoStatu(statu,msg){
+        var html = '';
+        if(statu){
+            switch(statu){
+                case 'loading':
+                html+='<div class="video-loading"></div>';
+                break;
+                case 'pause':
+                html+='<div class="iconfont">&#xe8b8;</div>';
+                break;
+                case 'play':
+                html+='<div class="iconfont">&#xe603;</div>';
+                break;
+                case 'seek-forward':
+                html+='<div class="iconfont">&#xe63c;</div>';
+                break;
+                case 'seek-back':
+                html+='<div class="iconfont">&#xe652;</div>';
+                break;
+                case 'error':
+                html+='<div class="iconfont">&#xe638;</div>';
+                break;
+                case 'info':
+                html+='<div class="iconfont"></div>';
+                break;
+            }
+            if(msg){
+                html+='<p>'+msg+'</p>';
+            }
+        }
+        $('#video-zhezhao').html(html).show();
+    }
+    function tipClose(){
 
+    }
+    function togglePlay(){
+        if(video.readyState != 4) return;
+            if(video.paused){
+                video.play();
+            }else{
+                video.pause();
+            }
     }
         /**
      * 时间格式化
@@ -63,6 +124,9 @@ define(function(){
         r += m+":";
         r += S;
         return r;
+    }
+    function PrefixInteger(num, length) {
+        return (Array(length).join('0') + num).slice(-length);
     }
     return index;
 });
