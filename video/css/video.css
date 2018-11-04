@@ -10,15 +10,17 @@
     width: 100%;
     height: 100%;
     /* background: rgba(233, 218, 218, 0.45); */
-    /* display: none; */
+    display: none;
 }
 .video{
     position: relative;
+    background-color: black;
 }
 .progress{
     margin-bottom: 5px;
     height: 5px;
     cursor: pointer;
+    overflow: visible;
 }
 .progress-bar-danger {
     background-color: #f00;
@@ -28,6 +30,7 @@
     z-index: 300;
     bottom: 10px;
     width: 100%;
+    color: white;
 }
 .sj{
     float: left;
@@ -52,14 +55,14 @@
     height: 100%;
     opacity: 0.6;
 }
-#video-pause div{
+#video-zhezhao div{
     position: absolute;
     left: 50%;
     top: 50%;
     margin-left: -50px;
     margin-top: -50px;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     color: #fff;
     /* z-index: 199; */
     border-radius: 50%;
@@ -67,17 +70,17 @@
     line-height: 100px;
     font-size: 3em;
 }
-#video-pause p{
+#video-zhezhao p{
     width: 100%;
     text-align: center;
     position: absolute;
-    bottom: 0;
-    height: 80px;
-    line-height: 80px;
+    top: 50%;
+    margin-top: 5px;
+    color: white;
     font-size: 24px;
 }
 .video-loading{
-    background-image: url(../../img/video/loading.gif);
+    background-image: url(../img/video/loading.gif);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -87,3 +90,23 @@ button{
     border: none;
     outline: 0 none !important;
 }
+.move {
+    /* position: absolute; */
+    display:none;
+    width: 10px;
+    height: 10px;
+    top: 0;
+    margin-left: -6px;
+    cursor: pointer;
+    /* transform: scale(0); */
+    transition: all .15s ease;
+    margin-top: -2px;
+    border-radius: 100%;
+    background-color:rgb(236, 20, 49);
+}
+.full {
+   width: 100%;
+   height: 100%;
+}
+
+

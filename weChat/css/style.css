@@ -1,0 +1,161 @@
+@charset "UTF-8";
+.list_item {
+	width: 200px;
+    position: relative;
+    display: inline-block;
+    margin: 5px 80px 5px 80px;
+    vertical-align: top;
+    font-size: 12px;
+    letter-spacing: normal;
+    color: #999;
+}
+.list_item span{
+	display:block;
+}
+.mod_pages {
+    margin: 40px auto;
+    text-align: center;
+}
+.s_ipt{ 
+   width: 521px;
+    height: 20px;
+    padding: 9px 7px;
+    font: 16px arial;
+    border: 1px solid #b8b8b8;
+    border-bottom: 1px solid #ccc;
+    border-right: 0;
+    vertical-align: top;
+    outline: none;
+    box-shadow: none;
+}
+.s_btn_wr, .s_btn_wr {
+   width: 102px;
+    height: 38px; 
+    border: 1px solid #38f;
+    border-bottom: 1px solid #2e7ae5;
+    background-color: #38f;
+}
+.s_btn_wr, .s_ipt_wr, .s_btn_wr {
+    display: inline-block;
+    zoom: 1;
+    background: none;
+    vertical-align: top;
+}
+.btn, .s-title-img .btn {
+    cursor: pointer;
+    width: 102px;
+    height: 38px;
+    line-height: 38px;
+    padding: 0;
+    border: 0;
+    background: none;
+    background-color: #38f;
+    font-size: 16px;
+    color: white;
+    box-shadow: none;
+    font-weight: normal;
+}
+.dm{
+	position:absolute;
+	 width:20%;
+ 	top:70px;
+	left:50px;
+	height:360px; 
+}
+.off{
+	z-index:-100;
+}
+ .room-chat-box {
+	width: 70%;
+    position: absolute;
+    top: 70;
+    right: 10px;
+    height:400px;
+    overflow: visible;
+}
+.room-chat-container {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 10px;
+    bottom: 40px;
+}
+.room-chat-container .room-chat-scroller {
+	overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    margin: 0 auto;
+    padding: 5px 0;
+    height: 100%;
+}
+.room-chat-scroller .room-chat-item {
+    padding: 0;
+    margin: 5px 11px;
+    line-height: 21px;
+    color: #353535;
+    vertical-align: baseline;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.room-chat-container .room-chat-scroller .room-chat-item .room-chat-user-name {
+    cursor: pointer;
+    color: #04c073;
+}
+ul {
+    list-style: none;
+}
+.room-chat-dispatch {
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 33px;
+   /*  background-color: #ededed; */
+}
+.crumbs-nav.top-op {
+    margin: 16px auto 66px;
+}
+.crumbs-nav {
+    position: relative;
+    z-index: 12;
+    margin: 0 auto 142px;
+    transition: margin .3s;
+}
+.center990 {
+    width: 990px;
+    margin: 0 auto;
+    padding-left: calc(100vw - 100%);
+}
+.crumbs-nav span {
+    padding: 0 6px 4px;
+    border-radius: 5px;
+    background: rgba(0,0,0,.2);
+}
+.chapter{
+	width: 1050px;
+    margin: 0 auto;
+    padding-left: calc(100vw - 100%);
+}
+.chapter ul{
+    overflow: hidden;
+    width: 1050px;
+}
+.cf {
+    zoom: 1;
+}
+.cf:after, .cf:before {
+    display: table;
+    content: '';
+}
+.chapter li{
+    font: 14px/40px PingFangSC-Regular,'-apple-system',Simsun;
+    float: left;
+    overflow: hidden;
+    width: 290px;
+    height: 40px;
+    padding-right: 60px;
+    border-bottom: 1px solid #ebebeb;
+}
+.tip{
+    color:red;
+}
