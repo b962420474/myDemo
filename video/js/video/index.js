@@ -1,12 +1,17 @@
 define(function(){
-    var url="http://cd.yun.ftn.qq.com/ftn_handler/7166a90c808971c8bd7f0fa95f7c805f2d07f0a7a73149d035563f3375a47c53/%E4%BA%91%E7%9B%98A%20%E6%AF%8F%E6%97%A5%E6%9B%B4%E6%96%B0%20-%20%E8%A5%BF%E8%99%B9%E5%B8%82%E9%A6%96%E5%AF%8C-%E5%9B%BD%E8%AF%AD720P.mp4";
     var videoBarTime;
     var videoTipTime;
     var mouseFlag=1;
+    var $danmu=$("#danmu");
     var video=$('#video')[0];
-    var index=new function(){
+    var _top=80;
+    var index=0;
+    var theindex=new function(){
         this.init=function(){
-            //video.src=url;
+            getvideoUrl(function(url){
+                video.src=url;
+                testdanmu();
+            });
             banrightkey();
             bind();
         }
@@ -311,5 +316,56 @@ define(function(){
         console.log(seektime);
         return seektime;
     }
-    return index;
+    function getvideoUrl(callback){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/videoPaser",
+            data:{txurl:"https://v.qq.com/x/cover/z6j3ixjjcokafyc.html"},
+            success:function(data){
+                console.log(data);
+                callback&&callback(data.data);
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+    }
+    function testdanmu(){
+        for(var i=0;i<50;i++){
+            setMessageInnerHTML("你好"+i);
+        }
+    }
+    function setMessageInnerHTML(innerHTML){
+        $danmu.append("<span id='"+index+"'>"+ innerHTML + "</span>");
+        launch();
+        //show(innerHTML);
+        }
+    function launch()
+    {
+    var _height = $danmu.height();
+    var _left = $danmu.width() - $("#"+index).width();
+    var time=10000;
+    if(index%2==0)
+        time=20000;
+        _top+=80;
+    if(_top>_height-100)
+        _top=80;
+        $("#"+index).css({
+            left:_left,
+            top:_top,
+            color:getRandomColor(),
+            position: "absolute"}
+        );
+         $("#"+index).animate(
+            {left:"-"+_left+"px"},
+            time,
+            function(){
+                //_left+=10;
+                }); 
+        index++;
+    }
+    function getRandomColor() {
+        return '#' + (function(h) {return new Array(7 - h.length).join("0") + h})((Math.random() * 0x1000000 << 0).toString(16))
+        }
+    return theindex;
 });
