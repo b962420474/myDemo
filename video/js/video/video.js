@@ -1,8 +1,10 @@
 define(['common'],function(common){
     var videoBarTime;
     var mouseFlag=1;
+    var _top=80;
+    var index=0;
+    var $danmu=$("#danmu");
     var video=$('#video')[0];
-    
     var theindex=new function(){
         this.init=function(){
             // getvideoUrl(function(url){
@@ -13,14 +15,35 @@ define(['common'],function(common){
             banrightkey();
             bind();
         }
+        this.debug=function(msg){
+            console.log(msg);
+            this.setMessageInnerHTML(msg);
+        }
+        this.setMessageInnerHTML=function(innerHTML){
+            $span=$("<span id='"+index+"'>"+ innerHTML + "</span>");
+            var _height = $danmu.height();
+            var _left = $danmu.width();
+            _top+=16;
+            if(_top>_height-100) _top=10;
+            $span.css({
+                left:_left,
+                top:_top,
+                color:getRandomColor(),
+                'white-space':'nowrap',
+                position: "absolute"}
+            );
+            $danmu.append($span);
+            launch($span);
+        }
     };
     function banrightkey(){
         $('#video').bind('contextmenu',function() { return false; });
     }
+    //绑定事件
     function bind(){
         $('#video').on({
             waiting:function(){
-                common.debug("waiting");
+                theindex.debug("waiting");
                 videoStatu('',"正在加载");
             },
             playing:function(){
@@ -55,15 +78,15 @@ define(['common'],function(common){
                 showrat(vTime);
             },
             ended:function(){
-                common.debug("播放结束");
+                theindex.debug("播放结束");
                 videoStatu('','播放结束');
             },
             canplay:function(){
-                common.debug("加载完成");
+                theindex.debug("加载完成");
                 videoStatu('play');
             },
             play:function(){
-                // common.debug("加载完成");
+                // theindex.debug("加载完成");
                 // videoStatu('play');
             },
             loadstart:function(){
@@ -71,7 +94,7 @@ define(['common'],function(common){
                 $("#time-Current-Text").find("span:eq(1)").html("00:00");
                 $('.progress .progress-bar:eq(0)').width(0);
                 videoStatu('',"正在加载");
-                common.debug('start')
+                theindex.debug('start')
             },
             mousemove:function(){
                 showVideoBar();
@@ -80,7 +103,7 @@ define(['common'],function(common){
                 togglePlay();
             },
             loadedmetadata:function(){
-                common.debug("111111");
+                theindex.debug("111111");
                 captureImage();
             }
         });
@@ -117,7 +140,7 @@ define(['common'],function(common){
                 
             },
             mousemove:function(e){
-                //common.debug("move");
+                //theindex.debug("move");
             },
             mouseenter:function(){
                 $('.progress .progress-bar:eq(1)').show();
@@ -137,7 +160,7 @@ define(['common'],function(common){
                 showVideoBar(true);
             },
             mouseleave:function(){
-                common.debug("over");
+                theindex.debug("over");
                 hideVideoBar();
             }
         });
@@ -320,8 +343,8 @@ define(['common'],function(common){
         var seektime=0;
         var mousex=e.screenX;
         var videox=common.GetObjPos(video)['x'];
-        common.debug("mousex:"+mousex);
-        common.debug("videox"+videox);
+        theindex.debug("mousex:"+mousex);
+        theindex.debug("videox"+videox);
         if(mousex>videox&&mousex<(videox+video.offsetWidth)){
             seektime=(mousex-videox)/video.offsetWidth*video.duration;
         }
@@ -331,20 +354,37 @@ define(['common'],function(common){
         else{
             seektime=video.duration;
         }
-        common.debug(seektime);
+        theindex.debug(seektime);
         return seektime;
     }
+    function launch($span)
+    {
+        var _left = $danmu.width();
+        var time=10000;
+        if(index%2==0)
+            time=20000;
+        $span.animate(
+            {left:"-"+ _left+"px"},
+            time,
+            function(){
+                $(this).remove();
+            }); 
+        index++;
+    }
+    function getRandomColor() {
+        return '#' + (function(h) {return new Array(7 - h.length).join("0") + h})((Math.random() * 0x1000000 << 0).toString(16))
+        }
     function getvideoUrl(callback){
         $.ajax({
             type:"post",
             url:serverurl+"/videoPaser",
             data:{txurl:"https://v.qq.com/x/cover/z6j3ixjjcokafyc.html"},
             success:function(data){
-                common.debug(data);
+                theindex.debug(data);
                 callback&&callback(data.data);
             },
             error:function(e){
-                common.debug(e);
+                theindex.debug(e);
             }
         });
     }
