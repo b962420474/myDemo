@@ -34,6 +34,7 @@
 }
 .progress-bar-danger {
     background-color: #f00;
+    transition: width .15s ease;
 }
 .video-bar{
     position: absolute;
@@ -41,6 +42,7 @@
     bottom: 10px;
     width: 100%;
     color: white;
+    overflow: hidden;
 }
 .sj{
     float: left;
@@ -101,7 +103,7 @@ button{
     outline: 0 none !important;
 }
 .move {
-    /* position: absolute; */
+    position: absolute;
     display:none;
     width: 10px;
     height: 10px;
@@ -110,7 +112,7 @@ button{
     cursor: pointer;
     /* transform: scale(0); */
     transition: all .15s ease;
-    margin-top: -2px;
+    margin-top: 0px;
     border-radius: 100%;
     background-color:rgb(236, 20, 49);
 }

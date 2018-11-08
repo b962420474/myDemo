@@ -1,7 +1,7 @@
 require(['config'],function(){
     loadJs(plugs,function(){
-        require(["index"],function(index){
-            index.init();
+        require(["video"],function(video){
+            video.init();
             //index.load();
         });
     });
