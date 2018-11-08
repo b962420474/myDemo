@@ -233,10 +233,15 @@ define(['common'],function(common){
             $(ele).html('&#xe623;');
         }
     }
-    // function download(){
-    //     window.open(video.src);
-    //     //window.location.href=video.src;
-    // }
+    function download(){
+        var src=video.src;
+        var $a = document.createElement('a');
+		$a.setAttribute("href", src);
+		$a.setAttribute("download", "");
+		var evObj = document.createEvent('MouseEvents');
+		evObj.initMouseEvent( 'click', true, true, window, 0, 0, 0, 0, 0, false, false, true, false, 0, null);
+		$a.dispatchEvent(evObj);
+    }
        /**
      * 时间格式化
      */

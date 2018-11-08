@@ -33,7 +33,7 @@ define(function(){
         $span=$("<span id='"+index+"'>"+ innerHTML + "</span>");
         var _height = $danmu.height();
         var _left = $danmu.width();
-        _top+=20;
+        _top+=16;
         if(_top>_height-100) _top=10;
         $span.css({
             left:_left,
