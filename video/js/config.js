@@ -1,5 +1,5 @@
 require.config({
-    baseUrl:'../../js/video',
+    baseUrl:'../../js/view',
     paths: {
         bootstrap:"../../plugs/js/bootstrap.min",
         jquery:"../../plugs/js/jquery",

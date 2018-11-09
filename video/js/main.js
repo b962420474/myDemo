@@ -1,7 +1,7 @@
 require(['config'],function(){
     loadJs(plugs,function(){
-        require(["video"],function(video){
-            video.init();
+        require(["index"],function(index){
+            index.init();
             //index.load();
         });
     });
@@ -32,25 +32,21 @@ function pageInit(pageName,param){
 function getParam(name){
     return data.name;
 }
-function load(name,pageurl){
-    $(name).load(pageurl);
+function loadhtml(name,pageurl,callback){
+    $(name).load(pageurl,callback);
 }
 function pageBack(page){
 
 }
 function loadJs(stripts,callback){
-    var i=0;
-    if(i==stripts.length-1)
+    if(stripts.length==1)
     {
-        require([stripts[i]],function(){
+        require([stripts[0]],function(){
             callback&&callback()});
     }
     else{
-        var s=stripts[i];
-        var index=stripts.indexOf(stripts[i]);
-        if (index > -1) {
-            stripts.splice(index, 1);
-        }
+        var s=stripts[0];
+        stripts.splice(0, 1);
         require([s],function(){
             loadJs(stripts,callback);
         });

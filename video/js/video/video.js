@@ -1,17 +1,29 @@
-define(['common'],function(common){
+define(['./common'],function(common){
     var videoBarTime;
     var mouseFlag=1;
     var _top=80;
     var index=0;
     var $danmu=$("#danmu");
     var video=$('#video')[0];
+    var islocking=1;
+    var buffertime;
     var theindex=new function(){
+        this.list;
+        this.play=function(url){
+            islocking=1;
+            //getvideoUrl("https://v.qq.com/x/cover/z6j3ixjjcokafyc.html",function(url){
+                video.src=url;
+                $('.progress .progress-bar:eq(1)').css("left","0%");
+                video.play();
+            //});
+        }
+        this.playnext=function(){
+            if(this.list.length>1){
+                this.list.splice(0,1);
+                this.play(this.list[0].url);
+            }
+        }
         this.init=function(){
-            // getvideoUrl(function(url){
-            //     video.src=url;
-            //     testdanmu();
-            // });
-            video.src="https://r2---sn-oguesnze.googlevideo.com/videoplayback?c=WEB&expire=1541682656&dur=6878.958&mn=sn-oguesnze%2Csn-i3b7kn7z&mm=31%2C26&ipbits=0&id=o-AAvkUGp59loLMe6FoDSUVrBYAZe1zWDWsJQ3MMJeBHJ3&sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&mv=m&mt=1541660931&ms=au%2Conr&ip=27.102.112.109&lmt=1520393037276853&signature=9642FD9F7BDB4E5F397F028379631344346E29B2.2841BA3AFFDC1D5A7752EC3D31890137CA6648A4&ratebypass=yes&itag=22&ei=gOHjW7GJJYatqQGkx7yICA&fvip=2&pl=24&source=youtube&key=yt6&mime=video%2Fmp4&requiressl=yes&initcwndbps=3378750";
             banrightkey();
             bind();
         }
@@ -58,6 +70,7 @@ define(['common'],function(common){
                 }
             },
             error:function(){
+                islocking=1;
                 if(video.error.code==4){
                     videoStatu('','不支持该类型');
                 }else if(video.error.code==3){
@@ -80,8 +93,10 @@ define(['common'],function(common){
             ended:function(){
                 theindex.debug("播放结束");
                 videoStatu('','播放结束');
+                theindex.playnext();
             },
             canplay:function(){
+                islocking=0;
                 theindex.debug("加载完成");
                 videoStatu('play');
             },
@@ -100,6 +115,7 @@ define(['common'],function(common){
                 showVideoBar();
             },
             click:function(){
+                if(islocking==1) return;
                 togglePlay();
             },
             loadedmetadata:function(){
@@ -113,10 +129,11 @@ define(['common'],function(common){
                 var type=$(ele).data("type");
                 switch(type){
                     case 'play':
+                        if(islocking==1) return;
                         togglePlay();
                         break;
                     case 'next':
-                        //togglePlay();
+                        theindex.playnext();
                         break;
                      case 'danmu':
                         toggleDanmu(ele);
@@ -135,6 +152,7 @@ define(['common'],function(common){
         });
         $(".pro").on({
             mousedown:function(e){
+                if(islocking==1) return;
                 video.pause();
                 mouseFlag=0;
                 
@@ -149,6 +167,7 @@ define(['common'],function(common){
                 $('.progress .progress-bar:eq(1)').hide();
             },
             mouseup:function(e){
+                if(islocking==1) return;
                 seek(findSeeked(e));
                 mouseFlag=1;
                 //e.stopPropagation();
@@ -166,11 +185,13 @@ define(['common'],function(common){
         });
         $(document).on({
             mousemove:function(e){
+                if(islocking==1) return;
                 if(mouseFlag==0){
                     showrat(findSeeked(e));
                 }
             },
             mouseup:function(e){
+                if(islocking==1) return;
                 if(mouseFlag==0){
                     seek(findSeeked(e));
                 }
@@ -224,8 +245,7 @@ define(['common'],function(common){
             }else{
                 video.pause();
             }
-    }
-     
+    } 
     function toggleDanmu(ele){
         if($(ele).hasClass("open")){
             $("#danmu").hide();
@@ -307,6 +327,16 @@ define(['common'],function(common){
             de.webkitCancelFullScreen();
         }
     }
+    function startBuffer(){
+        buffertime=setInterval(function(){
+            for(var i=0;i<video.buffered.length;i++){
+                
+            }
+        }, 1000);
+    }
+    function stopBuffer(){
+        clearInterval(buffertime);
+    }
     function showVideoBar(flag){
         clearTimeout(videoBarTime);
         $("#video-bar").show();
@@ -373,20 +403,21 @@ define(['common'],function(common){
     }
     function getRandomColor() {
         return '#' + (function(h) {return new Array(7 - h.length).join("0") + h})((Math.random() * 0x1000000 << 0).toString(16))
-        }
-    function getvideoUrl(callback){
-        $.ajax({
-            type:"post",
-            url:serverurl+"/videoPaser",
-            data:{txurl:"https://v.qq.com/x/cover/z6j3ixjjcokafyc.html"},
-            success:function(data){
-                theindex.debug(data);
-                callback&&callback(data.data);
-            },
-            error:function(e){
-                theindex.debug(e);
-            }
-        });
     }
+    function getvideoUrl(url,callback){
+            $.ajax({
+                type:"post",
+                url:serverurl+"/videoPaser",
+                data:{txurl:url},
+                success:function(data){
+                    theindex.debug(data);
+                    callback&&callback(data.data);
+                },
+                error:function(e){
+                    theindex.debug(e);
+                    videoStatu('','服务器出现了故障');
+                }
+            });
+        }
     return theindex;
 });

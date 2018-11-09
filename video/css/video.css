@@ -116,6 +116,9 @@ button{
     border-radius: 100%;
     background-color:rgb(236, 20, 49);
 }
+.progress .buffer{
+    color: gray;
+}
 .full {
    width: 100%;
    height: 100%;
