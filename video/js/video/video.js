@@ -14,6 +14,8 @@ define(['./common'],function(common){
             //getvideoUrl("https://v.qq.com/x/cover/z6j3ixjjcokafyc.html",function(url){
                 video.src=url;
                 $('.progress .progress-bar:eq(1)').css("left","0%");
+                video.preload="auto";
+                stopBuffer();
                 video.play();
             //});
         }
@@ -93,11 +95,13 @@ define(['./common'],function(common){
             ended:function(){
                 theindex.debug("播放结束");
                 videoStatu('','播放结束');
+                stopBuffer();
                 theindex.playnext();
             },
             canplay:function(){
                 islocking=0;
                 theindex.debug("加载完成");
+                startBuffer();
                 videoStatu('play');
             },
             play:function(){
@@ -328,10 +332,11 @@ define(['./common'],function(common){
         }
     }
     function startBuffer(){
+        stopBuffer();
+        var buffered=video.buffered;
         buffertime=setInterval(function(){
-            for(var i=0;i<video.buffered.length;i++){
-                
-            }
+            console.log(buffered.end(buffered.length-1)/video.duration*100+'%');
+            $('.progress .progress-bar:eq(2)').css("width",buffered.end(buffered.length-1)/video.duration*100+'%');
         }, 1000);
     }
     function stopBuffer(){

@@ -118,6 +118,8 @@ button{
 }
 .progress .buffer{
     color: gray;
+    transition: width .15s ease;
+    position: absolute;
 }
 .full {
    width: 100%;
