@@ -3,9 +3,10 @@ require.config({
     paths: {
         bootstrap:"../../plugs/js/bootstrap.min",
         jquery:"../../plugs/js/jquery",
+        hls:"https://cdn.jsdelivr.net/hls.js/latest/hls.min"
     }
 });
-var serverurl="http://127.0.0.1:8080";
+var serverurl="http://192.168.1.10:8080";
 var plugs=[
     'jquery',
     'bootstrap'

@@ -1,4 +1,4 @@
-define(['./common'],function(common){
+define(['./common','hls'],function(common,Hls){
     var videoBarTime;
     var mouseFlag=1;
     var _top=80;
@@ -6,20 +6,42 @@ define(['./common'],function(common){
     var $danmu=$("#danmu");
     var video=$('#video')[0];
     var islocking=1;
-    var buffertime;
+    var isnative=1;
+    var up=0;
+    var newurl="";
+    var ajax;
     var theindex=new function(){
         this.list;
         this.play=function(url){
             islocking=1;
-            //getvideoUrl("https://v.qq.com/x/cover/z6j3ixjjcokafyc.html",function(url){
-                video.src=url;
+            up=0;
+            newurl="";
+            getvideoUrl(url,function(url){
                 $('.progress .progress-bar:eq(1)').css("left","0%");
                 video.preload="auto";
-                stopBuffer();
-                video.play();
-            //});
+                if(url.indexOf(".m3u8")>0){
+                    if(Hls.isSupported()) {
+                        var hls = new Hls();
+                        hls.loadSource(url);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                        video.play();
+                    });
+                     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = url;
+                        video.addEventListener('loadedmetadata',function() {
+                          video.play();
+                        });
+                      }
+                }
+                else{
+                    video.src=url;
+                    video.play();
+            }
+            });
         }
         this.playnext=function(){
+            video.src="";
             if(this.list.length>1){
                 this.list.splice(0,1);
                 this.play(this.list[0].url);
@@ -73,16 +95,28 @@ define(['./common'],function(common){
             },
             error:function(){
                 islocking=1;
-                if(video.error.code==4){
-                    videoStatu('','不支持该类型');
-                }else if(video.error.code==3){
-                    videoStatu('','解码失败');
+                if(up<3){
+                    videoStatu('','加载中');
+                    up++;
+                    api(newurl,function(url){
+                        video.src=url;
+                        $('.progress .progress-bar:eq(1)').css("left","0%");
+                        video.preload="auto";
+                        video.play();
+                    });
                 }
-                else if(video.error.code==2){
-                    videoStatu('','网络错误');
-                }
-                else if(video.error.code==1){
-                    videoStatu('','');
+                else{
+                    if(video.error.code==4){
+                        videoStatu('','不支持该类型');
+                    }else if(video.error.code==3){
+                        videoStatu('','解码失败');
+                    }
+                    else if(video.error.code==2){
+                        videoStatu('','网络错误');
+                    }
+                    else if(video.error.code==1){
+                        videoStatu('','');
+                    }
                 }
             },
             timeupdate:function(){
@@ -95,13 +129,13 @@ define(['./common'],function(common){
             ended:function(){
                 theindex.debug("播放结束");
                 videoStatu('','播放结束');
-                stopBuffer();
+                //stopBuffer();
                 theindex.playnext();
             },
             canplay:function(){
                 islocking=0;
                 theindex.debug("加载完成");
-                startBuffer();
+                //startBuffer();
                 videoStatu('play');
             },
             play:function(){
@@ -112,6 +146,7 @@ define(['./common'],function(common){
                 $("#time-Current-Text").find("span:eq(0)").html("00:00");
                 $("#time-Current-Text").find("span:eq(1)").html("00:00");
                 $('.progress .progress-bar:eq(0)').width(0);
+                $('.progress .progress-bar:eq(2)').width(0);
                 videoStatu('',"正在加载");
                 theindex.debug('start')
             },
@@ -331,17 +366,6 @@ define(['./common'],function(common){
             de.webkitCancelFullScreen();
         }
     }
-    function startBuffer(){
-        stopBuffer();
-        var buffered=video.buffered;
-        buffertime=setInterval(function(){
-            console.log(buffered.end(buffered.length-1)/video.duration*100+'%');
-            $('.progress .progress-bar:eq(2)').css("width",buffered.end(buffered.length-1)/video.duration*100+'%');
-        }, 1000);
-    }
-    function stopBuffer(){
-        clearInterval(buffertime);
-    }
     function showVideoBar(flag){
         clearTimeout(videoBarTime);
         $("#video-bar").show();
@@ -363,6 +387,13 @@ define(['./common'],function(common){
     function showrat(seektime){
         $('.progress .progress-bar:eq(0)').width((seektime/video.duration)*100+"%");
         $('.progress .progress-bar:eq(1)').css("left",(seektime/video.duration)*100+"%");
+        var width=0;
+        if(video.buffered&&video.buffered.length>0){
+            var buffered=video.buffered;
+            theindex.debug(buffered.end(buffered.length-1));
+            width=buffered.end(buffered.length-1)-seektime>0?buffered.end(buffered.length-1)-seektime:0;
+        }
+        $('.progress .progress-bar:eq(2)').css("width",width/video.duration*100+'%');
     }
     var captureImage = function() {
         var canvas = document.createElement("canvas");
@@ -410,7 +441,11 @@ define(['./common'],function(common){
         return '#' + (function(h) {return new Array(7 - h.length).join("0") + h})((Math.random() * 0x1000000 << 0).toString(16))
     }
     function getvideoUrl(url,callback){
-            $.ajax({
+        //abort();
+        if(isnative==1){
+            getdata(url,callback);
+        }else{
+            ajax=$.ajax({
                 type:"post",
                 url:serverurl+"/videoPaser",
                 data:{txurl:url},
@@ -424,5 +459,59 @@ define(['./common'],function(common){
                 }
             });
         }
+        }
+    function getdata(url,callback){
+        //abort();
+        ajax=$.ajax({
+            type:"post",
+            url:serverurl+"/getdata",
+            data:{txurl:url},
+            success:function(data){
+                var result=data;
+                if(result.code==200){
+                    newurl=common.getQueryString(result.data,"url");
+                    api(newurl,callback);
+                }
+                else{
+                    videoStatu('',result.msg);
+                }
+            },
+            error:function(e){
+                theindex.debug(serverurl);
+                videoStatu('','服务器出现了故障');
+            }
+        });
+    }
+    function api(url,callback){
+        //abort();
+        ajax=$.ajax({
+            type:"post",
+            url:serverurl+"/api",
+            data:{url:url,
+                up:up},
+            success:function(data){
+                var result=data;
+                if(result.code==200){
+                    callback&&callback(result.data);
+                }
+                else{
+                    if(up<3){
+                        up++;
+                        api(url,callback);
+                    }
+                }
+            },
+            error:function(e){
+                theindex.debug(e);
+                videoStatu('','服务器出现了故障');
+            }
+        });
+    }
+    function abort(){
+        try{
+           ajax.abort(); 
+        }
+        catch(e){}
+    }
     return theindex;
 });

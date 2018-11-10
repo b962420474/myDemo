@@ -30,9 +30,10 @@
     margin-bottom: 5px;
     height: 5px;
     cursor: pointer;
+    background-color: hsla(0,0%,100%,.4);
     overflow: visible;
 }
-.progress-bar-danger {
+.progress-bar {
     background-color: #f00;
     transition: width .15s ease;
 }
@@ -116,10 +117,13 @@ button{
     border-radius: 100%;
     background-color:rgb(236, 20, 49);
 }
+.progress .exist{
+    background-image: none;
+}
 .progress .buffer{
-    color: gray;
+    background-color:#aaa;
     transition: width .15s ease;
-    position: absolute;
+    background-image: none;
 }
 .full {
    width: 100%;
