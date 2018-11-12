@@ -1,6 +1,9 @@
 define(['../video/video'],function(video){
 var index=new function(){
     this.init=function(){
+        loadhtml(".header","./header",function(){
+            
+        });
             video.init();
             video.list=[{
                 url:'http://www.runoob.com/try/demo_source/movie.mp4'
