@@ -33,7 +33,14 @@ function getParam(name){
     return data.name;
 }
 function loadhtml(name,pageurl,callback){
-    $(name).load(pageurl,callback);
+    $.get(pageurl+".html",function(html){
+        $(name).html(html);
+        require([pageurl],function(page){
+            callback&&callback(page);
+        });
+    }).fail(function(){
+        console.log("加载失败");
+    });
 }
 function pageBack(page){
 
