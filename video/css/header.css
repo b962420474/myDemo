@@ -1,5 +1,7 @@
 .header{
 	width: 100%;
+	padding-right: 0px;
+    padding-left: 0px;
 }
 .duya-header-wrap{
     height: 59px;
