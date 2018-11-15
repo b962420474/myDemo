@@ -1,4 +1,4 @@
-define(['./common','hls'],function(common,Hls){
+define(['../util/common','hls'],function(common,Hls){
     var videoBarTime;
     var mouseFlag=1;
     var _top=80;

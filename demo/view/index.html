@@ -3,13 +3,39 @@
    <head>
        <meta charset="utf-8">
        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+       <link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css">
    </head>
    <body style="height: 100%; margin: 0">
-        <div>
+        <div class="row">
+                <div class="col-md-2" style="min-width: 150px;">
+                        <div class="btn-group">
+                                <button style="min-width: 150px;"class="btn btn-default dropdown-toggle time" data-toggle="dropdown" type="button">今天<span class="caret"></span></button>
+                              <ul class="dropdown-menu">
+                                  <li><a href="javascript:void(0)" onclick="test(this)">今天</a></li>
+                                  <li><a href="javascript:void(0)" onclick="test(this)">昨天</a></li>
+                                  <li><a href="javascript:void(0)" onclick="test(this)">过去7天</a></li>
+                                  <li><a href="javascript:void(0)" onclick="test(this)">过去6个月</a></li>
+                              </ul>
+                    </div>
+                </div>
+                <div class="col-md-2" style="min-width: 150px;">
+                    <div class="btn-group">
+                                <button style="min-width: 150px;"class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">iServer<span class="caret"></span></button>
+                              <ul class="dropdown-menu">
+                                  <li><a href="##">iServer</a></li>
+                                  <li><a href="##">金锐显</a></li>
+                                  <li><a href="##">鼎科</a></li>
+                                  <li><a href="##">智影</a></li>
+                              </ul>
+                    </div>
+                </div>
+        </div>
+        <div class="row" style="height: 300px; margin: 0">
                 <div id="container" style="height: 100%"></div>
         </div>
-        <script type="text/javascript" src="../js/"></script>
-        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+        <script type="text/javascript" src="../js/jquery.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
        <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
@@ -26,13 +52,13 @@ var app = {};
 option = null;
 option = {
     title: {
-        text: '折线图堆叠'
+        text: '活跃量'
     },
     tooltip: {
         trigger: 'axis'
     },
     legend: {
-        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+        data:['使用次数','使用时长','增长量']
     },
     grid: {
         left: '3%',
@@ -55,38 +81,45 @@ option = {
     },
     series: [
         {
-            name:'邮件营销',
+            name:'使用次数',
             type:'line',
             stack: '总量',
             data:[120, 132, 101, 134, 90, 230, 210]
         },
         {
-            name:'联盟广告',
+            name:'使用时长',
             type:'line',
             stack: '总量',
             data:[220, 182, 191, 234, 290, 330, 310]
         },
         {
-            name:'视频广告',
+            name:'增长量',
             type:'line',
             stack: '总量',
             data:[150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-            name:'直接访问',
-            type:'line',
-            stack: '总量',
-            data:[320, 332, 301, 334, 390, 330, 320]
-        },
-        {
-            name:'搜索引擎',
-            type:'line',
-            stack: '总量',
-            data:[820, 932, 901, 934, 1290, 1330, 1320]
         }
     ]
 };
-;
+function test(e){
+    var index=$(e).parent().index();
+    $(".time").html($(e).text()+'<span class="caret"></span>');
+    switch(index){
+            case 0:
+            option.xAxis.data=['0点','4点','8点','12点','16点','18点','22点'];
+            break;
+            case 1:
+            option.xAxis.data=['0点','4点','8点','12点','16点','18点','22点'];
+            break;
+            case 2:
+            option.xAxis.data=['周一','周二','周三','周四','周五','周六','周日'];
+            break;
+            case 3:
+            option.xAxis.data=['1月','2月','3月','4月','5月','6月','7月'];
+            break;
+
+    }
+    myChart.setOption(option, true);
+}
 if (option && typeof option === "object") {
     myChart.setOption(option, true);
 }
