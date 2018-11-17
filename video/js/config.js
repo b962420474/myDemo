@@ -12,7 +12,7 @@ var plugs=[
     'bootstrap'
 ];
 var routeurl={
-    index:'./index',
-    videoList:'./videoList',
-    video:'./video'
+    index:'index',
+    videoList:'videoList',
+    video:'video'
 }
