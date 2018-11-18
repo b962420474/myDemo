@@ -20,6 +20,10 @@ define(['../util/common','hls'],function(common,Hls){
         {
             url:'https://m.v.qq.com/cover/r/rpup19lfbuf2skc.html?vid=y002856bq4f'
         },
+        {
+            url:'https://v.qq.com/x/cover/rpup19lfbuf2skc/e0028php22d.html'
+        },
+        
         ];
         this.play=function(url){
             islocking=1;

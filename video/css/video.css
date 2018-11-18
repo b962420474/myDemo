@@ -154,3 +154,12 @@ button{
     opacity: 0.6;
 }
 
+/*播放列表*/
+.playlist{
+    
+}
+.list-group-item{
+    /* background-color: rgba(0,0,0,.8); */
+    border: 0px solid #ddd;
+}
+
