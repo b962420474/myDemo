@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dbutton">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;" />
+<style>
+* {
+  padding:0;
+  margin:0;
+  border:0;
+}
+body {
+  background:#fff;
+  width:1280px;
+  height:220px;
+}
+
+button {
+  width:  100%;
+  height: 100%;
+  font-size: 28px;
+}
+
+td {
+  border:1px solid #aaa;
+  background: #ff0;
+  text-align:center;
+  cursor:pointer;
+  color:#000;
+}
+
+table {
+  border:2px solid #999;
+  table-layout:fixed;
+  width: 1280px;
+}
+
+button:hover,button:focus{
+  background: #aaf;
+}
+
+.ctrlkeys,.shiftKeys {
+  background: #f99;
+}
+
+.num {
+  color:blue;
+}
+</style>
+<script>
+var htmlCode = {
+  "&amp;":"&",
+  "&lt;" :"<",
+  "&gt;" :">",
+  "Space":" ",
+}
+
+function ime_cmd(v) {
+  if (window.iBrowser !== undefined) {
+    window.iBrowser.sendCommand(v, "");
+  } else {
+    console.log("IME:[CMD]:" + v);
+  }
+}
+
+function ime_insert(v) {
+  if (window.iBrowser !== undefined) {
+    window.iBrowser.sendCommand("insert", v);
+  } else {
+    console.log("IME:[INS]:" + v);
+  }
+}
+
+function test(){
+  var input = document.getElementById("input");
+  var e = window.event || test.caller.arguments[0];
+  var el = e.target || e.srcElement;
+  if(el.tagName.toLowerCase() == "button") {
+    if (el.className === "" || el.className === undefined || el.className === "num") {
+      var str = el.innerHTML;
+      str = htmlCode[str] || str;
+      ime_insert(str);
+    }
+    else if (el.className == "ctrlkeys") {
+      ime_cmd(el.id);
+    } else if (el.id == "shift") {      
+      var els = document.getElementsByTagName("button");
+      for(var i = 0, l = els.length; i < l; i++){
+        var str = els[i].innerHTML;
+        if(/^[a-z]$/.test(str))
+          els[i].innerHTML = str.toUpperCase();
+        if(/^[A-Z]$/.test(str))
+          els[i].innerHTML = str.toLowerCase();  
+      }
+    }
+  }
+  
+}
+
+function ctrKeyboard(){
+  capsInit();
+}
+
+function capsInit(){
+  var els = document.getElementsByTagName("button");
+  for(var i = 0,j = 0, l = els.length; i < l; i++){
+    var str = els[i].innerHTML;
+    if(/^[A-Z]$/.test(str))
+      els[i].innerHTML = str.toLowerCase();  
+  }
+}
+</script>
+
+</head>
+<body onload="ctrKeyboard()">
+<table cellspacing="1" onclick="test()">
+ <tr>
+  <td colspan="2"><button>http://</button></td>
+  <td colspan="2"><button>www.</button></td>
+  <td colspan="2"><button>.com</button></td>
+  <td colspan="2"><button>.org</button></td>
+  <td colspan="2"><button>.cn</button></td>
+  <td colspan="2"><button>.com.cn</button></td>
+  <td colspan="2"><button id="home" class="ctrlkeys">Home</button></td>
+  <td colspan="2"><button id="end" class="ctrlkeys">End</button></td>
+ </tr>
+ <tr>
+  <td><button>~</button></td>
+  <td><button>!</button></td>
+  <td><button>@</button></td>
+  <td><button>#</button></td>
+  <td><button>$</button></td>
+  <td><button>%</button></td>
+  <td><button>^</button></td>
+  <td><button>&amp;</button></td>
+  <td><button>*</button></td>
+  <td><button>(</button></td>
+  <td><button>)</button></td>
+  <td><button>_</button></td>
+  <td><button>+</button></td>
+  <td><button>|</button></td>
+  <td colspan="2"><button id="clear" class="ctrlkeys">Clear</button></td>
+ </tr>
+ <tr>
+  <td><button>`</button></td>
+  <td><button class="num">1</button></td>
+  <td><button class="num">2</button></td>
+  <td><button class="num">3</button></td>
+  <td><button class="num">4</button></td>
+  <td><button class="num">5</button></td>
+  <td><button class="num">6</button></td>
+  <td><button class="num">7</button></td>
+  <td><button class="num">8</button></td>
+  <td><button class="num">9</button></td>
+  <td><button class="num">0</button></td>
+  <td><button>-</button></td>
+  <td><button>=</button></td>
+  <td><button>\</button></td>
+  <td colspan="2" ><button id="backspace" class="ctrlkeys">BackSpace</button></td>
+ </tr>
+ <tr>
+  <td><button>q</button></td>
+  <td><button>w</button></td>
+  <td><button>e</button></td>
+  <td><button>r</button></td>
+  <td><button>t</button></td>
+  <td><button>y</button></td>
+  <td><button>u</button></td>
+  <td><button>i</button></td>
+  <td><button>o</button></td>
+  <td><button>p</button></td>
+  <td><button>{</button></td>
+  <td><button>}</button></td>
+  <td><button>[</button></td>
+  <td><button>]</button></td>
+  <td colspan="2"><button id="shift" class="shiftKeys">Shift</button></td>
+ </tr>
+ <tr>
+  <td><button>a</button></td>
+  <td><button>s</button></td>
+  <td><button>d</button></td>
+  <td><button>f</button></td>
+  <td><button>g</button></td>
+  <td><button>h</button></td>
+  <td><button>j</button></td>
+  <td><button>k</button></td>
+  <td><button>l</button></td>
+  <td><button>:</button></td>
+  <td><button>"</button></td>
+  <td><button>;</button></td>
+  <td><button>'</button></td>
+  <td ><button id="hide" class="ctrlkeys">OK</button></td>
+  <td colspan="2"><button id="commit" class="ctrlkeys">Enter</button></td>
+ </tr>
+ <tr>
+  <td><button>z</button></td>
+  <td><button>x</button></td>
+  <td><button>c</button></td>
+  <td><button>v</button></td>
+  <td><button>b</button></td>
+  <td><button>n</button></td>
+  <td><button>m</button></td>
+  <td><button>&lt;</button></td>
+  <td><button>&gt;</button></td>
+  <td><button>?</button></td>
+  <td><button>,</button></td>
+  <td><button>.</button></td>
+  <td><button>/</button></td>
+  <td colspan="3"><button>Space</button></td>
+ </tr>
+</table>
+<script>
+document.getElementById("hide").focus();
+document.onkeydown = function(e){
+	if(e.keyCode == 462 || e.keyCode == 8 || e.keyCode == 27){
+		ime_cmd("hide");
+	}
+}
+</script>
+</body>
+</html>
