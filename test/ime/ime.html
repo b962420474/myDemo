@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dbutton">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <style>
 * {
   padding:0;
@@ -15,7 +15,7 @@ body {
   height:220px;
 }
 
-button {
+td button {
   width:  100%;
   height: 100%;
   font-size: 28px;
@@ -46,6 +46,57 @@ button:hover,button:focus{
 .num {
   color:blue;
 }
+.keyrow{
+  text-align:center;
+}
+.keyspace{
+  width: 800px;
+}
+#keyboard .alt{
+  width: 225px;
+}
+#keyboard .shift{
+  width: 176px;
+}
+#keyboard .change{
+  font-family:"iconfont" !important;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 176px;
+}
+#keyboard .bksp{
+  font-family:"iconfont" !important;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#keyboard button{
+    border: 1px solid #aaa;
+    margin: 2px;
+    min-width: 86px;
+    min-height: 36px;
+    text-align: center;
+    cursor: pointer;
+    color: #000;
+    font-size:28px;
+}
+@font-face {
+  font-family: "iconfont";
+  src: url('iconfont.eot?t=1545125575459'); /* IE9*/
+  src: url('iconfont.eot?t=1545125575459#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
+  url('iconfont.ttf?t=1545125575459') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1545125575459#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  /* font-size:16px; */
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 </style>
 <script>
 var htmlCode = {
@@ -54,7 +105,7 @@ var htmlCode = {
   "&gt;" :">",
   "Space":" ",
 }
-
+var lang="eng";
 function ime_cmd(v) {
   if (window.iBrowser !== undefined) {
     window.iBrowser.sendCommand(v, "");
@@ -70,7 +121,6 @@ function ime_insert(v) {
     console.log("IME:[INS]:" + v);
   }
 }
-
 function test(){
   var input = document.getElementById("input");
   var e = window.event || test.caller.arguments[0];
@@ -93,6 +143,11 @@ function test(){
           els[i].innerHTML = str.toLowerCase();  
       }
     }
+    else if(el.id == "change"){
+      if(lang=="eng") return;
+      document.getElementsByTagName("table")[0].style.display="none";
+      Keyboard.show();
+    }
   }
   
 }
@@ -109,11 +164,38 @@ function capsInit(){
       els[i].innerHTML = str.toLowerCase();  
   }
 }
+function init(){
+  capsInit();
+  var reg = new RegExp("(^|&)lang=([^&]*)(&|$)");
+  var match = window.location.search.substr(1).match(reg);
+  lang = match?unescape(match[2]):"eng";//语言
+  if(Keyboard.layouts[lang]){
+      Keyboard.init(lang,function(type,msg){
+        if(type=="insert"){
+          ime_insert(msg);
+        }
+        else if(type=="cmd"){
+          ime_cmd(msg);
+        }
+        else{
+          document.getElementsByTagName("table")[0].style.display="";
+        }
+      });
+      Keyboard.hide();
+    }
+    else{
+      lang="eng";
+      var space=document.getElementById("thespace");
+      space.nextElementSibling.style.display="none";
+      space.colSpan='3';
+    }
+    document.getElementsByTagName("table")[0].style.display="";
+}
 </script>
 
 </head>
-<body onload="ctrKeyboard()">
-<table cellspacing="1" onclick="test()">
+<body onload="init()">
+<table cellspacing="1" onclick="test()" style="display:none">
  <tr>
   <td colspan="2"><button>http://</button></td>
   <td colspan="2"><button>www.</button></td>
@@ -206,9 +288,11 @@ function capsInit(){
   <td><button>,</button></td>
   <td><button>.</button></td>
   <td><button>/</button></td>
-  <td colspan="3"><button>Space</button></td>
+  <td id="thespace"><button>Space</button></td>
+  <td colspan="2"><button id="change" class="shiftKeys iconfont">&#xe728;</button></td>
  </tr>
 </table>
+<script src="keybord.js"></script>
 <script>
 document.getElementById("hide").focus();
 document.onkeydown = function(e){
