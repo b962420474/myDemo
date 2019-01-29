@@ -11,38 +11,31 @@ define(['../util/common','hls'],function(common,Hls){
     var newurl="";
     var ajax;
     var theindex=new function(){
-        this.list;
+        this.list=[{
+            url:'http://www.iqiyi.com/v_19rrdgiq8s.html'
+        },
+        {
+            url:'https://v.qq.com/x/cover/rpup19lfbuf2skc/x0028yz902j.html'
+        },
+        {
+            url:'https://m.v.qq.com/cover/r/rpup19lfbuf2skc.html?vid=y002856bq4f'
+        },
+        {
+            url:'https://v.qq.com/x/cover/rpup19lfbuf2skc/e0028php22d.html'
+        },
+        
+        ];
         this.play=function(url){
             islocking=1;
             up=0;
             newurl="";
             getvideoUrl(url,function(url){
-                $('.progress .progress-bar:eq(1)').css("left","0%");
-                video.preload="auto";
-                if(url.indexOf(".m3u8")>0){
-                    if(Hls.isSupported()) {
-                        var hls = new Hls();
-                        hls.loadSource(url);
-                        hls.attachMedia(video);
-                        hls.on(Hls.Events.MANIFEST_PARSED,function() {
-                        video.play();
-                    });
-                     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = url;
-                        video.addEventListener('loadedmetadata',function() {
-                          video.play();
-                        });
-                      }
-                }
-                else{
-                    video.src=url;
-                    video.play();
-            }
+                playing(url);
             });
         }
         this.playnext=function(){
-            video.src="";
             if(this.list.length>1){
+                video.src="";
                 this.list.splice(0,1);
                 this.play(this.list[0].url);
             }
@@ -72,6 +65,29 @@ define(['../util/common','hls'],function(common,Hls){
             launch($span);
         }
     };
+    function playing(url){
+        $('.progress .progress-bar:eq(1)').css("left","0%");
+        video.preload="auto";
+        if(url.indexOf(".m3u8")>0){
+            if(Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                video.play();
+            });
+             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('loadedmetadata',function() {
+                  video.play();
+                });
+              }
+        }
+        else{
+            video.src=url;
+            video.play();
+    }
+    }
     function banrightkey(){
         $('#video').bind('contextmenu',function() { return false; });
     }
@@ -94,6 +110,8 @@ define(['../util/common','hls'],function(common,Hls){
                 }
             },
             error:function(){
+                 console.log("href:"+"http://"+window.location.host+window.location.pathname);
+                if(video.src==("http://"+window.location.host+window.location.pathname)) return;
                 islocking=1;
                 if(up<3){
                     videoStatu('','加载中');
@@ -107,12 +125,12 @@ define(['../util/common','hls'],function(common,Hls){
                 }
                 else{
                     if(video.error.code==4){
-                        videoStatu('','不支持该类型');
+                        videoStatu('','不支持该类型,请切换其他线路');
                     }else if(video.error.code==3){
-                        videoStatu('','解码失败');
+                        videoStatu('','解码失败,请切换其他线路');
                     }
                     else if(video.error.code==2){
-                        videoStatu('','网络错误');
+                        videoStatu('','网络错误,请切换其他线路');
                     }
                     else if(video.error.code==1){
                         videoStatu('','');
@@ -159,12 +177,12 @@ define(['../util/common','hls'],function(common,Hls){
             },
             loadedmetadata:function(){
                 theindex.debug("111111");
-                captureImage();
+                //captureImage();
             }
         });
         $(".videobtn").on({
             click:function(e){
-                var ele=e.target;
+                var ele=e.currentTarget;
                 var type=$(ele).data("type");
                 switch(type){
                     case 'play':
@@ -185,6 +203,18 @@ define(['../util/common','hls'],function(common,Hls){
                         break;
                     case 'download':
                     download(video.src,null,"video/webm");
+                        break;
+                    case 'line':
+                        $(ele).find(".list-group").toggle();
+                        break;
+                }
+            },
+            mouseleave:function(e){
+                var ele=e.currentTarget;
+                var type=$(ele).data("type");
+                switch(type){
+                    case 'line':
+                        $(ele).find(".list-group").hide();
                         break;
                 }
             }
@@ -461,7 +491,12 @@ define(['../util/common','hls'],function(common,Hls){
         }
         }
     function getdata(url,callback){
-        //abort();
+        abort();
+        if(url.trim().indexOf("https")==0){
+            url="http"+url.trim().substr(url.trim().indexOf("https")+5);
+            console.log(url);
+        }
+        $(".videobtn .list-group").html("");
         ajax=$.ajax({
             type:"post",
             url:serverurl+"/getdata",
@@ -469,21 +504,24 @@ define(['../util/common','hls'],function(common,Hls){
             success:function(data){
                 var result=data;
                 if(result.code==200){
-                    newurl=common.getQueryString(result.data,"url");
+                    initLine(result.data);
+                    newurl=common.getQueryString(result.data[0],"url");
                     api(newurl,callback);
                 }
                 else{
                     videoStatu('',result.msg);
                 }
             },
-            error:function(e){
+            error:function(error){
+                if(error.statusText=="abort") return;
                 theindex.debug(serverurl);
                 videoStatu('','服务器出现了故障');
             }
         });
     }
     function api(url,callback){
-        //abort();
+        console.log("api");
+        abort();
         ajax=$.ajax({
             type:"post",
             url:serverurl+"/api",
@@ -501,11 +539,30 @@ define(['../util/common','hls'],function(common,Hls){
                     }
                 }
             },
-            error:function(e){
-                theindex.debug(e);
+            error:function(error){
+                if(error.statusText=="abort") return;
+                theindex.debug(error);
                 videoStatu('','服务器出现了故障');
             }
         });
+    }
+    function initLine(data){
+        var html="";
+        for(var i=0;i<data.length;i++){
+            html+='<a href="javascript:void(0)" class="list-group-item" url='+common.getQueryString(data[i],"url")+'>线路'+(i+1)+'</a>'
+        }
+        $(".videobtn .list-group").html(html);
+        $(".videobtn .list-group a").on({
+            click:function(e){
+                if($(".videobtn .txp_label").text()==$(this).text()) return;
+                $(".videobtn .txp_label").html($(this).text());
+                newurl=$(this).attr("url");
+                up=0;
+                video.src="";
+                islocking=1;
+                api($(this).attr("url"),playing);
+            }
+        })
     }
     function abort(){
         try{
