@@ -6,123 +6,80 @@
        <link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css">
    </head>
    <body style="height: 100%; margin: 0">
-        <div class="row">
-                <div class="col-md-2" style="min-width: 150px;">
-                        <div class="btn-group">
-                                <button style="min-width: 150px;"class="btn btn-default dropdown-toggle time" data-toggle="dropdown" type="button">今天<span class="caret"></span></button>
-                              <ul class="dropdown-menu">
-                                  <li><a href="javascript:void(0)" onclick="test(this)">今天</a></li>
-                                  <li><a href="javascript:void(0)" onclick="test(this)">昨天</a></li>
-                                  <li><a href="javascript:void(0)" onclick="test(this)">过去7天</a></li>
-                                  <li><a href="javascript:void(0)" onclick="test(this)">过去6个月</a></li>
-                              </ul>
+    <table class="table table-bordered table-striped table-hover table-condensed" style="margin-top: 10px;">
+        <thead>
+        <tr>
+            <th><input type="checkbox" name="invalidmac_id" value=""></th>
+            <th>序号</th>
+            <th>板卡厂商</th>
+            <th>设备mac</th>
+            <th>IP地址</th>
+            <th>请求次数</th>
+            <th>首次请求时间</th>
+            <th>最后一次请求时间</th>
+            <th>水印</th>
+            <th>管理</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr data-id="305">
+                <td><input type="checkbox" name="invalidmac_id[]" value="305"></td>
+                <td>305</td>
+                <td>Cultraview</td>
+                <td>B8:3D:4E:7F:FA:30</td>
+                <td>27.102.112.109</td>
+                <td>14</td>
+                <td>2018-12-24 16:52</td>
+                <td>2018-12-24 17:38</td>
+                <td>关</td>
+                <td align="center">
+                    <div class="tbRowButtons">
+                        <button type="button" class="btn btn-success btn-xs" data-symbol="rowSwitchUseBtn" data-isuse="0" style="">
+                            <i class="glyphicon glyphicon-eye-open"></i> 开/关
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs" data-symbol="rowDelKeyBtn" style="">
+                            <i class="glyphicon glyphicon-remove"></i> 删除
+                        </button>
                     </div>
-                </div>
-                <div class="col-md-2" style="min-width: 150px;">
-                    <div class="btn-group">
-                                <button style="min-width: 150px;"class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">iServer<span class="caret"></span></button>
-                              <ul class="dropdown-menu">
-                                  <li><a href="##">iServer</a></li>
-                                  <li><a href="##">金锐显</a></li>
-                                  <li><a href="##">鼎科</a></li>
-                                  <li><a href="##">智影</a></li>
-                              </ul>
+                </td>
+            </tr>
+            <tr data-id="304">
+                <td><input type="checkbox" name="invalidmac_id[]" value="304"></td>
+                <td>304</td>
+                <td>Cultraview</td>
+                <td>B8:3D:4E:7F:FA:30</td>
+                <td>27.102.112.109</td>
+                <td>14</td>
+                <td>2018-12-24 16:50</td>
+                <td>2018-12-24 17:38</td>
+                <td>关</td>
+                <td align="center">
+                    <div class="tbRowButtons">
+                        <button type="button" class="btn btn-success btn-xs" data-symbol="rowSwitchUseBtn" data-isuse="0" style="">
+                            <i class="glyphicon glyphicon-eye-open"></i> 开/关
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs" data-symbol="rowDelKeyBtn" style="">
+                            <i class="glyphicon glyphicon-remove"></i> 删除
+                        </button>
                     </div>
-                </div>
-        </div>
-        <div class="row" style="height: 300px; margin: 0">
-                <div id="container" style="height: 100%"></div>
-        </div>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+        <div><input type="button" id="export" value="导出"></div>
         <script type="text/javascript" src="../js/jquery.js"></script>
-        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+        <script type="text/javascript" src="../js/json2csv.js"></script>
+        <script type="text/javascript" src="../js/excleHelper.js"></script>
        <script type="text/javascript">
-var dom = document.getElementById("container");
-var myChart = echarts.init(dom);
-var app = {};
-option = null;
-option = {
-    title: {
-        text: '活跃量'
-    },
-    tooltip: {
-        trigger: 'axis'
-    },
-    legend: {
-        data:['使用次数','使用时长','增长量']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
-    xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['周一','周二','周三','周四','周五','周六','周日']
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [
-        {
-            name:'使用次数',
-            type:'line',
-            stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-            name:'使用时长',
-            type:'line',
-            stack: '总量',
-            data:[220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-            name:'增长量',
-            type:'line',
-            stack: '总量',
-            data:[150, 232, 201, 154, 190, 330, 410]
-        }
-    ]
-};
-function test(e){
-    var index=$(e).parent().index();
-    $(".time").html($(e).text()+'<span class="caret"></span>');
-    switch(index){
-            case 0:
-            option.xAxis.data=['0点','4点','8点','12点','16点','18点','22点'];
-            break;
-            case 1:
-            option.xAxis.data=['0点','4点','8点','12点','16点','18点','22点'];
-            break;
-            case 2:
-            option.xAxis.data=['周一','周二','周三','周四','周五','周六','周日'];
-            break;
-            case 3:
-            option.xAxis.data=['1月','2月','3月','4月','5月','6月','7月'];
-            break;
-
-    }
-    myChart.setOption(option, true);
-}
-if (option && typeof option === "object") {
-    myChart.setOption(option, true);
-}
+       var param={
+            fieldsTarget:$("table thead th"),
+            listTarget:$("table tbody tr"),
+            filename:"test",
+            export:{
+                target:$("#export"),
+            }
+       };
+       excleHelper.init(param);
        </script>
    </body>
 </html>

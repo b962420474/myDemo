@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- <link rel="stylesheet" href="./font.css"> -->
 <style>
 * {
   padding:0;
@@ -40,7 +41,7 @@ button:hover,button:focus{
 }
 
 .ctrlkeys,.shiftKeys {
-  background: #f99;
+  /* background: #f99; */
 }
 
 .num {
@@ -49,7 +50,7 @@ button:hover,button:focus{
 .keyrow{
   text-align:center;
 }
-.keyspace{
+#keyboard .keyspace{
   width: 800px;
 }
 #keyboard .alt{
@@ -64,22 +65,27 @@ button:hover,button:focus{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 176px;
+  /* font-size: 28px; */
 }
 #keyboard .bksp{
   font-family:"iconfont" !important;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* font-size: 28px; */
 }
 #keyboard button{
     border: 1px solid #aaa;
     margin: 2px;
-    min-width: 86px;
-    min-height: 36px;
+    width: 86px;
+    height: 36px;
     text-align: center;
     cursor: pointer;
     color: #000;
-    font-size:28px;
+    font-size:25px;
+    line-height: 20px;
+    overflow: hidden;
+    font-family:arial,sans-serif;
 }
 @font-face {
   font-family: "iconfont";
@@ -92,7 +98,6 @@ button:hover,button:focus{
 
 .iconfont {
   font-family:"iconfont" !important;
-  /* font-size:16px; */
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -166,9 +171,9 @@ function capsInit(){
 }
 function init(){
   capsInit();
-  var reg = new RegExp("(^|&)lang=([^&]*)(&|$)");
-  var match = window.location.search.substr(1).match(reg);
-  lang = match?unescape(match[2]):"eng";//语言
+  console.log("lang:"+window.navigator.language);
+  lang = window.navigator.language?window.navigator.language:"eng";//语言
+  //lang="hin";
   if(Keyboard.layouts[lang]){
       Keyboard.init(lang,function(type,msg){
         if(type=="insert"){
