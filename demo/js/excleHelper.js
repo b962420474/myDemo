@@ -3,10 +3,7 @@
         init:function(param){
             var that=this;
             $.extend(this.defaults,param);
-            $.each(this.defaults.fieldsTarget,function(i,a){
-                console.log($(a).text());
-                that.fileds.push($(a).text());
-            });
+            
             $.each(this.defaults.listTarget,function(i,a){
                 var data={};
                 $.each($(a).find("td"),function(j,b){
@@ -18,6 +15,13 @@
             that.defaults.export.target.on("click",function(){
                 that.download(that.defaults.filename+".csv");
                 that.defaults.export.clickfun&&that.defaults.export.clickfun();
+            });
+        },
+        getfileds:function(){
+            var that=this;
+            $.each(this.defaults.fieldsTarget,function(i,a){
+                console.log($(a).text());
+                that.fileds.push($(a).text());
             });
         },
         download:function(filename){

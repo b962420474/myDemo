@@ -173,7 +173,7 @@ function init(){
   capsInit();
   console.log("lang:"+window.navigator.language);
   lang = window.navigator.language?window.navigator.language:"eng";//语言
-  //lang="hin";
+  lang="hin";
   if(Keyboard.layouts[lang]){
       Keyboard.init(lang,function(type,msg){
         if(type=="insert"){
