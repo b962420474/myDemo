@@ -45,16 +45,16 @@
   width: 730px;*/
   z-index: 1;
   opacity: 1;
-  transform: scale3d(1.0, 1.2, 1.2)
+  -webkit-transform: scale3d(1.0, 1.2, 1.2)
 }
 .before {
   /*left: 0;*/
-  transform: translateX(-250px);
+  -webkit-transform: translateX(-250px);
   opacity: .8;
 }
 .after {
   /*left: 500px;*/
-  transform: translateX(250px);
+  -webkit-transform: translateX(250px);
   opacity: .8;
 }
 .lines {

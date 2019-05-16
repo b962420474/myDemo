@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .model-loading {
+            width: 135px;
+            height: 135px;
+            border-radius: 8px;
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            display: inline-block;
+        }
+
+        .model-loading>span {
+            width: 50px;
+            height: 50px;
+            float: left;
+            padding: 8px;
+        }
+
+        .model-loading>span>i {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+        }
+        .loading{
+            width: 2px;
+            height: 2px;
+            border-radius: 1px;
+            box-shadow: 0 -24px 0 6px black, /*上*/
+            0 24px 0 3px #333, /*下*/
+            -24px 0 0 3px #333, /*左*/
+            24px 0 0 3px #333, /*右*/
+            -18px -18px 0 3px #333, /*左上*/
+            18px -18px 0 4.5px #333, /*右上*/
+            -18px 18px 0 3px #333, /*左下*/
+            18px 18px 0 3px #333/*右下*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="model-loading">
+        <span><i style="background: #19ec11"></i></span>
+        <span><i style="background: #fd4f23"></i></span>
+        <span><i style="background: #6a7cff"></i></span>
+        <span><i style="background: #e1de0f"></i></span>
+    </div>
+    <!-- <div class="loading" style="position:absolute;left:50%;top:50%;width: 2px;
+    height: 2px;
+    border-radius: 1px;
+    box-shadow: 0 -24px 0 6px black, /*上*/
+    0 24px 0 3px #333, /*下*/
+    -24px 0 0 3px #333, /*左*/
+    24px 0 0 3px #333, /*右*/
+    -18px -18px 0 3px #333, /*左上*/
+    18px -18px 0 4.5px #333, /*右上*/
+    -18px 18px 0 3px #333, /*左下*/
+    18px 18px 0 3px #333/*右下*/">       
+    </div> -->
+</body>
+<script src="./jquery.min.js"></script>
+<script src="./animation.js"></script>
+<script>
+    var a = new Animator(2000, function (p) {
+        $(".model-loading").css('-webkit-transform', 'translateY(' + 100 * p + 'px)');
+    }, Easing.swingFrom);
+    a.start();
+    //loading();
+</script>
+
+</html>
