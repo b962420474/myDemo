@@ -105,7 +105,7 @@
             var duration = this.duration,
                 self = this;
             /*定义动画执行函数*/
-            requestAnimationFrame(function step() {
+            self.timeId=requestAnimationFrame(function step() {
                 /*得到动画执行进度*/
                 var p = (Date.now() - startTime) / duration;
                 /*是否执行下一帧动画*/
@@ -122,13 +122,12 @@
                     } 
                 }
                 // 如果next是true执行下一帧动画
-                if(next) requestAnimationFrame(step);
+                if(next) self.timeId=requestAnimationFrame(step);
             });
         },
         stop:function(callback){
-            this.config.finished=true;
-            if(callback)
-            this.stopcallback=callback;
+            cancelAnimationFrame(this.timeId);
+            callback&&callback();
         }
     };
     var loading=function(){
