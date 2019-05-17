@@ -86,6 +86,7 @@
         this.easing = easing || function(p) {
             return p
         };
+        this.openAnimation=true;
         this.config={
             finished:false
         };
@@ -97,9 +98,8 @@
          true表示动画不循环执行。  
         */
         start: function(finished,callback) {
+            if(!this.openAnimation) return;
             /*动画开始时间*/
-            if(finished) this.config.finished=finished;
-            if(callback) this.stopcallback=callback;
             var startTime = Date.now();
             /*动画执行时间*/
             var duration = this.duration,
@@ -114,9 +114,11 @@
                 if(p < 1.0) {
                     self.progress(self.easing(p), p);   //执行动画回调函数，并传入动画算子的结果和动画进度。
                 } else {
-                    if(self.config.finished){  //判断是否停止动画。如果是true代表停止动画。
+                    if(finished){  //判断是否停止动画。如果是true代表停止动画。
                         next = false;
-                        self.stopcallback&&self.stopcallback();
+                        cancelAnimationFrame(self.timeId);
+                        callback&&callback();
+                        return;
                     }else{
                         startTime = Date.now();
                     } 
@@ -128,6 +130,9 @@
         stop:function(callback){
             cancelAnimationFrame(this.timeId);
             callback&&callback();
+        },
+        setOff:function(flag){
+            this.openAnimation=flag;
         }
     };
     var loading=function(){
