@@ -1,0 +1,226 @@
+生命周期钩子：
+    created:表示数据观测完，但尚未挂载el
+    mounted:el挂载到实例后调用
+    beforeDestroy:实例销毁前调用
+v-  表示指令
+filters:项下面的函数表示过滤器
+:src="http..." 表示v-bind:src="http..." （表示v-bind的语法糖，v-bind设置标签的属性） 
+@click="handle"  表示v-on:click="handle"  （表示v-on的语法糖，v-on绑定事件）
+
+vue计算属性：vue所有计算属性以函数的形式写在vue实例内的computed项内。
+    每一个计算属性都包含一个getter和setter
+    计算属性可以依赖其他计算属性，还可以依赖其他实例的数据
+    计算属性{{txt}}  此txt不用带()，是属性，不是方法
+    method中的方法是方法，{{txt()}}需要带括号调用,可以传递参数
+    计算属性具有缓存，只有在其依赖的数据发生变化时它才会重新取值。
+
+
+v-bind:
+    1、:class
+        1.1、
+        <div :class="{'active': isActive }"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                isActive:true
+            }
+        })
+        结果为<div class="active"></div>，isActive为true则有active类，为false则没有。
+        1.2、
+        该对象可以传入多个属性：
+        <div class="static" :class="{'active': isActive,'focus':focus }"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                isActive:true,
+                focus:false
+            }
+        })
+        <div class="static active"></div>
+        当数据发生变化时，class会相应的更新
+        1.3、
+        :class也可添加计算属性
+        <div :class="classes"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                isActive:true,
+                error:false
+            },
+            computed:{
+                classes:function(){
+                    return {
+                        'active':this.isActive&&this.error!=null,
+                        'fail':this.error&&this.error.type==='fail'
+                    }
+                }
+            }
+        })
+        1.4
+        当需要用到多个class时，给:class绑定一个数组
+        <div :class="[activeCls,errorCls]"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                activeCls:'active',
+                errorCls:'error'
+            }
+        });
+        结果为：<div class="active error"></div>
+        也可以使用三元表达式来切换class
+        <div :class="[isActive?activeCls:'',errorCls]"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                isActive:true,
+                activeCls:'active',
+                errorCls:'error'
+            }
+        })
+        结果为：<div class="active error"></div>
+        还可以这样写：
+        <div :class="[{'active':isActive},errorCls]"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                isActive:true,
+                errorCls:'error'
+            }
+        })
+    2、:style
+        2.1、绑定style
+        <div :style="{'color':color,'font-size':fontsize+'px'}"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                color:'green',
+                fontsize:14
+            }
+        });
+        结果为：<div style="color:green;font-size:14px"></div>
+        也可以这样写：
+        <div :style="style"></div>
+        new Vue({
+            el:'#app',
+            data:{
+                style:{
+                    color:'green',
+                    fontSize:'14px'
+                }
+            }
+        })
+
+内置指令：
+    1、v-cloak
+    v-cloak是一个解决初始化慢导致页面闪动的最佳实践，适用于简单项目，工程化项目不需要
+    <div v-cloak>{{message}}</div>
+    new Vue({
+        el:'#app',
+        data:{
+            message:"sdfsdf"
+        }
+    })
+    在css 中加上
+    [v-cloak]{
+        display:none;
+    }
+
+    2、v-once
+    定义它的元素或组件只渲染一次，包括元素或组件的所有子节点，渲染完后不随数据的变化重新渲染，为静态内容
+    <div v-once><span>{{message}}</span></div>
+    new Vue({
+        el:'#app',
+        data:{
+            message:'这是一段文本'
+        }
+    })
+    3、v-if、v-else-if、v-else
+    条件渲染指令
+    <p v-if="states===1">当states为1时显示</p>
+    <p v-else-if="states===2">当states为2时显示</p>
+    <p v-else>否则此段显示</p>
+    new Vue({
+        el:'#app',
+        data:{
+            states:1
+        }
+    })
+    当表达式为true时，当前元素或组件及所有子节点显示，为false时则移除。
+    如果一次需要判断多个元素，则可以使用vue内置元素<template>
+    <template v-if="states===1">
+        <p>这是一段文本</p>
+        <p>这是一段文本</p>
+        <p>这是一段文本</p>
+    </template>
+    new Vue({
+        el:'#app',
+        data:{
+            states:1
+        }
+    })
+    vue在渲染元素时，会尽可能的复用而非重新渲染，如下
+    <div id="app">
+        <template v-if="type==='name'">
+            <label>用户名：</label>
+            <input placeholder="请输入用户名">
+        </template>
+        <template v-else>
+            <label>邮箱：</label>
+            <input placeholder="请输入邮箱">
+        </template>
+        <button @click="handleToggleClick">切换输入类型</button>
+    </div>
+    new Vue({
+        el:'#app',
+        data:{
+            type:'name'
+        },
+        methods:{
+            handleToggleClick:function(){
+                this.type=this.type==="name"?"mail":"name";
+            }
+        }
+    })
+    显示结果看出input中的值不变，说明只是替换了placeholder，input被复用了。
+    key属性决定是否复用元素（添加key）。key属性要唯一
+    <div id="app">
+        <template v-if="type==='name'">
+            <label>用户名：</label>
+            <input placeholder="请输入用户名" key="name-input">
+        </template>
+        <template v-else>
+            <label>邮箱：</label>
+            <input placeholder="请输入邮箱" key="mail-input">
+        </template>
+        <button @click="handleToggleClick">切换输入类型</button>
+    </div>
+    new Vue({
+        el:'#app',
+        data:{
+            type:'name'
+        },
+        methods:{
+            handleToggleClick:function(){
+                this.type=this.type==="name"?"mail":"name";
+            }
+        }
+    })
+    4、v-show
+    作用和v-if相似，控制元素是否显示，区别在于v-show实际是隐藏（display:none）,v-if则是删除对应的元素
+    <div v-show="states===1"></div>
+    new Vue({
+        el:'#app',
+        data:{
+            states:2
+        }
+    })
+    实际结果：<div style="display:none"></div>
+    注意：v-show不能在template上使用
+    5、v-for
+    数组遍历或者枚举一个对象循环显示。
+    
+
+
+
+
+

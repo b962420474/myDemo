@@ -6,21 +6,35 @@
 </head> 
 <body> 
 <div id="app">
-    <input type="radio" v-model="picked" value="html" id="html">
-    <label for="html">HTML</label><br>
-    <input type="radio" v-model="picked" value="js" id="js">
-    <label for="js">JavaScript</label><br>
-    <input type="radio" v-model="picked" value="css" id="css">
-    <label for="css">CSS</label><br>
+    <div v-if="flag">{{now}}</div>
+    <div>{{now1()}}</div>
 </div> 
 <script src="../js/vue.min.js"></script> 
 <script> 
     var app =new Vue({ 
     el :'#app', 
     data: {
-        picked:"js"
+        picked:"js",
+        flag:true
+    },
+    methods:{
+        now1:function(){
+            return Date.now();
+        }
+    },
+    computed:{
+        now:function(){
+            console.log(Date.now());
+            return Date.now();
+        }
     }
 });
+setTimeout(function(){
+    app.flag=false;
+},5000);
+setTimeout(function(){
+    app.flag=true;
+},10000);
 </script> 
 </body> 
 </html> 
