@@ -6,35 +6,51 @@
 </head> 
 <body> 
 <div id="app">
-    <div v-if="flag">{{now}}</div>
-    <div>{{now1()}}</div>
+    <ul>
+        <template v-for="book in filterBooks">
+            <li>{{book.name}}</li>
+            <li>{{book.author}}</li>
+        </template>
+    </ul>
+    <ul>
+        <template v-for="book in books">
+            <li>{{book.name}}</li>
+            <li>{{book.author}}</li>
+        </template>
+    </ul>
+    <select v-model="picked" multiple>
+        <option value="css">css</option>
+        <option >html</option>
+        <option >js</option>
+    </select>
 </div> 
 <script src="../js/vue.min.js"></script> 
 <script> 
-    var app =new Vue({ 
-    el :'#app', 
-    data: {
-        picked:"js",
-        flag:true
-    },
-    methods:{
-        now1:function(){
-            return Date.now();
+    var app=new Vue({
+        el:"#app",
+        data:{
+            books:[
+                {name:"java",author:""},
+                {name:"c++",author:""},
+                {name:"javascript",author:""}
+            ],
+            picked:[
+                'css','js'
+            ]
+        },
+        computed:{
+            sortBooks:function(){
+                return this.books.sort(function(a,b){
+                    return a.name.length<b.name.length;
+                });
+            },
+            filterBooks:function(){
+                return this.books.filter(function(book){
+                    return book.name.match(/javascript/);
+                });
+            }
         }
-    },
-    computed:{
-        now:function(){
-            console.log(Date.now());
-            return Date.now();
-        }
-    }
-});
-setTimeout(function(){
-    app.flag=false;
-},5000);
-setTimeout(function(){
-    app.flag=true;
-},10000);
+    })
 </script> 
 </body> 
 </html> 

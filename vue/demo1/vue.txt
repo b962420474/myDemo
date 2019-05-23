@@ -1,13 +1,25 @@
+## **Vue学习笔记（基础篇）**
 生命周期钩子：
-    created:表示数据观测完，但尚未挂载el
-    mounted:el挂载到实例后调用
-    beforeDestroy:实例销毁前调用
+    
+
+ - created:表示数据观测完，但尚未挂载el
+
+   
+
+ - mounted:el挂载到实例后调用
+
+   
+
+ - beforeDestroy:实例销毁前调用
+
 v-  表示指令
 filters:项下面的函数表示过滤器
 :src="http..." 表示v-bind:src="http..." （表示v-bind的语法糖，v-bind设置标签的属性） 
 @click="handle"  表示v-on:click="handle"  （表示v-on的语法糖，v-on绑定事件）
 
 vue计算属性：vue所有计算属性以函数的形式写在vue实例内的computed项内。
+
+
     每一个计算属性都包含一个getter和setter
     计算属性可以依赖其他计算属性，还可以依赖其他实例的数据
     计算属性{{txt}}  此txt不用带()，是属性，不是方法
@@ -16,6 +28,8 @@ vue计算属性：vue所有计算属性以函数的形式写在vue实例内的co
 
 
 v-bind:
+
+
     1、:class
         1.1、
         <div :class="{'active': isActive }"></div>
@@ -87,6 +101,7 @@ v-bind:
                 errorCls:'error'
             }
         })
+
     2、:style
         2.1、绑定style
         <div :style="{'color':color,'font-size':fontsize+'px'}"></div>
@@ -111,6 +126,8 @@ v-bind:
         })
 
 内置指令：
+
+
     1、v-cloak
     v-cloak是一个解决初始化慢导致页面闪动的最佳实践，适用于简单项目，工程化项目不需要
     <div v-cloak>{{message}}</div>
@@ -217,8 +234,255 @@ v-bind:
     实际结果：<div style="display:none"></div>
     注意：v-show不能在template上使用
     5、v-for
-    数组遍历或者枚举一个对象循环显示。
-    
+    数组遍历或者枚举一个对象循环显示,它的表达式需结合in来使用，类似item in items,in可以用of替代
+    <ul>
+        <li v-for="book in books">{{book.name}}</li>
+    </ul>
+    new Vue({
+        el:"#app",
+        data:{
+            books:[
+                {name:"java"},
+                {name:"javascript"},
+                {name:"c++"}
+            ]
+        }
+    })
+    输出结果：
+    <ul>
+        <li>java</li>
+        <li>javascript</li>
+        <li>c++</li>
+    </ul>
+    v-for的表达式支持一个可选参数来表示当前项的索引
+    <ul>
+        <li v-for="(book,index) in books">{{index}}  -  {{book.name}}</li>
+    </ul>
+    new Vue({
+        el:'#app',
+        data:{
+            books:[
+                {name:"java"},
+                {name:"javascript"},
+                {name:"c++"}
+            ]
+        }
+    })
+    输出结果：
+    <ul>
+        <li>0 - java</li>
+        <li>1 - javascript</li>
+        <li>2 - c++</li>
+    </ul>
+    v-for一可以使用在template上使用
+    <ul>
+        <template v-for="book in books">
+            <li>{{book.name}}</li>
+            <li>{{book.author}}</li>
+        </template>
+    </ul>
+    new Vue({
+        el:"#app",
+        data:{
+            books:[
+                {name:"java",author:""},
+                {name:"javascript",author:""},
+                {name:"c++",author:""}
+            ]
+        }
+    })
+    对象也可以使用v-for遍历
+    <div>
+        <span v-for="value in user">{{value}}</span>
+    </div>
+    new Vue({
+        el:"#app",
+        data:{
+            user:{
+                name:"xxx",
+                age:27
+            }
+        }
+    })
+    渲染结果为：
+    <div>
+        <span>xxx</span><span>27</span>
+    </div>
+    遍历对象属性时，有两个可选参数分别是键名和索引
+    <ul>
+        <li v-for="(value,key,index) in user">{{index}} - {{key}} : {{value}}</li>
+    </ul>
+    new Vue({
+        el:'#app',
+        data:{
+            user:{
+                name:"xxx",
+                age:27
+            }
+        }
+    })
+    渲染结果为：
+    <ul>
+        <li> 0 - name :xxx</li>
+        <li> 1 - age :27</li>
+    </ul>
+    v-for还能迭代整数
+    <div>
+        <span v-for="n in 10">{{n}}</span>
+    </div>
+    new Vue({
+        el:"#app"
+    })
+    渲染结果：1 2 3 4 5 6 7 8 9 10
+    6、数组更新
+    使用以下一组观察数组变异的方法，它们会触发视图更新:push、pop、shift、unshift、splice、sort、reverse.这些方法会改变被这些方法调用的原始数组。
+    filter、concat、slice这些方法会返回一个新数组，可以用新数组来替换原始数组来触发视图更新。
+    注意：以下变动的数组是不会触发视图更新
+    app.books[3]={...},app.books.length=1
+    解决方案：
+    Vue.set(app.books,3,{...});
+    在webpack中:this.$set(app.books,3,{...})  this指向app，即当前组件实例
+    或者 app.books.splice(3,1,{.....})
+    app.books.length=1可以改成app.books.splice(1)
+    7、排序与过滤
+    <ul>
+        <template v-for="book in sortBooks">
+            <li>{{book.name}}</li>
+            <li>{{book.author}}</li>
+        </template>
+    </ul>
+    <ul>
+        <template v-for="book in filterBooks">
+            <li>{{book.name}}</li>
+            <li>{{book.author}}</li>
+        </template>
+    </ul>
+    new Vue({
+        el:"#app",
+        data:{
+            books:[
+                {name:"java",author:""},
+                {name:"javascript",author:""}
+            ]
+        },
+        computed:{
+            sortBooks:function(){
+                return this.books.sort(function(a,b){
+                    return a.name.length<b.name.length;
+                });
+            },
+            filterBooks:function(){
+                return this.books.filter(function(book){
+                    return book.name.match(/javascript/);
+                });
+            }
+        }
+    })
+    8、v-on
+    @click调用的方法名可以不跟（）,如果该方法有参数，默认会将事件对象event传入
+    vue提供了一个$event变量，用于访问原生dom事件
+    <div>
+        <a href="http://www.baidu.com" @click="handleClick('禁止打开',$event)">打开链接</a>
+    </div>
+    new Vue({
+        el:'#app',
+        methods:{
+            handleClick:function(message,event){
+                event.preventDefault();
+                alert(message);
+            }
+        }
+    })
+    修饰符
+    阻止click事件冒泡
+    <a @click.stop="handle"></a>
+    提交事件不再重载页面
+    <form @submit.prevent="handle"></form>
+    修饰符串联
+    <a @click.stop.prevent="handle"></a>
+    只触发一次
+    <a @click.once="handle"></a>
+
+
+表单与v-model
+    1、基本用法
+    v-model用于表单类元素的数据双向绑定
+    <input type="text" v-model="message">
+    <div>{{message}}</div>
+    new Vue({
+        el:"#app",
+        data:{
+            message:""
+        }
+    })
+    改变输入框的值，div中的内容也会改变，使用v-model后，表单控件的值只依赖于绑定的数据，不再关心初始化时的value属性
+    2、单选按钮
+    <input type="radio" :checked="picked">
+    new Vue({
+        el:"#app",
+        data:{
+            picked:true
+        }
+    })
+    组合使用互斥效果(当picked值与value值相等，则选中该)
+    <input type="radio" v-model="picked" value="js">
+    <br>
+    <input type="radio" v-model="picked" value="css">
+    <br>
+    <input type="radio" v-model="picked" value="html">
+    <br>
+    new Vue({
+        el:'#app',
+        data:{
+            picked:"css"
+        }
+    })
+    3、复选框
+    复选框单独使用用v-model
+    <input type="checkbox" v-model="picked" value="js">
+    <label for="js">js</label>
+    <br>
+    <input type="checkbox" v-model="picked" value="css">
+    <label for="css">css</label>
+    <br>
+    <input type="checkbox" v-model="picked" value="html">
+    <label for="html">html</label>
+    <br>
+    new Vue({
+        el:"#app",
+        data:{
+            picked:["html","css"]
+        }
+    })
+    4、选择框
+    <select v-model="picked" multiple>
+        <option value="css">css</option>
+        <option >html</option>
+        <option >js</option>
+    </select>
+    new Vue({
+        el:"#app",
+        data:{
+            picked:[
+                'css','js'
+            ]
+        }
+    })
+    如果含有value属性,v-model会优先匹配value，没有才会去匹配<option>中text的值
+    5、绑定值
+    <input type="radio" v-model="picked" :value="123">
+    new Vue({
+        el:"#app",
+        data:{
+            picked:false
+        }
+    })
+    选中时，picked=123;
+    6、修饰符
+    v-model.lazy="message"
+    message不是实时改变，是在失焦或回车时才改变
+    v-model.number="message" 将message转换为number
+    v-model.trim="message"  自动过滤首位空格
 
 
 
