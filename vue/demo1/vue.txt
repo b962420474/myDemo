@@ -484,6 +484,46 @@ v-bind:
     v-model.number="message" 将message转换为number
     v-model.trim="message"  自动过滤首位空格
 
+Vue学习笔记（组件篇）
+1、组件用法
+
+    全局注册：全局注册后，任何vue实例都能使用（template的dom结构必须被元素包含，否则无法渲染）
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    Vue.component("my-component",{
+        template:"<div>这里是组件的内容</div>"
+    })
+    new Vue({
+        el:'#app'
+    })
+    渲染结果：
+    <div id="app">
+        <div>这里是组件的内容</div>
+    </div>
+    局部注册：
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    new Vue({
+        el:'#app',
+        components:{
+            "my-component":{
+                template:"<div>这里是组件的内容</div>"
+            }
+        }
+    })
+    table中使用组件可以用is来挂载(ul、ol、select)
+    <table>
+        <tbody is="my-component"></tbody>
+    </table>
+    Vue.component("my-component",{
+        template:"<div>这里是组件的内容</div>"
+    })
+    new Vue({
+        el:"#app"
+    })
+    组件还可以使用data、computed、methods等，不过data是函数，需要return这个值
 
 
 
