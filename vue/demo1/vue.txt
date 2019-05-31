@@ -524,7 +524,114 @@ Vue学习笔记（组件篇）
         el:"#app"
     })
     组件还可以使用data、computed、methods等，不过data是函数，需要return这个值
+    组件动态获取父级数据
+    <my-component :warning-text="parentMessage"></my-component>
+    Vue.component("my-components",{
+        props:['warningText'],
+        template:'<div>{{warningText}}</div>'
+    })
+    new Vue({
+        el:"#app",
+        data:{
+            parentMessage:"xxx"
+        }
+    })
 
+2、单项数据流
+
+    <my-component :init-count="1"></my-component>
+    Vue.component("my-component",{
+        props:['initCount'],
+        template:<div>{{count}}</div>,
+        data:function(){
+            return {
+                data:this.initCount
+            }
+        }
+    })
+    new Vue({
+        el:'#app'
+    })
+
+    <my-component :width="100"></my-component>
+    Vue.component("my-component",{
+        props:['width'],
+        template:'<div :style="style"></div>',
+        computed:{
+            style:function(){
+                return {
+                    width:this.width+'px'
+                }
+            }
+        }
+    });
+    new Vue({
+        el:"#app"
+    })
+
+3、数据验证
+    Vue.component("my-component",{
+        props:{
+            propA:Number,
+            propB:[String,Mumber], //字符串或者number
+            propC:{
+                type:Boolean,   boolean类型，默认为true
+                default:true
+            },
+            propD:{
+                type:Number,
+                required:true  //Number类型，必传
+            },
+            propE:{
+                type:Array,      //数组或对象，默认值必须函数来返回
+                default:function(){
+                    return []
+                }
+            },
+            propF:{
+                validator:function(value){
+                    return value>10          自定义验证函数
+                }
+            }
+        }
+    })
+
+4、组件通信
+    1、自定义事件
+    父组件可以在子组件自定义标签上通过v-on来监听自定义事件
+    <div id="app">
+        <p>{{total}}</p>
+        <my-component :increase="handleGetTotal"  :reduce="handleGetTotal"></my-component>
+    </div>
+    Vue.component("my-component",{
+        template:'<button @click="handleIncrease">+1</button><button @click="handleReduce">-1</button>',
+        data:function(){
+            return {
+                counter:0
+            }
+        },
+        methods:{
+            handleIncrease:function(){
+                this.counter++;
+                this.$emit("increase",this.counter);
+            },
+            handleReduce:function(){
+                this.counter--;
+                this.$emit("reduce",this.counter);
+            }
+        }
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            total:0
+        },
+        methods:{
+            handleGetTotal:function(total){
+                this.total=total;
+            }
+        }
+    })
 
 
 
