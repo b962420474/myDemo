@@ -545,7 +545,7 @@ Vue学习笔记（组件篇）
         template:<div>{{count}}</div>,
         data:function(){
             return {
-                data:this.initCount
+                count:this.initCount
             }
         }
     })
@@ -570,6 +570,8 @@ Vue学习笔记（组件篇）
     })
 
 3、数据验证
+
+
     Vue.component("my-component",{
         props:{
             propA:Number,
@@ -597,6 +599,7 @@ Vue学习笔记（组件篇）
     })
 
 4、组件通信
+
     1、自定义事件
     父组件可以在子组件自定义标签上通过v-on来监听自定义事件
     <div id="app">
@@ -632,6 +635,327 @@ Vue学习笔记（组件篇）
             }
         }
     })
+    v-model
+    <div id="app">
+        <div>总数{{total}}<div>
+        <my-component v-model="total"></my-component>
+    </div>
+    Vue.component("my-component",{
+        template:'<button @click="handleClick">+1</button>',
+        data:function(){
+            return {
+                counter:0
+            }
+        },
+        methods:{
+            handleClick:function(){
+                this.counter++;
+                this.$emit("input",this.counter);
+            }
+        }
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            total:0
+        }
+    })
+    相当于使用@input="handle"
+    v-model创建自定义表单输入组件进行双向绑定(接收一个value属性，value有变化时触发input事件)
+    <div id="app">
+        <p>总数：{{total}}</p>
+        <my-component v-model="total"></my-component>
+        <button @click="handleReduce">-1</button>
+    </div>
+    Vue.component("my-component",{
+        props:"value",
+        template:'<input :value="value" @input="updateValue">',
+        methods:{
+            updateValue:function(event){
+                this.$emit("input",event.target.value);
+            }
+        }
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            total:0
+        },
+        methods:{
+            handleReduce:function(){
+                this.total--;
+            }
+        }
+    })
+    2、非父子组件通信
+    中央事件总线bus
+    <div id="app">
+        {{message}}
+        <component-a></component-a>
+    </div>
+    var bus=new Vue();
+    Vue.component("component-a",{
+        template:'<button @click="handleClick">传递事件</button>',
+        methods:{
+            handleClick:function(){
+                bus.$emit("on-message","来自a的类容");
+            }
+        }
+    });
+    new Vue({
+        el:'#app',
+        data:{
+            message:''
+        },
+        mounted:function(){
+            var _this=this;
+            bus.$on("on-message",function(msg){
+                _this.message=msg;
+            })
+        }
+    })
+    父链
+    this.$parent可以访问该实例的父实例或组件，this.$children访问所有的子组件
+    <div id="app">
+        {{message}}
+        <component-a></component-a>
+    </div>
+    Vue.component("component-a",{
+        template:'<button @click="handleClick">button</button>',
+        methods:{
+            handleClick:function(){
+                this.$parent.message="来自。。的消息";
+            }
+        }
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            message:''
+        }
+    })
+    子组件索引(通过ref为为字组件指定一个索引)
+    <div id="app">
+        <button @click="handleref">获取子组件实例</button>
+        <component-a ref="comA"></component-a>
+    </div>
+    Vue.component("component-a",{
+        template:'<div>子组件</div>',
+        data:function(){
+            return:{
+                message:'子组件内容'
+            }
+        }
+    })
+    new Vue({
+        el:"#app",
+        methods:{
+            handleref:function(){
+                var msg=this.$refs.comA.message;
+                console.log(msg);
+            }
+        }
+    })
+    3、slot分发
+    <div id="app">
+        <child>
+            <p>分发的内容</p>
+        </child>
+    </div>
+    vue.component("child",{
+        template:'\
+        <div>\
+            <slot>\
+                <p>这是默认内容</p>\
+            </slot>\
+        </div>'
+    })
+    new Vue({
+        el:'#app'
+    })
+    子组件<slot>元素里面定义了一个默认内容，如果父组件没有使用slot，则渲染默认的内容，如果使用了，则替换整个<slot>,分发的内容作用域在父组件上，子组件模板上的内容，
+    作用域在子组件上。
+    <div id="app">
+        <child-component>
+            <h2 slot="header">标题</h2>
+            <p>正文</p>
+            <div slot="footer">底部信息</div>
+        </child-component>
+    </div>
+    vue.component("child-component",{
+        template:'<div>\
+                    <div class="header">\
+                        <slot name="header"></slot>\
+                    </div>\
+                    <div class="main">\
+                        <slot></slot>\
+                    </div>\
+                    <div class="footer">\
+                        <slot name="footer"></slot>\
+                    </div>\
+                </div>'
+    })
+    new Vue({
+        el:"#app"
+    })
+    指定了name特性的，相应的slot会被替换，没有使用特性的会替换默认slot，没有默认slot则父组件多余的不会显示
+    4、作用域插槽
+    <div id="app">
+        <child-component>
+            <template scope="props">
+                <p>父组件的内容</p>
+                <p>{{props.msg}}</p>
+            </template>
+        </child-component>
+    </div>
+    vue.component("child-component",{
+         template:'\
+            <div class="container">\
+                <slot msg="来自子组件的内容"></slot>\
+            </div>'
+    })
+    new Vue({
+        el:'#app'
+    })
+    props是一个临时变量，可通过这个变量访问子组件插槽的数据，如msg
+    渲染结果：
+    <div id="app">
+        <div class="container">
+            <p>父组件内容</p>
+            <p>来自子组件的内容</p>
+        </div>
+    </div>
+    列表组件
+    <div id="app">
+        <my-list :books="books">
+            <template scope="props" slot="book">
+                <li>{{props.bookName}}</li>
+            </template>
+        </my-list>
+    </div>
+    Vue.component("my-list",{
+        props:{
+            books:{
+                type:Array,
+                default:function(){
+                    return []
+                }
+            }
+        },
+        template:'\
+            <ul>\
+                <slot name="book" v-for="book in books" :book-name="book.name"></slot>\
+            </ul>'
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            books:[
+                {name:"js"},
+                {name:"java"}
+            ]
+        }
+    })
+    作用域插槽使用场景：既可以复用子组件的slot,又可以使slot内容不同
+    5、访问slot
+    <div id="app">
+        <child-component>
+            <h2 slot="header"></h2>
+            <p>xxxx</p>
+            <div slot="footer"></div>
+        </child-component>
+    </div>
+    Vue.component("child-component",{
+        template:'\
+            <div class="header">\
+                <slot name="header"></slot>\
+            </div>\
+            <div class="main">\
+                <slot></slot>\
+            </div>\
+        ',
+        mounted:function(){
+            var header=this.$slots.header;
+            var main=this.$slots.default;
+            console.log(header);
+            console.log(header[0].elm.innerHTML)
+        }
+    })
+    new Vue({
+        el:'#app'
+    })
+
+
+5、组件高级用法
+
+    1、递归组件（设置name属性,必须有数量限制，不能无限递归）
+    <div id="app">
+        <child-component :count="1"></child-component>
+    </div>
+    Vue.component("child-component",{
+        name:"child-component",
+        props:{
+            count:{
+                type:Number,
+                default:1
+            }
+        },
+        template:'\
+            <div class="child">\
+                <child-component :count="count+1" v-if="count<3"></child-component>
+            </div>'
+    })
+    new Vue({
+        el:'#app'
+    })
+
+    2、内联模板
+    在使用组件时，在组件标签上使用inline-template特性，组件会把他的内容当模板，不会对内容进行分发。
+    3、动态组件
+    通过<component>元素动态挂载不同的组件
+    <div id="app">
+        <component :id="currentView"></component>
+        <button @click="handleClick('A')">挂载A</button>
+        <button @click="handleClick('B')">挂载B</button>
+    </div>
+    new Vue({
+        el:'#app',
+        data:{
+            currentView:'comA'
+        },
+        components:{
+            comA:{
+                template:'<div>组件A</div>'
+            },
+            comB:{
+                template:'<div>组件B</div>'
+            },
+        },
+        methods:{
+            handleClick:function(component){
+                this.currentView="com"+component;
+            }
+        }
+    })
+    4、异步组件
+    <div id="app">
+        <child-component></child-component>
+    </div>
+    Vue.component("child-component",function(resolve,reject){
+        setTimeout(function(){
+            resolve({
+                template:"异步渲染"
+            })
+        },2000)
+    })
+
+    $nextTick
+    手动挂载实例
+    Vue.extend 和$mount 两个方法来手动挂载个实例。
+
+
+
+
 
 
 

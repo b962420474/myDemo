@@ -23,10 +23,56 @@
         <option >html</option>
         <option >js</option>
     </select>
-    <my-component></my-component>
+    <div>总数{{total}}<div>
+    <my-component v-model="total"></my-component>
+    <my-list :books="books">
+        <template scope="props" slot="book">
+            <li >{{props.bookName}}</li>
+        </template>
+    </my-list>
+    <child-component>
+        <template scope="props">
+            <p>父组件的内容</p>
+            <p>{{props.msg}}</p>
+        </template>
+    </child-component>
 </div> 
 <script src="../js/vue.min.js"></script> 
 <script> 
+Vue.component("my-component",{
+        template:'<button @click="handleClick">+1</button>',
+        data:function(){
+            return {
+                counter:0
+            }
+        },
+        methods:{
+            handleClick:function(){
+                this.counter++;
+                this.$emit("input",this.counter);
+            }
+        }
+    })
+    Vue.component("my-list",{
+        props:{
+            books:{
+                type:Array,
+                default:function(){
+                    return []
+                }
+            }
+        },
+        template:'\
+            <ul>\
+                <slot name="book" v-for="book in books" :book-name="book.name"></slot>\
+            </ul>'
+    })
+    Vue.component("child-component",{
+         template:'\
+            <div class="container">\
+                <slot msg="来自子组件的内容"></slot>\
+            </div>'
+    })
     var app=new Vue({
         el:"#app",
         data:{
@@ -37,12 +83,8 @@
             ],
             picked:[
                 'css','js'
-            ]
-        },
-        components:{
-            "my-component":{
-                template:"<div>这里是组件的内容</div>"
-            }
+            ],
+            total:0
         },
         computed:{
             sortBooks:function(){
