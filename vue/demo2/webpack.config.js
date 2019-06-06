@@ -1,5 +1,6 @@
 var path=require("path");
 var ExtractTextPlugin = require ('extract-text-webpack-plugin' );
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 var config={
     entry:{
         main:'./main.js'
@@ -33,7 +34,8 @@ var config={
         ]
     },
     plugins:[
-        new ExtractTextPlugin("main.css")
+        new ExtractTextPlugin("main.css"),
+        new VueLoaderPlugin()
     ],
     output:{
         path:path.join(__dirname,'./dist'),
