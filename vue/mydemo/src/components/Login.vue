@@ -51,7 +51,7 @@ export default {
       this.iconShow = true;
     },
     blur: function() {
-        console.log("11")
+      console.log("11");
       //this.iconShow = false;
     },
     handleEye: function() {
@@ -115,6 +115,7 @@ export default {
   padding: 5px;
 }
 .btn {
+  margin-top: 100px;
   width: 113%;
   background-color: #f5f5f5;
   border-color: transparent;
