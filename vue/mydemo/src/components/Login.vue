@@ -4,7 +4,7 @@
       <div class="login_main">
         <div class="item">
           <input type="text" v-model="name" @focus="focus" @blur="blur" placeholder="用户名">
-          <label class="iconfont icon-shanchu" v-if="iconShow" @click="clear"></label>
+          <label class="iconfont icon-shanchu" v-show="iconShow" @mousedown="clear($event)"></label>
           <span></span>
         </div>
         <div class="item">
@@ -21,6 +21,7 @@
 </template>
 <script>
 import service from "../libs/service";
+import $ from 'jquery'
 export default {
   name: "Login",
   data() {
@@ -51,8 +52,7 @@ export default {
       this.iconShow = true;
     },
     blur: function() {
-      console.log("11");
-      //this.iconShow = false;
+      this.iconShow = false;
     },
     handleEye: function() {
       if (this.pwdType === "text") {
@@ -63,8 +63,10 @@ export default {
         this.pwdType = "text";
       }
     },
-    clear: function() {
+    clear: function(e) {
       this.name = "";
+      $(e.target).prev().focus();
+      e.preventDefault();
     }
   }
 };

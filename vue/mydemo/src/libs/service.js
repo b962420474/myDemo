@@ -1,6 +1,6 @@
 import axios from 'axios'
 const service = {
-  apiurl: 'http://127.0.0.1:8080/'
+  apiurl: process.serverUrl
 }
 service.ajax = axios.create({
   baseURL: service.apiurl
