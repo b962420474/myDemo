@@ -29,8 +29,8 @@ export default {
       name: "",
       password: "",
       iconShow: false,
-      iconeye: "icon-iconcloseeye",
-      pwdType: "text"
+      iconeye: "icon-yanjing",
+      pwdType: "password"
     };
   },
   methods: {
