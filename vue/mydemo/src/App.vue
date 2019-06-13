@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <router-view/>
   </div>
@@ -7,6 +7,7 @@
 
 <script>
 import "./css/icon.css"
+import "./css/style.css"
 export default {
   name: 'App'
 }
