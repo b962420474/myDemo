@@ -2,6 +2,15 @@
     font-size: 16px;
     outline: none;
 }
+body{
+    background: #f5f6f7;
+}
 a{
-    text-decoration:none;
+    outline: none;
+    text-decoration: none;
+    color: #8e959a;
+    cursor: pointer;
+}
+li{
+    list-style-type: none;
 }

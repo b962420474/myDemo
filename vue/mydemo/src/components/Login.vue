@@ -47,6 +47,7 @@ export default {
         .catch(res => {
           console.log(res);
         });
+        this.$router.push({path:"home"});
     },
     focus: function() {
       this.iconShow = true;

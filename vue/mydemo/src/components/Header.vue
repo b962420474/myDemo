@@ -3,12 +3,12 @@
         <div class="items logo"></div>
         <div class="items inputBox">
             <input type="text" v-model="searchText">
-            <span  class="iconfont"></span>
+            <label  class="iconfont">&#xe610;</label>
         </div>
         <div class="items">
             <ul>
                 <li v-for="item in items" :key="item.title">
-                    <a><router-link :to="item.path">{{item.title}}</router-link></a>
+                    <router-link :to="item.path">{{item.title}}</router-link>
                 </li>
             </ul>
         </div>
@@ -42,7 +42,11 @@ export default {
 .logo{
     width: 26px;
     height: 26px;
-    background-image: url("../assets/logo.png")
+    background-image: url("../assets/logo.png");
+    background-size: cover;
+    position: absolute;
+    left: 100px;
+    top: 12px;
 }
 li{
     list-style-type: none;
@@ -50,9 +54,22 @@ li{
 }
 .items{
     display: inline-block;
+    margin: auto 10px;
 }
 .items li{
     padding: 0 10px;
+}
+.inputBox{
+    padding: 3px;
+    border: solid 1px;
+    border-radius: 5px;
+}
+.inputBox label{
+    cursor: pointer;
+    z-index: 1
+}
+input{
+    border: 0
 }
 </style>
 
