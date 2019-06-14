@@ -1,0 +1,35 @@
+const data = {
+    pageList: {
+        recommend: [
+            { title: "编程小知识之 JavaScript 文件读取", content: "文件读取在当今的编程语言中应该算是一项比较 trivial 的工作了,语言的标准库一般都会帮助我们做好文件抽象" },
+            { title: "简析JavaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序", content: "这篇文章主要介绍了javaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序整理总结的相关资料" },
+            { title: "vue 过滤器的基本使用", content: "vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化" },
+            { title: "webpack入门到进阶（二）配置", content: "当webpack安装好以后，我们就要考虑webpack配置使用了。" }
+        ],
+        java:[
+            { title: "史上最简单的SpringCloud教程 | 第七篇: 高可用的分布式配置中心(Spring Cloud Config)", content: "文件读取在当今的编程语言中应该算是一项比较 trivial 的工作了,语言的标准库一般都会帮助我们做好文件抽象" },
+            { title: "idea 开发spring boot应用程序", content: "这篇文章主要介绍了javaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序整理总结的相关资料" },
+            { title: "【Spring 5】响应式Web框架实战（下）", content: "vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化" },
+            { title: "spring里头各种获取ApplicationContext的方法", content: "当webpack安装好以后，我们就要考虑webpack配置使用了。" }
+        ],
+        javascript:[
+            { title: "编程小知识之 JavaScript 文件读取", content: "文件读取在当今的编程语言中应该算是一项比较 trivial 的工作了,语言的标准库一般都会帮助我们做好文件抽象" },
+            { title: "简析JavaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序", content: "这篇文章主要介绍了javaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序整理总结的相关资料" },
+            { title: "vue 过滤器的基本使用", content: "vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化" },
+            { title: "webpack入门到进阶（二）配置", content: "当webpack安装好以后，我们就要考虑webpack配置使用了。" }
+        ],
+        'c++':[
+            { title: "C/C++使用libcurl库发送http请求（get和post可以用于请求html信息，也可以请求xml和json等串）", content: "文件读取在当今的编程语言中应该算是一项比较 trivial 的工作了,语言的标准库一般都会帮助我们做好文件抽象" },
+            { title: "C++中的类和对象", content: "这篇文章主要介绍了javaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序整理总结的相关资料" },
+            { title: "C语言入门+进阶，有这几本就够了", content: "vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化" },
+            { title: "程序员必学C++的七大理由", content: "当webpack安装好以后，我们就要考虑webpack配置使用了。" }
+        ],
+        'other':[
+            { title: "程序员必学C++的七大理由", content: "文件读取在当今的编程语言中应该算是一项比较 trivial 的工作了,语言的标准库一般都会帮助我们做好文件抽象" },
+            { title: "百度相关搜索是怎么出现的如何利用", content: "这篇文章主要介绍了javaScript 事件绑定、事件冒泡、事件捕获和事件执行顺序整理总结的相关资料" },
+            { title: "那些会阻碍程序员成长的细节【4】", content: "vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化" },
+            { title: "技术前沿与经典文章20：历史上54位伟大物理学家、科学家的专属LOGO（六）", content: "当webpack安装好以后，我们就要考虑webpack配置使用了。" }
+        ],
+    }
+}
+export default data

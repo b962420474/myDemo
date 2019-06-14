@@ -43,6 +43,7 @@ export default {
         .post("login", param)
         .then(res => {
           console.log("登陆成功");
+          this.$router.push({path:"home"});
         })
         .catch(res => {
           console.log(res);

@@ -20,7 +20,8 @@ export default new Router({
       children:[
         {
           path:"/",
-          component:MainPage
+          component:MainPage,
+          props: (route) => ({ id: route.query.id })
         }
       ]
     }
