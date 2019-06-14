@@ -9,9 +9,12 @@ body{
 a{
     outline: none;
     text-decoration: none;
-    color: #8e959a;
+    color: #2c3e50;
     cursor: pointer;
 }
 li{
     list-style-type: none;
+}
+ul{
+    padding-left: 0px;
 }

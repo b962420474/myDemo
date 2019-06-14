@@ -12,7 +12,7 @@
         <li v-for="item in list" :key="item.title">
           <div>
             <h2>
-              <a>{{item.title}}</a>
+              <a @click="toPerson">{{item.title}}</a>
             </h2>
             <div>{{item.content}}</div>
           </div>
@@ -53,6 +53,9 @@ export default {
       } else {
         this.list = datas.pageList["recommend"];
       }
+    },
+    toPerson(){
+        this.$router.push({path: "home/person/chao"})
     }
   },
   beforeRouteEnter(to, from, next) {

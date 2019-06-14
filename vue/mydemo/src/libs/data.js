@@ -30,6 +30,24 @@ const data = {
             { title: "那些会阻碍程序员成长的细节【4】", content: "vue.js 允许你自定义过滤器，可被用于一些常见的文本格式化" },
             { title: "技术前沿与经典文章20：历史上54位伟大物理学家、科学家的专属LOGO（六）", content: "当webpack安装好以后，我们就要考虑webpack配置使用了。" }
         ],
+    },
+    persons:{
+        chao:{
+            infoList1:[
+                {title:"原创",num:22,type:true},
+                {title:"粉丝",num:20,type:false},
+                {title:"喜欢",num:53,type:false},
+                {title:"评论",num:67,type:false},
+            ],
+            infoList2:[
+                {title:"等级",num:22},
+                {title:"访问",num:"20万+"},
+                {title:"积分",num:533},
+                {title:"排名",num:67},
+            ],
+            picurl:"./assets/logo.png",
+            name:"chao"
+        }
     }
 }
 export default data
