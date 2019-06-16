@@ -1,0 +1,105 @@
+{
+    "chao": {
+        "infoList1": [
+            {
+                "title": "原创",
+                "num": 22,
+                "type": true
+            },
+            {
+                "title": "粉丝",
+                "num": 20,
+                "type": false
+            },
+            {
+                "title": "喜欢",
+                "num": 53,
+                "type": false
+            },
+            {
+                "title": "评论",
+                "num": 67,
+                "type": false
+            }
+        ],
+        "infoList2": [
+            {
+                "title": "等级",
+                "num": 22
+            },
+            {
+                "title": "访问",
+                "num": "20万+"
+            },
+            {
+                "title": "积分",
+                "num": 533
+            },
+            {
+                "title": "排名",
+                "num": 67
+            }
+        ],
+        "picurl": "/static/img/logo.png",
+        "name": "chao",
+        "typeList":[
+            {
+                "title": "微服务",
+                "num": 17,
+                "type":true
+            },
+            {
+                "title": "SpringBoot",
+                "num": 15,
+                "type":false
+            },
+            {
+                "title": "SpringCloud",
+                "num": 2,
+                "type":false
+            },
+            {
+                "title": "编程语言",
+                "num": 30,
+                "type":true
+            },
+            {
+                "title": "javascript",
+                "num": 10,
+                "type":false
+            },
+            {
+                "title": "java",
+                "num": 20,
+                "type":false
+            }
+        ],
+        "hotArticleList":[
+            {
+                "title": "Spring加载properties文件的两种方式",
+                "num": 117254,
+                "url":""
+            },
+            {
+                "title": "【SSH网上商城项目实战30】项目总结（附源码下载地址）",
+                "num": 35481,
+                "url":""
+            },
+            {
+                "title": "jQuery-Validate验证插件的使用步骤详解",
+                "num": 22540,
+                "url":""
+            },
+            {
+                "title": "【SSH网上商城项目实战01】整合Struts2、Hibernate4.3和Spring4.2",
+                "num": 3012,
+                "url":""
+            },
+            {
+                "title": "【数据结构和算法05】 红-黑树（看完包懂~）",
+                "num": 10,
+                "url":""
+            }
+        ]
+    }
+}

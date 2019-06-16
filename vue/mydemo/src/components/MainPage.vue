@@ -24,17 +24,10 @@
 <script>
 import service from "../libs/service";
 import $ from "jquery";
-import datas from "../libs/data";
 export default {
   data() {
     return {
-      items: [
-        { title: "推荐", data: "recommend" },
-        { title: "java", data: "java" },
-        { title: "javascript", data: "javascript" },
-        { title: "c++", data: "c++" },
-        { title: "其他", data: "other" }
-      ],
+      items: [],
       list: []
     };
   },
@@ -45,22 +38,32 @@ export default {
     },
     getPage(id) {
       service
-        .ajax("getPage", { url: id })
-        .then(res => {})
+        .ajax("/static/datas/pageList.json")
+        .then(res => {
+          if (res.pageList[id]) {
+            this.list = res.pageList[id];
+          } else {
+            this.list = res.pageList["recommend"];
+          }
+        })
         .catch(res => {});
-      if (datas.pageList[id]) {
-        this.list = datas.pageList[id];
-      } else {
-        this.list = datas.pageList["recommend"];
-      }
     },
-    toPerson(){
-        this.$router.push({path: "home/person/chao"})
+    getType() {
+      service
+        .ajax("/static/datas/typeList.json")
+        .then(res => {
+          this.items=res;
+        })
+        .catch(res => {});
+    },
+    toPerson() {
+      this.$router.push({ path: "home/chao" });
     }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       console.log("beforeRouteEnter:" + vm.$attrs["id"]);
+      vm.getType();
       vm.getPage(vm.$attrs["id"]);
     });
   },

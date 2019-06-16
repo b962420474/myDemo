@@ -22,8 +22,8 @@
               <span v-else>{{item.title}}</span>
             </div>
             <div>
-              <a v-if="item.type===true">{{item.num}}</a>
-              <span v-else>{{item.num}}</span>
+              <a v-if="item.type===true" class="count">{{item.num}}</a>
+              <span v-else class="count">{{item.num}}</span>
             </div>
           </li>
         </ul>
@@ -37,14 +37,36 @@
         </ul>
       </div>
     </div>
-    <div class="Newest"></div>
-    <div class="sort"></div>
+    <div class="Newest">
+      <h3 class="aside-title">个人分类</h3>
+      <div class="aside-content">
+        <ul>
+          <li v-for="item in person.typeList" :key="item.value">
+            <a>
+              <span v-if="item.type===true" class="titleleft">● 【{{item.title}}】</span>
+              <span v-else class="titleleft">------【{{item.title}}】</span>
+              <span  class="float-right">{{item.num}}篇</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="Newest">
+      <h3 class="aside-title">热门文章</h3>
+      <div class="aside-content">
+        <ul class="hotArticle-list">
+          <li v-for="item in person.hotArticleList" :key="item.value">
+            <a :href="item.url">{{item.title}}</a>
+            <p class="read">阅读数 <span>{{item.num}}</span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import service from "../libs/service";
 import $ from "jquery";
-import datas from "../libs/data";
 export default {
   data() {
     return {
@@ -54,10 +76,15 @@ export default {
   props: ["userid"],
   methods: {
     init(userid) {
-      //service.ajax();
-      if (datas.persons[userid]) {
-        this.person = datas.persons[userid];
-      }
+      var self = this;
+      service
+        .ajax("/static/datas/persons.json")
+        .then(res => {
+          if (res[userid]) {
+            self.person = res[userid];
+          }
+        })
+        .catch();
     }
   },
   mounted: function() {
@@ -77,68 +104,130 @@ export default {
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
-.info .top{
-    padding: 16px 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e3e3e3;
-    display: flex !important;
+.info .top {
+  padding: 16px 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e3e3e3;
+  display: flex !important;
 }
-.felx{
-    display: flex !important;
+.felx {
+  display: flex !important;
 }
-.middle{
-    margin-top: -8px;
+.felx div{
+      margin: 5px 0px;
 }
-.infoList1{
-    border-bottom: 1px solid #e3e3e3;
-}
-.infoList1 li{
-    padding: 16px;
-}
-.infoList2{
-    padding-bottom: 20px;
-}
-.infoList2 li{
-    margin-top: 8px;
-    width: 50%;
-    display: inline-flex;
-    line-height: 16px;
-}
-.infoList2 span{
-    margin-left:15px;
-}
-.info .icon{
-    position: relative;
-    width: 48px;
-    height: 48px;
-}
-.ptitle{
-    display: inline-block;
-    color: #3d3d3d;
+.felx .count {
     font-weight: 700;
-    max-width: 150px;
-    max-height: 66px;
-    overflow: hidden;
-    margin-left: 8px;
-    width: 156px;
-    line-height: 48px;
-    word-wrap: break-word;
 }
-.follow{
-    width: 56px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 10px;
-    width: 56px;
-    height: 28px;
-    min-width: auto;
-    font-size: 12px;
-    border: solid 1px #ca0c16;
-    border-radius: 5px;
-    line-height: 28px;
-    color:#ca0c16;
+.middle {
+  margin-top: -8px;
+}
+.infoList1 {
+  border-bottom: 1px solid #e3e3e3;
+}
+.infoList1 li {
+  padding: 16px;
+}
+.infoList2 {
+  padding-bottom: 20px;
+}
+.infoList2 li {
+  margin-top: 8px;
+  width: 50%;
+  display: inline-flex;
+  line-height: 16px;
+}
+.infoList2 span {
+  margin-left: 15px;
+}
+.info .icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+.ptitle {
+  display: inline-block;
+  color: #3d3d3d;
+  font-weight: 700;
+  max-width: 150px;
+  max-height: 66px;
+  overflow: hidden;
+  margin-left: 8px;
+  width: 156px;
+  line-height: 48px;
+  word-wrap: break-word;
+}
+.follow {
+  width: 56px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  width: 56px;
+  height: 28px;
+  min-width: auto;
+  font-size: 12px;
+  border: solid 1px #ca0c16;
+  border-radius: 5px;
+  line-height: 28px;
+  color: #ca0c16;
+}
+.Newest {
+  margin-bottom: 8px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+.aside-title {
+  font-size: 12px;
+  color: #3d3d3d;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(#efefef),
+    to(#ddd)
+  );
+  background: linear-gradient(#efefef, #ddd);
+  background-size: 300px 38px;
+  padding: 0 16px;
+  height: 38px;
+  line-height: 38px;
+}
+.aside-content {
+  padding: 16px;
+  text-align: left;
+}
+.aside-content ul{
+  margin-top: -8px;
+}
+.titleleft {
+  width: 84%;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  color: #369;
+}
+.float-right{
+  float: right !important;
+}
+.aside-content li {
+  margin-top: 8px;
+}
+.hotArticle-list a {
+  display: block;
+  max-height: 44px;
+  overflow: hidden;
+  word-wrap: break-word;
+      color: #369;
+}
+.read {
+  font-size: 12px;
+    color: #858585;
+    line-height: 20px;
+        margin: 2px 0px;
 }
 </style>
 
