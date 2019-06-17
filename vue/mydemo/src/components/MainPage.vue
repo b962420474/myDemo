@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main1">
     <div class="left">
       <ul>
         <li v-for="item in items" :key="item.title">
@@ -57,7 +57,8 @@ export default {
         .catch(res => {});
     },
     toPerson() {
-      this.$router.push({ path: "home/chao" });
+      var arcitleId='123456';
+      this.$router.push({ path: "home/chao/article/123456" });
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -75,7 +76,7 @@ export default {
 };
 </script>
 <style scoped>
-.main {
+.main1 {
   width: 1180px;
   padding: 12px 0 0;
   margin-right: auto;

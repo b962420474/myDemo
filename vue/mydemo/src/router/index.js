@@ -4,6 +4,8 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import MainPage from '@/components/MainPage'
 import PersonPage from '@/components/PersonPage'
+import article from '@/components/article'
+import personHome from '@/components/personHome'
 Vue.use(Router)
 
 export default new Router({
@@ -27,7 +29,19 @@ export default new Router({
         {
           path:":userid",
           component:PersonPage,
-          props:true
+          props:true,
+          children:[
+            {
+              path:"/",
+              component:personHome,
+              props:true
+            },
+            {
+              path:"article/:articleId",
+              component:article,
+              props:true
+            }
+          ]
         }
       ]
     }

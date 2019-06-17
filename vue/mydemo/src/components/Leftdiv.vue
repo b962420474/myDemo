@@ -3,12 +3,12 @@
     <div class="info">
       <div class="top felx">
         <div class="icon">
-          <a>
+          <router-link :to="getPersonUrl()">
             <img :src="person.picurl">
-          </a>
+          </router-link>
         </div>
         <div class="ptitle">
-          <a>{{person.name}}</a>
+         <router-link :to="getPersonUrl()">{{person.name}}</router-link>
         </div>
         <div class="follow">
           <a>关注</a>
@@ -42,11 +42,11 @@
       <div class="aside-content">
         <ul>
           <li v-for="item in person.typeList" :key="item.value">
-            <a>
+            <router-link :to="getArticleUrl()">
               <span v-if="item.type===true" class="titleleft">● 【{{item.title}}】</span>
               <span v-else class="titleleft">------【{{item.title}}】</span>
               <span  class="float-right">{{item.num}}篇</span>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -56,7 +56,7 @@
       <div class="aside-content">
         <ul class="hotArticle-list">
           <li v-for="item in person.hotArticleList" :key="item.value">
-            <a :href="item.url">{{item.title}}</a>
+            <router-link :to="getArticleUrl()">{{item.title}}</router-link>
             <p class="read">阅读数 <span>{{item.num}}</span></p>
           </li>
         </ul>
@@ -67,6 +67,7 @@
 <script>
 import service from "../libs/service";
 import $ from "jquery";
+import articleVue from './article.vue';
 export default {
   data() {
     return {
@@ -85,6 +86,13 @@ export default {
           }
         })
         .catch();
+    },
+    getPersonUrl(){
+      return "/home/"+this.person.name;
+    },
+    getArticleUrl(e){
+      var articleId="123456";
+      return "/home/"+this.person.name+"/article/"+articleId;
     }
   },
   mounted: function() {
@@ -120,7 +128,7 @@ export default {
     font-weight: 700;
 }
 .middle {
-  margin-top: -8px;
+  /* margin-top: -8px; */
 }
 .infoList1 {
   border-bottom: 1px solid #e3e3e3;

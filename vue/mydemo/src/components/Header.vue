@@ -37,7 +37,7 @@ export default {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
     min-width: 1200px;
     width: 100%;
-    padding: 0 28px 0 17px;
+    padding: 10px 28px 10px 17px;
 }
 .logo{
     width: 26px;
