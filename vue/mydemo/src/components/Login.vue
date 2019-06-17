@@ -43,12 +43,12 @@ export default {
         .post("login", param)
         .then(res => {
           console.log("登陆成功");
-          this.$router.push({path:"home"});
+          this.$router.push({path:"/"});
         })
         .catch(res => {
           console.log(res);
         });
-        this.$router.push({path:"home"});
+        this.$router.push({path:"/"});
     },
     focus: function() {
       this.iconShow = true;

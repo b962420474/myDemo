@@ -88,11 +88,11 @@ export default {
         .catch();
     },
     getPersonUrl(){
-      return "/home/"+this.person.name;
+      return "/"+this.person.name;
     },
     getArticleUrl(e){
       var articleId="123456";
-      return "/home/"+this.person.name+"/article/"+articleId;
+      return "/"+this.person.name+"/article/"+articleId;
     }
   },
   mounted: function() {

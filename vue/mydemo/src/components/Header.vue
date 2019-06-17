@@ -1,6 +1,9 @@
 <template>
     <div class="header">
         <div class="items logo"></div>
+        <div class="items">
+            <router-link to="/">首页</router-link>
+        </div>
         <div class="items inputBox">
             <input type="text" v-model="searchText">
             <label  class="iconfont">&#xe610;</label>
@@ -19,9 +22,9 @@ export default {
     data (){
         return {
             items:[
-                {path:"/",title:"写博客"},
-                {path:"/",title:"登陆"},
-                {path:"/",title:"注册"}
+                {path:"/edit",title:"写博客"},
+                {path:"/login",title:"登陆"},
+                {path:"/login",title:"注册"}
             ],
             searchText:""
         }

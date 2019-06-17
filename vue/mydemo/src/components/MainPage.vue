@@ -34,7 +34,7 @@ export default {
   methods: {
     handlePage: function(e) {
       let data = $(e.target).data("id");
-      this.$router.push({ path: "home", query: { id: data } });
+      this.$router.push({ path: "/", query: { id: data } });
     },
     getPage(id) {
       service
@@ -58,7 +58,7 @@ export default {
     },
     toPerson() {
       var arcitleId='123456';
-      this.$router.push({ path: "home/chao/article/123456" });
+      this.$router.push({ path: "/chao/article/123456" });
     }
   },
   beforeRouteEnter(to, from, next) {

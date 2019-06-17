@@ -6,18 +6,23 @@ import MainPage from '@/components/MainPage'
 import PersonPage from '@/components/PersonPage'
 import article from '@/components/article'
 import personHome from '@/components/personHome'
+import edit from '@/components/edit'
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes:[
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/home',
+      path:'/edit',
+      component:edit
+    },
+    {
+      path: '/',
       name: 'Home',
       component: Home,
       children:[
