@@ -12,22 +12,15 @@
 <script>
   var drawing=document.getElementById("drawing");
   if(drawing.getContext){
-      var context=drawing.getContext("2d");
-      //绘制红色矩形
-      context.beginPath(); 
- //绘制外圆
- context.arc(100, 100, 99, 0, 2 * Math.PI, false); 
- //绘制内圆
- //context.moveTo(194, 100); 
- context.arc(100, 100, 94, 0, 2 * Math.PI, false); 
- //绘制分针
- context.moveTo(100, 100); 
- context.lineTo(100, 15); 
- //绘制时针
- context.moveTo(100, 100); 
- context.lineTo(35, 100); 
- //描边路径
- context.stroke(); 
+      var ctx=drawing.getContext("2d");
+      var img=new Image();
+      img.onload=function(){
+        canvas.drawImage(this,{context:ctx});
+        canvas.discolourAnimation(10000,function(p){
+          canvas.changeImageColor({color:1+','+1+','+1,context:ctx,w:img.width,h:img.height})
+        })
+      }
+      img.src="./logo.png";
   }
 </script>
 </html>
