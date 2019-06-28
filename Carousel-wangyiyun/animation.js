@@ -153,44 +153,70 @@
         }, Easing.easeBoth);
         b.start();
     }
-    var loading_1 = function () {
-        var load = '<div id="a_laoding" style="opacity: 0;overflow:hidden;margin:auto;width:500px;height: 100px;padding: 20px 20px 20px;border-radius: 5px;text-align: center;">'+
-            '<div class="load-line line1"></div>'+
-            '<div class="load-line line2"></div>'+
-            '<div class="load-line line3"></div>'+
-            '<div class="load-line line4"></div>'+
-            '<div class="load-line line5"></div>'+
-            '<div class="load-line line6"></div>'+
-            '</div>';
-            
-        addNewStyle('.load-line{display: inline-block;background: #666;height: 10px;width: 10px;border-radius: 50%;transform: translateX(-300px);background-color: #4b9cdb;}');
-        $("body").append(load);
-        var b = new Animator(4000, function (p,procsss) {
-            $(".line1").css('-webkit-transform', 'translateX(' + (-300+500 * p) + 'px)');
-            setTimeout(function(){
-                $(".line2").css('-webkit-transform', 'translateX(' + (-300+500 * p) + 'px)');
-            },100);
-            setTimeout(function(){
-                $(".line3").css('-webkit-transform', 'translateX(' + (-300+500 * p) + 'px)');
-            },200);
-            setTimeout(function(){
-                $(".line4").css('-webkit-transform', 'translateX(' + (-300+500 * p) + 'px)');
-            },300);
-            setTimeout(function(){
-                $(".line5").css('-webkit-transform', 'translateX(' + (-300+500 * p) + 'px)');
-            },400);
-            setTimeout(function(){
-                $(".line6").css('-webkit-transform', 'translateX(' + (-300+500 * p) + 'px)');
-            },500);
-            if(procsss<0.5){
-                $("#a_laoding").css("opacity",2*procsss);
+    var loading_2=function(){
+        var html='<div id="loader_loading" class="loader">\
+        <div class="dot" style="background: #32aacc;"></div>\
+        <div class="dot" style="background: #64aacc;"></div>\
+        <div class="dot" style="background: #96aacc;"></div>\
+        <div class="dot" style="background: #c8aacc;"></div>\
+        <div class="dot" style="background: #faaacc;"></div>\
+        </div>'
+        addNewStyle('#loader_loading.loader{\
+            position: absolute;\
+            top: 50%;\
+            left: 40%;\
+            margin-left: 10%;\
+            transform: translate3d(-50%, -50%, 0);\
+          }\
+          #loader_loading .dot {\
+            width: 24px;\
+            height: 24px;\
+            background: #3ac;\
+            border-radius: 100%;\
+            display: inline-block;\
+          }')
+          $("body").append(html);
+        return new Animator(1000, function (p) {
+            if(p<0.5){
+                scale1(p,0);
+                setTimeout(function(){
+                  scale1(p,1);
+                },100);
+                setTimeout(function(){
+                  scale1(p,2);
+                },200);
+                setTimeout(function(){
+                  scale1(p,3);
+                },300);
+                setTimeout(function(){
+                  scale1(p,4);
+                },400);
             }
             else{
-                $("#a_laoding").css("opacity",2*(1-procsss));
+                scale2(p,0);
+                setTimeout(function(){
+                  scale2(p,1);
+                },100);
+                setTimeout(function(){
+                  scale2(p,2);
+                },200);
+                setTimeout(function(){
+                  scale2(p,3);
+                },300);
+                setTimeout(function(){
+                  scale2(p,4);
+                },400);
             }
-        }, Easing.easeInOutExpo);
-        b.start();
+        }, Easing.linear);
     }
+    function scale1(p,i){
+        $(".dot").eq(i).css("transform","scale("+(2*p+1)+")");
+        $(".dot").eq(i).css("opacity",""+(-1.4*p+1));
+      }
+      function scale2(p,i){
+        $(".dot").eq(i).css("transform","scale("+(-2*p+3)+")");
+        $(".dot").eq(i).css("opacity",""+(1.4*p-0.4));
+      }
     function addNewStyle(newStyle){
         var styleElement = document.getElementById('styles_js');
         if (!styleElement) {
@@ -203,5 +229,15 @@
     }
     window.Animator = Animator;
     window.Easing = Easing;
-    window.loading = loading_1;
+    window.loading = {
+        target:null,
+        start:function(){
+            this.target=loading_2();
+            this.target.start();
+        },
+        remove:function(){
+            this.target.stop();
+            document.getElementById("loader_loading").remove();
+        }
+    };
 })(window)
