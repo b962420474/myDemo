@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link href="css/checkboxes.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main">
+        <div class="xl">
+            <div class="item_xl">
+            </div>
+            <div class="item_xl">
+                <li>
+                    <label>音量:</label>
+                    <div class="process">
+                        <p></p>
+                        <i id="ilog"></i>
+                    </div>
+                </li>
+                <li>
+                    <label>亮度:</label>
+                    <div class="process">
+                        <p></p>
+                        <i id="ilog"></i>
+                    </div>
+                </li>
+            </div>
+            <div class="iconfont logo1">&#xe633;</div>
+        </div>
+        <div class="top">
+            <div class="logo">
+                <li class="icon iconfont">&#xe657;</li>
+                <li class="icon iconfont">&#xe614;</li>
+                <li class="icon iconfont">&#xe627;</li>
+                <li class="icon iconfont">&#xe601;</li>
+            </div>
+        </div>
+        <div class="item item_active">
+            <div class="swp1">
+                <li class="swp1_active"><img src="./img/1.jpg"></li>
+                <li><img src="./img/2.jpg"></li>
+                <li><img src="./img/3.jpg"></li>
+                <li><img src="./img/4.jpg"></li>
+                <li><img src="./img/5.jpg"></li>
+                <li><img src="./img/6.jpg"></li>
+            </div>
+            <button class="set" onclick="next()">参数设置</button>
+        </div>
+        <div class=" item xd">
+            <div class="back iconfont" onclick="back(this);">&#xe655;</div>
+            <div class="swp2">
+                <li>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</span></div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                    <div class="item_a">
+                        <div class="item_a_type">温度</div>
+                        <div class="item_a_value">20</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item_a">
+                        <div class="item_a_type">漂洗回数</div>
+                        <div class="item_a_value">3</div>
+                    </div>
+                    <div class="item_a">
+                        <div class="item_a_type">水位</div>
+                        <div class="item_a_value">中</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item_a">
+                        <div class="item_a_type">脱水时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                    <div class="item_a">
+                        <div class="item_a_type">脱水转速</div>
+                        <div class="item_a_value">30</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                    <div class="item_a">
+                        <div class="item_a_type">洗涤时间</div>
+                        <div class="item_a_value">30分钟</div>
+                    </div>
+                </li>
+            </div>
+            <div class="features">
+                <li class="">
+                    <div class="light">
+                        <div class="ckbx-style-11">
+                            <input type="checkbox" id="ckbx-style-11-2" checked="" value="0" name="ckbx-style-12">
+                            <label for="ckbx-style-11-2"></label>
+                        </div>
+                    </div>
+                    <div class="wa">洗涤</div>
+                </li>
+                <li class="">
+                    <div class="light">
+                        <div class="ckbx-style-11">
+                            <input type="checkbox" id="ckbx-style-11-3" checked="" value="0" name="ckbx-style-13">
+                            <label for="ckbx-style-11-3"></label>
+                        </div>
+                    </div>
+                    <div class="wa">漂洗</div>
+                </li>
+                <li class="">
+                    <div class="light">
+                        <div class="ckbx-style-11">
+                            <input type="checkbox" id="ckbx-style-11-4" checked="" value="0" name="ckbx-style-14">
+                            <label for="ckbx-style-11-4"></label>
+                        </div>
+                    </div>
+                    <div class="wa">脱水</div>
+                </li>
+                <li class="">
+                    <div class="light">
+                        <div class="ckbx-style-11">
+                            <input type="checkbox" id="ckbx-style-11-5" checked="" value="0" name="ckbx-style-15">
+                            <label for="ckbx-style-11-5"></label>
+                        </div>
+                    </div>
+                    <div class="wa">烘干</div>
+                </li>
+            </div>
+            <button class="qd"" onclick="next()">启动</button>
+        </div>
+        <div class="item">
+            <div class="back iconfont" onclick="back(this);">&#xe655;</div>
+            <div style="width: 300px; margin: 10px;">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="js/swp1.js"></script>
+    <script type="text/javascript" src="js/swp2.js"></script>
+    <script type="text/javascript" src="js/swp3.js"></script>
+    <script type="text/javascript" src="js/wave.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            swp1();
+            swp2();
+            swp3();
+            initCanves();
+        }
+        function next() {
+            if ($(".item_active").next().hasClass("item")) {
+                $(".item_active").removeClass("item_active").next().addClass("item_active");
+            }
+        }
+        function back(n) {
+            $(n).parent().prev().hasClass("item") ? $(n).parent().removeClass("item_active").prev().addClass("item_active") : null;
+        }
+    </script>
+</body>
+
+</html>

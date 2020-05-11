@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <script>
+        kssort=(arry,from,to)=>{
+            let i=from;
+            let j=to;
+            let X=arry[i];
+            while(i<j){
+                while(j>i&&arry[j]<X){
+                    j--;
+                }
+                arry[i]=arry[j];
+                while(i<j&&arry[i]>X){
+                    i++;
+                }
+                
+            }
+       }
+    </script>
+</body>
+
+</html>

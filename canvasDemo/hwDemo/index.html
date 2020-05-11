@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link href="css/checkboxes.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main">
+        <div class="top">
+            <div class="logo">
+                <li><img src="./img/sc .png"></li>
+                <li><img src="./img/fz.png"></li>
+                <li><img src="./img/sz.png"></li>
+            </div>
+        </div>
+        <div class="item item_active">
+            <div class="swp1">
+                <li class="swp1_1 active"><img src="./img/program_1.png"><img src="./img/program_2.png"></li>
+                <li class="swp1_2">
+                    <img src="./img/program_3.png"><img src="./img/program_4.png">
+                    <img src="./img/program_5.png"><img src="./img/program_6.png">
+                </li>
+                <li class="swp1_1"><img src="./img/program_7.png"><img src="./img/program_8.png"></li>
+                <li class="swp1_2"><img src="./img/program_9.png"><img src="./img/program_10.png">
+                    <img src="./img/program_11.png"><img src="./img/program_12.png"></li>
+                <li class="swp1_1"><img src="./img/program_13.png"><img src="./img/program_14.png"></li>
+                <li class="swp1_2"><img src="./img/program_15.png"><img src="./img/program_16.png">
+                    <img src="./img/program_17.png"><img src="./img/program_18.png"></li>
+            </div>
+            <!-- <button class="set" onclick="next()">参数设置</button> -->
+        </div>
+        <div class=" item xd" onclick="cancel()">
+            <div class="back iconfont" onclick="back(this);">&#xe655;</div>
+            <div class="swp2">
+                <button class="gn"" onclick=" showMenu(this)"><label>功能</label><img src="./img/jh.png" width="20px"></button>
+            </div>
+            <div class="features">
+                <li class="">
+                    <div class="bj">185</div>
+                    <div>洗涤</div>
+                </li>
+                <li class="">
+                    <div class="bj">2次</div>
+                    <div>漂洗</div>
+                </li>
+                <li class="">
+                    <div class="bj">5分</div>
+                    <div>脱水</div>
+                    <div class="xx">
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                        <li>4</li>
+                        <li>5</li>
+                        <li>6</li>
+                        <li>7</li>
+                        <li>8</li>
+                        <li>9</li>
+                    </ul>
+                </div>
+                </li>
+            </div>
+            <button class="qd"" onclick=" next()">开始</button>
+        </div>
+        <div class="item">
+            <div class="back iconfont" onclick="back(this);">&#xe655;</div>
+            <div style="width: 300px; margin: 10px;">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="menu" onclick="selectMenu()">
+            <li>
+                <div style="background-image:url(./img/SidebarOption_1_b.png)"><label>洗涤</label></div>
+                <div style="background-image:url(./img/SidebarFunc_12_b.png)"><label>烘干</label></div>
+            </li>
+            <li>
+                <div style="background-image:url(./img/SidebarOption_2_b.png)"><label>脱水</label></div>
+                <div style="background-image:url(./img/SidebarOption_3_b.png)"><label>干洗</label></div>
+            </li>
+            <li>
+                <div style="background-image:url(./img/SidebarOption_4_b.png)"><label>漂洗</label></div>
+                <div style="background-image:url(./img/SidebarOption_6_b.png)"><label>甩干</label></div>
+            </li>
+        </div>
+        <div class="option">
+            <div class="title">烘干</div>
+            <div class="content">
+                <li onclick="selectOption(this)">晾干</li>
+                <li onclick="selectOption(this)">标准</li>
+                <li onclick="selectOption(this)">特干</li>
+            </div>
+            <div class="an"><button onclick="hide()">取消</button><button onclick="hide()">确定</button></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/swp1.js"></script>
+    <script type="text/javascript" src="js/swp2.js"></script>
+    <script type="text/javascript" src="js/swp3.js"></script>
+    <script type="text/javascript" src="js/wave.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            swp1();
+            // swp2();
+            // swp3();
+            // initCanves();
+        }
+        function next() {
+            if ($(".item_active").next().hasClass("item")) {
+                $(".item_active").removeClass("item_active").next().addClass("item_active");
+            }
+        }
+        function back(n) {
+            $(n).parent().prev().hasClass("item") ? $(n).parent().removeClass("item_active").prev().addClass("item_active") : null;
+        }
+    </script>
+</body>
+
+</html>

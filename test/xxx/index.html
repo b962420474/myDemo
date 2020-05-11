@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       <meta charset="utf-8">
+       <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   </head>
+   <body>
+        <div class="row" align="center">
+                <video controls id="video" webkit-playsinline="true" src=""></video>
+        </div>
+        <div class="row">
+            <ul class='info'>
+
+            </ul>
+        </div>
+        <!-- <div id="menu">
+            <div class="menu">清除</div>
+        </div> -->
+       <script>
+           var list=[
+               "https://r3---sn-4g5ednss.googlevideo.com/videoplayback?expire=1563364700&ei=-7guXaPgLpfM4QKt0oiYAg&ip=52.59.249.20&id=o-ACqdUgrMwmi1VxRdye0t4GG5oRz0wOeBHkB5I_xe4JAy&itag=22&source=youtube&requiressl=yes&mm=31%2C26&mn=sn-4g5ednss%2Csn-25ge7nsk&ms=au%2Conr&mv=m&mvi=2&pl=24&initcwndbps=1350000&mime=video%2Fmp4&ratebypass=yes&dur=11633.429&lmt=1537059033491740&mt=1563343068&fvip=3&c=WEB&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cmime%2Cratebypass%2Cdur%2Clmt&sig=ALgxI2wwRQIhAJ-feRmadk4Xnx7a28wQ3w02zFKVxBEio3u13clBCAv2AiAVOGcEHqkzRbsccm_XL9ghD_ULr-XXnkchhhrUjJ4tpQ%3D%3D&lsparams=mm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHylml4wRAIgUE4BPrt_GgX9_IgcnDBDt30MgILNg8exnOWM475fGJwCICE4RLKcx6jeWUJBp9AA_Xe6x9EcF1qqryr771K3ZdE9",
+           ];
+           var seekMark=false,seekT;
+           var video=document.getElementById("video");
+           video.src=list[0];
+           video.play();
+           list.shift();
+           video.addEventListener("ended",function(){
+               if(list.length>0){
+                video.src=list[0];
+                video.play();
+                list.shift();
+               }
+           });
+           video.focus();
+       </script>
+   </body>
+</html>
