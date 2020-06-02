@@ -39,7 +39,7 @@
       <img :src="button.img_url" @click="start()">
       <img @click="back()" src="../assets/img/PDPMLayerDefCancelButton_BackgroundImage.png">
     </div>
-    <Tip title="Defrost complete" ref="tip" @handleOk="handleOk()"></Tip>
+    <Tip :title="title" ref="tip" @handleOk="handleOk()"></Tip>
     <Pause @next="next()" ref="pause"></Pause>
   </div>
 </template>
@@ -53,6 +53,7 @@ export default {
   components: { MyCircle, Tip, Timmer, Pause },
   data() {
     return {
+      title:this.$i18n.t("defrost_complete"),
       list: {
         name: "Weight",
         isshow: true,

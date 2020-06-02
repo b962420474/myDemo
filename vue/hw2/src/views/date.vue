@@ -8,7 +8,7 @@
     <div class="button" @click="tip()">
       <img src="../assets/img/HWMLayerCmpltngConfirmButton_BackgroundImage.png">
     </div>
-    <Tip title="Date Set" ref="tip"></Tip>
+    <Tip :title="title" ref="tip"></Tip>
   </div>
 </template>
 <script>
@@ -35,6 +35,7 @@ export default {
   components: { Roll, Tip },
   data() {
     return {
+      title:this.$i18n.t('date_set'),
       yearList: [],
       monthlist: [
         { name: "January", isactive: false },

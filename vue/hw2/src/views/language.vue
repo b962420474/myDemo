@@ -2,7 +2,7 @@
   <div class="language">
     <roll :list="list"></roll>
     <div class="button" @click="tip()"> <img src="../assets/img/HWMLayerCmpltngConfirmButton_BackgroundImage.png"></div>
-    <Tip title="Language Set" ref="tip"></Tip>
+    <Tip :title="title" ref="tip"></Tip>
   </div>
 </template>
 <script>
@@ -12,6 +12,7 @@ export default {
   components: { Roll ,Tip},
   data() {
     return {
+      title:this.$i18n.t('language_set'),
       list: [
         { name: "English", isactive: false },
         { name: "Français", isactive: false },

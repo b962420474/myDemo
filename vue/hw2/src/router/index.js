@@ -11,6 +11,7 @@ import heating from '@/views/heating'
 import defrost from '@/views/defrost'
 import presets from '@/views/presets'
 import microwave from '@/views/microwave'
+import voice from '@/views/voice'
 Vue.use(Router)
 
 export default new Router({
@@ -70,6 +71,12 @@ export default new Router({
       path: '/microwave',
       name: 'microwave',
       component: microwave
+    }
+    ,
+    {
+      path: '/voice/:id',
+      name: 'voice',
+      component: voice
     }
   ]
 })

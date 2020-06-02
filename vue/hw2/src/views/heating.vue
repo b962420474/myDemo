@@ -26,7 +26,7 @@
       <img :src="button.img_url" @click="start()">
       <img @click="back()" src="../assets/img/PDPMLayerDefCancelButton_BackgroundImage.png">
     </div>
-    <Tip title="Timer complete" ref="tip"></Tip>
+    <Tip :title="title" ref="tip"></Tip>
     <Pause @next="next()" ref="pause"></Pause>
   </div>
 </template>
@@ -39,6 +39,7 @@ export default {
   components: { MyCircle, Tip, Timmer, Pause },
   data() {
     return {
+      title:this.$i18n.t("timer_complete"),
       list: [
         {
           name: "Temperature",

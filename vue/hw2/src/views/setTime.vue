@@ -26,8 +26,8 @@ export default {
     return {
       title:this.$i18n.t('time_set'),
       list: [
-        { name: "Hour", isshow: false, base: 24 ,num:5,start:0},
-        { name: "Minute", isshow: false, base: 60 ,num:5,start:0}
+        { name: this.$i18n.t('hour'), isshow: false, base: 23 ,num:5,start:0},
+        { name: this.$i18n.t('minute'), isshow: false, base: 59 ,num:5,start:0}
       ]
     };
   },
