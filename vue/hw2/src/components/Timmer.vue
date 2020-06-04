@@ -1,8 +1,7 @@
 <template>
-      <div class="time" id="time"></div>
+  <div class="time" id="time">{{html}}</div>
 </template>
 <script>
-var $time;
 export default {
   data() {
     return {
@@ -10,39 +9,35 @@ export default {
         h: 0,
         m: 0,
         s: 0
-      }
+      },
+      html: ""
     };
   },
   beforeMount: function() {},
-  mounted: function() {
-    $time = document.getElementById("time");
-    let date = new Date();
-    this.time.h = date.getHours();
-    this.time.m = date.getMinutes();
-    this.time.s = date.getSeconds();
+  created: function() {
+    this.getTime();
     this.updateTime();
   },
   computed: {},
   methods: {
     updateTime: function() {
       let self = this;
-      if (this.time.m == 60) {
-        this.time.m = 0;
-        this.time.h++;
-      }
-      if (this.time.h == 24) {
-        this.time.h = 0;
-      }
-      var html =
-        (self.time.h < 10 ? "0" + self.time.h : self.time.h) +
-        " : " +
-        (self.time.m < 10 ? "0" + self.time.m : self.time.m);
-      $time.innerHTML = html;
       setTimeout(function() {
-        self.time.m++;
+        self.getTime();
+        // console.log(self.html+" : "+self.time.s);
         self.updateTime();
-      }, 60000);
+      }, 10000);
     },
+    getTime:function(){
+      let date = new Date();
+      this.time.h = date.getHours();
+      this.time.m = date.getMinutes();
+      this.time.s = date.getSeconds();
+      this.html =
+      (this.time.h < 10 ? "0" + this.time.h : this.time.h) +
+      " : " +
+      (this.time.m < 10 ? "0" + this.time.m : this.time.m);
+    }
   }
 };
 </script>

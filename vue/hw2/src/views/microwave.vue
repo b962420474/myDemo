@@ -3,24 +3,40 @@
     <div class="header">
       <img src="../assets/img/HPMLayerDefNoLightButton_BackgroundImage.png">
       <Timmer></Timmer>
-      <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png" />
+      <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png">
     </div>
     <div class="timer">
-      <MyCircle
-        v-for="(item,index) in list"
-        :key="index"
-        :title="item.name"
-        :base="item.base"
-        :isshow="item.isshow"
-        :num="item.num"
-        :ref="item.name"
-        :start="item.start"
-        :unit="item.unit"
-        :wea_show="item.wea_show"
-        :my_type="item.type"
-        :current_wea="item.current_wea"
-        @click.native="pressKey(index)"
-      ></MyCircle>
+      <Ring
+        class="center"
+        :base="power.base"
+        :isshow="power.isshow"
+        :num="power.num"
+        ref="power"
+        :start="power.start"
+        @click.native="pressKey(power)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{power.name}}</div>
+          <div class="num">
+            {{power.num}}
+            <span style="font-size:10px;position: absolute;color:#ffffff6e;">{{power.unit}}</span>
+          </div>
+        </div>
+      </Ring>
+      <Ring
+        class="center"
+        :base="Timer.base"
+        :isshow="Timer.isshow"
+        :num="Timer.num"
+        ref="timmer"
+        :start="Timer.start"
+        @click.native="pressKey(Timer)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{Timer.name}}</div>
+          <div class="num">{{getNum}}</div>
+        </div>
+      </Ring>
     </div>
     <div class="button">
       <img :src="button.img_url" @click="start()">
@@ -31,37 +47,32 @@
   </div>
 </template>
 <script>
-import MyCircle from "../components/MyCircle.vue";
+import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 import Pause from "../components/Pause.vue";
 var $time;
 export default {
-  components: { MyCircle, Tip,Timmer,Pause },
+  components: { Ring, Tip, Timmer, Pause },
   data() {
     return {
-      list: [
-        {
-          name: "Power",
-          isshow: true,
-          base: 220,
-          num: 600,
-          start: 30,
-          unit: "w",
-          wea_show: false,
-          current_wea: 30
-        },
-        {
-          name: "Timer",
-          isshow: false,
-          base: 60,
-          num: 1,
-          start: 1,
-          wea_show: false,
-          current_wea: 30,
-          type: "timmer"
-        }
-      ],
+      power: {
+        name: "Power",
+        isshow: true,
+        base: 220,
+        num: 600,
+        start: 30,
+        unit: "w"
+      },
+      Timer: {
+        name: "Timer",
+        isshow: false,
+        base: 60,
+        num: 1,
+        start: 1,
+        sec:60,
+        type: "timmer"
+      },
       button: {
         img_url: require("../assets/img/HPMLayerDefStartButton_BackgroundImage.png"),
         pause: require("../assets/img/MWMLayerStopButton_BackgroundImage.png"),
@@ -72,23 +83,28 @@ export default {
     };
   },
   beforeMount: function() {},
-  mounted: function() {
+  mounted: function() {},
+  computed: {
+    getNum: function() {
+      return (
+        "0" +
+        Math.floor(this.Timer.num / 60) +
+        ":" +
+        (this.Timer.num % 60 < 10
+          ? "0" + (this.Timer.num % 60)
+          : this.Timer.num % 60)
+      );
+    }
   },
-  computed: {},
   methods: {
-    pressKey: function(index) {
-      this.list.forEach((element, i) => {
-        if (i === index) {
-          element.isshow = true;
-        } else {
-          element.isshow = false;
-        }
-      });
+    pressKey: function(power) {
+      this.hideCircle();
+      power.isshow = true;
     },
     tip: function() {
       this.$refs.tip.show();
     },
-    clearTime:function(){
+    clearTime: function() {
       clearInterval(this.timer);
     },
     start: function() {
@@ -96,36 +112,47 @@ export default {
       var self = this;
       if (this.button.type == "start") {
         console.log("start .......");
-        this.button.type="pause";
+        this.button.type = "pause";
         this.hideCircle();
-        this.button.img_url=this.button.pause;
-        if (this.list[1].num > 0) {
-          this.timer = setInterval(function() {
-            self.list[1].num--;
-            console.log(self.list[1].num);
-            if (self.list[1].num == 0) {
-              self.tip();
-              self.clearTime();
-            }
-          }, 60000);
-        } 
+        this.button.img_url = this.button.pause;
+        this.startTime();
       } else {
         console.log("pause .......");
         this.$refs.pause.show();
         this.clearTime();
       }
     },
-    hideCircle:function(){
-      this.list.forEach(function(element){
-        element.isshow=false;
-      })
+    startTime: function() {
+      var self = this;
+      if (this.Timer.num > 0) {
+        this.timer = setInterval(function() {
+          self.Timer.sec--;
+          if(self.Timer.sec==0){
+            self.Timer.num--;
+            self.Timer.sec=60;
+          }
+          console.log(self.Timer.num);
+          if (self.Timer.num == 0) {
+            self.tip();
+            self.clearTime();
+          }
+        }, 1000);
+      }
     },
-    startlock(){
-        this.$emit("lock");
+    hideCircle: function() {
+      this.Timer.isshow = false;
+      this.power.isshow = false;
     },
-       next() {
-        this.startTime();
+    setTimerNum:function(num){
+      this.Timer.num=num;
+      this.Timer.sec=60;
     },
+    startlock() {
+      this.$emit("lock");
+    },
+    next() {
+      this.startTime();
+    }
   }
 };
 </script>
@@ -147,20 +174,25 @@ export default {
   -webkit-align-self: center;
   width: 66%;
 }
-.item {
-  /* margin: 20px auto; */
-  display: -webkit-flex;
-  -webkit-justify-content: center;
+.center {
+  margin: auto;
 }
-.icon {
-  -webkit-align-self: center;
+.ClassyCountdown-value {
+  width: 100%;
+  line-height: 1em;
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  left: 0;
+  display: block;
+  font-family: "Open Sans";
+  font-weight: 300;
+  margin-top: -34px;
+  font-size: 18px;
 }
-.icon div {
-  margin: 30px;
-}
-.week div {
-  margin: 0 4px;
-  font-size: 14px;
+.num {
+  font-size: 30px;
+  margin-top: 10px;
 }
 .button {
   /* margin-top: 10px; */

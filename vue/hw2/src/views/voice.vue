@@ -29,6 +29,8 @@ export default {
   components: { Ring, Tip },
   data() {
     return {
+      item: { name: "Brightness", isshow: false, base: 9, num: 1, start: 0 },
+      tipTitle: "Brightness Set"
     };
   },
   beforeMount: function() {
