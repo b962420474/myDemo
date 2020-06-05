@@ -5,7 +5,7 @@
       <li
         v-for="data in list"
         :key="data.name"
-        @mouseup="next($event)"
+        @mouseup="next(data.name)"
         @mousedown="changeImage(data)"
       >
         <img :src="data.img_url">
@@ -17,6 +17,7 @@
 import Back from "../components/Back.vue";
 export default {
   components: { Back },
+  inject:['getPlugin'],
   data() {
     return {
       list: [
@@ -50,11 +51,17 @@ export default {
           name: "setup",
           img_url_down: require("../assets/img/SSLayerDefResetSmallRadioBox_CheckedImage.png")
         }
-      ]
+      ],
+      plugin:null
     };
   },
+  created:function(){
+    this.plugin=this.getPlugin();
+  },
   methods: {
-    next: function(e) {
+    next: function(name) {
+      console.log("push setting/"+name);
+      this.plugin.route("setting/"+name);
     },
     changeImage(item) {
       item.img_url = item.img_url_down;

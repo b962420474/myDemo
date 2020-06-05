@@ -2,6 +2,7 @@
   <div id="app">
     <router-view @lock="lock()" v-if="isRouterAlive"/>
     <Lock ref="lock"></Lock>
+    <object ref="DemoPlugin" type="brown/DemoPlugin" style="visibility:hidden; width:0px; height:0px;" @onRouter="onRouter"></object>
   </div>
 </template>
 
@@ -17,23 +18,6 @@ export default {
   },
    created:function(){
     var self=this;
-    // setTimeout(() => {
-    //   self.$router.push({name:"brightness",params:{message:{
-    //     list: [
-    //     { name: "Brightness", isshow: false, base: 9 ,num:9,start:0}
-    //     ],
-    //     tipTitle:"Brightness Set"
-    //   }}});
-    // }, 10000);
-
-    // setTimeout(() => {
-    //   self.$router.push({name:"defrost",params:{message:{
-    //     list: [
-    //     { name: "Voice", isshow: false, base: 3 ,num:1,start:0}
-    //     ],
-    //     tipTitle:"Voice Set"
-    //   }}});
-    // }, 20000);
   },
   data(){
     return {
@@ -50,6 +34,16 @@ export default {
     this.$nextTick(function(){
       this.isRouterAlive=true;
     })
+  },
+  onRouter(path){
+    console.log(".....receive router....");
+    console.log(path);
+    let p=path.splice("/");
+    let view=p[1];
+    switch(p[0]){
+      case "setting":
+      this.$router.push({name:view});
+    }
   }
 }
 }

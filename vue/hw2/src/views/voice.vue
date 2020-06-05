@@ -36,7 +36,7 @@ export default {
   beforeMount: function() {
      var type=this.$route.params.id;
      if(type==="volume"){
-       this.item={ name: this.$i18n.t('volume'), isshow: false, base: 9, num: 1, start: 0 };
+       this.item={ name: this.$i18n.t('volume'), isshow: true, base: 9, num: 1, start: 0 };
        this.tipTitle= this.$i18n.t('volume_set')
      }
      else{
@@ -48,7 +48,7 @@ export default {
   methods: {
     pressKey: function() {
       this.item.isshow = true;
-      this.$refs.ring.blueCircle(this.item.num++);
+      this.$refs.ring.blueCircle(++this.item.num);
     },
     tip: function() {
       this.$refs.tip.show();

@@ -15,7 +15,7 @@
         :start="power.start"
         @click.native="pressKey(power)"
       >
-        <div class="ClassyCountdown-value">
+        <div class="ClassyCountdown-value" @click="setPower()">
           <div>{{power.name}}</div>
           <div class="num">
             {{power.num}}
@@ -59,7 +59,7 @@ export default {
       power: {
         name: "Power",
         isshow: true,
-        base: 220,
+        base: 1000,
         num: 600,
         start: 30,
         unit: "w"
@@ -142,6 +142,10 @@ export default {
     hideCircle: function() {
       this.Timer.isshow = false;
       this.power.isshow = false;
+    },
+    setPower(){
+      this.power.num=this.power.num+100<this.power.base?this.power.num+100:this.power.base;
+      this.$refs.power.blueCircle(this.power.num);
     },
     setTimerNum:function(num){
       this.Timer.num=num;

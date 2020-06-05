@@ -2,6 +2,7 @@
   <div id="app">
     <router-view @Greyscreen="Greyscreen()"/>
     <Greyscreen ref="Greyscreen" :isshow="isshow"></Greyscreen>
+    <object ref="DemoPlugin" type="brown/DemoPlugin" style="visibility:hidden; width:0px; height:0px;"></object>
   </div>
 
 </template>
@@ -15,17 +16,21 @@ export default {
       isshow:false
     }
   },
+  provide(){
+    return {
+      getPlugin:this.getPlugin
+    }
+  },
   created:function(){
-    var self=this;
-    // setTimeout(() => {
-    //   self.$router.push({name:"healthy"});
-    // }, 20000);
-    
+    var self=this;  
   },
   methods:{
     Greyscreen(){
       console.log("lock......");
       this.isshow=true;
+    },
+    getPlugin:function(){
+      return this.$refs.DemoPlugin;
     }
   },
   name: "App"

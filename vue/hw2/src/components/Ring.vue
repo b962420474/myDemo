@@ -8,7 +8,7 @@
 </template>
 <script>
 export default {
-  props: ['base','num','isshow','start'],
+  props: ["base", "num", "isshow", "start"],
   data() {
     return {};
   },
@@ -17,8 +17,9 @@ export default {
     this.context = this.canvas.getContext("2d");
     this.centerX = this.canvas.width / 2;
     this.centerY = this.canvas.height / 2;
-    this.rad= Math.PI * 2 / this.base;
-    this.whiteCircle();
+    this.rad = (Math.PI * 2) / this.base;
+    this.setCanvas();
+    // this.whiteCircle();
     this.blueCircle(this.num);
   },
   computed: {},
@@ -27,21 +28,63 @@ export default {
       this.context.save();
       this.context.beginPath();
       this.context.strokeStyle = "#9e9e9e";
+      this.context.fillStyle = "#9e9e9e"; //C
       this.context.lineWidth = 14;
-      this.context.arc(this.centerX, this.centerY, 65, 0, Math.PI * 2, false);
+      this.context.arc(
+        this.centerX,
+        this.centerY,
+        this.canvas.width / 2 - 14,
+        0,
+        Math.PI * 2,
+        false
+      );
       this.context.stroke();
       this.context.closePath();
       this.context.restore();
     },
     blueCircle: function(n) {
+      this.clearCanvas();
+      this.whiteCircle();
       this.context.save();
       this.context.beginPath();
       this.context.strokeStyle = "#49f";
+      this.context.fillStyle = "#49f"; //C
       this.context.lineWidth = 14;
       this.context.lineCap = "round";
-      this.context.arc(this.centerX,this.centerY,65,-Math.PI / 2, -Math.PI / 2 + (n-this.start) * this.rad,false);
+      this.context.arc(
+        this.centerX,
+        this.centerY,
+        this.canvas.width / 2 - 14,
+        -Math.PI / 2,
+        -Math.PI / 2 + (n - this.start) * this.rad,
+        false
+      );
       this.context.stroke();
       this.context.restore();
+    },
+    setCanvas: function() {
+      var width = this.canvas.width,
+        height = this.canvas.height;
+      var getPixelRatio = function(context) {
+        var backingStore =
+          context.backingStorePixelRatio ||
+          context.webkitBackingStorePixelRatio ||
+          context.mozBackingStorePixelRatio ||
+          context.msBackingStorePixelRatio ||
+          context.oBackingStorePixelRatio ||
+          context.backingStorePixelRatio ||
+          1;
+        return (window.devicePixelRatio || 1) / backingStore;
+      };
+      var ratio = getPixelRatio(this.context);
+      this.canvas.style.width = width + "px";
+      this.canvas.style.height = height + "px";
+      this.canvas.height = height * ratio;
+      this.canvas.width = width * ratio;
+      this.context.scale(ratio, ratio);
+    },
+    clearCanvas() {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
   }
 };
