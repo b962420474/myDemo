@@ -30,6 +30,7 @@ var hasMove = false;
 export default {
   components: {Lines },
   props:['type'],
+  inject:['getDatas'],
   data() {
     return {
       list: [
@@ -60,8 +61,20 @@ export default {
           },
           {
             img_url: require("../assets/img/HSLayerDMFrstEcoSmallButton_BackgroundImage.png"),
-            name: "Fanned",
+            name: "ECO",
             img_url_down: require("../assets/img/HSLayerDMFrstEcoSmallButton_PressImage.png"),
+            datas: {
+              head: {
+                title: "ECO",
+                backurl: "/healthy"
+              },
+              mwo: false
+            }
+          },
+          {
+            img_url: require("../assets/img/HSLayerDMFrstFannedSmallButton_BackgroundImage.png"),
+            name: "Fanned",
+            img_url_down: require("../assets/img/HSLayerDMFrstFannedSmallButton_PressImage.png"),
             datas: {
               head: {
                 title: "Fanned",
@@ -71,20 +84,8 @@ export default {
             }
           },
           {
-            img_url: require("../assets/img/HSLayerDMFrstFannedSmallButton_BackgroundImage.png"),
-            name: "Fanned1",
-            img_url_down: require("../assets/img/HSLayerDMFrstFannedSmallButton_PressImage.png"),
-            datas: {
-              head: {
-                title: "Fanned1",
-                backurl: "/healthy"
-              },
-              mwo: false
-            }
-          },
-          {
             img_url: require("../assets/img/HSLayerDMFrstGrillSmallButton_BackgroundImage.png"),
-            name: "Grill",
+            name: "Grills",
             img_url_down: require("../assets/img/HSLayerDMFrstGrillSmallButton_PressImage.png"),
             datas: {
               head: {
@@ -96,7 +97,7 @@ export default {
           },
           {
             img_url: require("../assets/img/HSLayerDMFrstGrillFanSmallButton_BackgroundImage.png"),
-            name: "Grill&Fan",
+            name: "Grill_Fans",
             img_url_down: require("../assets/img/HSLayerDMFrstGrillFanSmallButton_PressImage.png"),
             datas: {
               head: {
@@ -108,7 +109,7 @@ export default {
           },
           {
             img_url: require("../assets/img/HSLayerDMFrstDoubleGrillSmallButton_BackgroundImage.png"),
-            name: "Double grill",
+            name: "Double_grills",
             img_url_down: require("../assets/img/HSLayerDMFrstDoubleGrillSmallButton_PressImage.png"),
             datas: {
               head: {
@@ -134,7 +135,7 @@ export default {
         [
           {
             img_url: require("../assets/img/HSLayerDMScndSlowCookSmallButton_BackgroundImage.png"),
-            name: "Slow cook",
+            name: "Slow_cooks",
             img_url_down: require("../assets/img/HSLayerDMScndSlowCookSmallButton_PressImage.png"),
             datas: {
               head: {
@@ -158,7 +159,7 @@ export default {
           },
           {
             img_url: require("../assets/img/HSLayerDMScndWarmPlateSmallButton_BackgroundImage.png"),
-            name: "Warm plate",
+            name: "Warm_plate",
             img_url_down: require("../assets/img/HSLayerDMScndWarmPlateSmallButton_PressImage.png"),
             datas: {
               head: {
@@ -182,7 +183,7 @@ export default {
           },
           {
             img_url: require("../assets/img/HSLayerDMScndPizzaSmallButton_BackgroundImage.png"),
-            name: "Pizza",
+            name: "Pizzas",
             img_url_down: require("../assets/img/HSLayerDMScndPizzaSmallButton_PressImage.png"),
             datas: {
               head: {
@@ -197,8 +198,12 @@ export default {
       itemIndex: 0,
       isItem: false,
       num: 2,
-      activeIndex: 0
+      activeIndex: 0,
+       plugin:null
     };
+  },
+  created:function(){
+    this.plugin=this.getDatas().plugin;
   },
   mounted: function() {
     offset = document.getElementById("menu_content").querySelector(".menu_item").offsetWidth;
@@ -247,9 +252,25 @@ export default {
         translateX = length;
       } else if (this.isItem) {
         if(this.type==="presets"){
+          const path="presets?heating-"+this.list[this.activeIndex][this.itemIndex].name;
+          console.log(path);
+          try{
+            this.plugin.route(path);
+          }
+          catch(e){
+            console.log("this is no iBrowser");
+          }
           this.$router.push({ name: "heatingItem",params:{message:this.list[this.activeIndex][this.itemIndex]} })
         }
         else{
+          const path="heating?"+this.list[this.activeIndex][this.itemIndex].name;
+          console.log(path);
+          try{
+            this.plugin.route(path);
+          }
+          catch(e){
+            console.log("this is no iBrowser");
+          }
           this.$router.push({ name: "pizza",params:{message:this.list[this.activeIndex][this.itemIndex].datas} })
         }
       }

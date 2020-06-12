@@ -47,7 +47,7 @@ export default {
 }
 .operation{
   display: -webkit-flex;
-  justify-content: center;
+  -webkit-justify-content: center;
 }
 </style>
 

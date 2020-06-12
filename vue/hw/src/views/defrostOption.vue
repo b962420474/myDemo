@@ -20,6 +20,7 @@
 import Back from "../components/Back.vue";
 export default {
   components: { Back },
+  inject:['getDatas'],
   data() {
     return {
       list: [
@@ -30,12 +31,12 @@ export default {
         },
         {
           img_url: require("../assets/img/DSLayerButton1_BackgroundImage.png"),
-          name: "birds",
+          name: "bird",
           img_url_down: require("../assets/img/DSLayerButton1_PressImage.png")
         },
         {
           img_url: require("../assets/img/DSLayerButton2_BackgroundImage.png"),
-          name: "fish",
+          name: "fishss",
           img_url_down: require("../assets/img/DSLayerButton2_PressImage.png")
         },
         {
@@ -49,8 +50,12 @@ export default {
           img_url_down: require("../assets/img/DSLayerButton4_PressImage.png")
         }
       ],
-       title: "Presets"
+       title: "Presets",
+       plugin:null
     };
+  },
+  created:function(){
+    this.plugin=this.getDatas().plugin;
   },
   methods: {
     next: function(item) {
@@ -58,6 +63,13 @@ export default {
         "title":this.title,
         "imgurl":item.img_url,
         "backurl":"/defrostOption"
+      }
+       try{
+            console.log("presets?defrost-"+item.name);
+            this.plugin.route("presets?defrost-"+item.name);
+          }
+      catch(e){
+          console.log("this is no iBrowser");
       }
       this.$router.push({name:'defrostItem',params:{'message':message}});
     },

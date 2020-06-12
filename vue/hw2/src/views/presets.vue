@@ -3,24 +3,47 @@
     <div class="header">
       <img src="../assets/img/HPMLayerDefNoLightButton_BackgroundImage.png">
       <Timmer></Timmer>
-      <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png" />
+      <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png">
     </div>
     <div class="timer">
-      <MyCircle
-        v-for="(item,index) in list"
-        :key="index"
-        :title="item.name"
+      <Ring
+        class="center"
         :base="item.base"
         :isshow="item.isshow"
         :num="item.num"
-        :ref="item.name"
+        ref="item"
         :start="item.start"
-        :unit="item.unit"
-        :wea_show="item.wea_show"
-        :my_type="item.type"
-        :current_wea="item.current_wea"
-        @click.native="pressKey(index)"
-      ></MyCircle>
+        @click.native="pressKey(item)"
+      >
+        <div class="ClassyCountdown-value" v-if="item.unit">
+          <div>{{item.name}}</div>
+          <div class="num">
+            {{item.num}}
+            <span style="font-size:10px;position: absolute;color:#ffffff6e;">{{item.unit}}</span>
+          </div>
+        </div>
+        <div class="ClassyCountdown-value" v-else>
+          <div>{{item.name}}</div>
+          <div class="num">
+            {{getNum}}
+          </div>
+        </div>
+      </Ring>
+      <Ring
+        v-if="type=='heating'"
+        class="center"
+        :base="timer.base"
+        :isshow="timer.isshow"
+        :num="timer.num"
+        ref="timer"
+        :start="timer.start"
+        @click.native="pressKey(timer)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{timer.name}}</div>
+          <div class="num">{{timer.num}}</div>
+        </div>
+      </Ring>
     </div>
     <div class="button">
       <img src="../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png" @click="start()">
@@ -30,76 +53,147 @@
   </div>
 </template>
 <script>
-import MyCircle from "../components/MyCircle.vue";
+import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 var $time;
 export default {
-  components: { MyCircle, Tip,Timmer },
+  components: { Ring, Tip, Timmer },
+  inject: ["reload",'getDatas'],
   data() {
     return {
-      list: [
-        {
-          name: "Temperature",
-          isshow: true,
-          base: 220,
-          num: 180,
-          start: 30,
-          unit: "℃",
-          wea_show: false,
-          current_wea: 30
-        },
-        {
-          name: "Timer",
-          isshow: false,
-          base: 60,
-          num: 1,
-          start: 1,
-          wea_show: false,
-          current_wea: 30,
-          type: "timmer"
-        }
-      ],
+      item:{},
+      timer:{},
+      type:'',
       button: {
         img_url: require("../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png"),
         pause: require("../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png"),
         start: require("../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png"),
         type: "start"
       },
-      timer: false
+      plugin:null
     };
   },
-  beforeMount: function() {},
-  mounted: function() {
+  beforeMount: function() {
+    this.plugin=this.getDatas().plugin;
+    var types = this.$route.params.id.split("-");
+    this.type=types[0];
+    var type=types[1];
+    switch(type){
+      case 'Standard':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Convection':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 100,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      break;
+      case 'ECO':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 150,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Fanned':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 120,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Grills':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 110,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Grill_Fans':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 105,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Double_grills':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 200,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Bottom':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 210,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Slow_cooks':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Preserve':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 70,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Warm_plate':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 30,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Dry':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 50,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Pizzas':
+      this.item={name: "Temperature",isshow: true,base: 220,num: 40,start: 30,unit: "℃",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+
+      
+      case 'meat':
+      this.item={name: "Weight",isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'bird':
+      this.item={name: "Weight",isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      break;
+      case 'fish':
+      this.item={name: "Weight",isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'vegetables':
+      this.item={name: "Weight",isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"item"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'manual':
+      this.item={name: "Timer",isshow: true,base: 220,num: 110,start: 30,key:"timer"};
+      break;
+    }
+    try{
+      this.plugin.setting("setpresets",this.item.key,this.item.num);
+      }catch(e){}
   },
-  computed: {},
+  mounted: function() {},
+  computed: {
+    getNum:function(){
+      return (this.item.num/60<10?"0"+Math.floor(this.item.num/60):this.item.num/60)+":"+(this.item.num%60<10?"0"+this.item.num%60:this.item.num%60);
+    }
+  },
   methods: {
-    pressKey: function(index) {
-      this.list.forEach((element, i) => {
-        if (i === index) {
-          element.isshow = true;
-        } else {
-          element.isshow = false;
-        }
-      });
+    pressKey: function(item) {
+      this.hideCircle();
+      item.isshow = true;
+      try{
+        this.plugin.setting("setpresets",item.key,item.num);
+      }catch(e){}
     },
     tip: function() {
       this.$refs.tip.show();
     },
-    clearTime:function(){
-      clearInterval(this.timer);
+    hideCircle: function() {
+      this.timer.isshow = false;
+      this.item.isshow = false;
     },
     start: function() {
-      console.log("add time:"+this.list[1].num+" wea:"+this.list[0].num)
+      console.log("add time:" + this.item.num + " wea:" + this.timer.num);
     },
-    startlock(){
-        this.$emit("lock");
+    startlock() {
+      this.$emit("lock");
     },
     back: function() {
       if (this.button.type == "pause") {
       } else {
       }
     },
+     updateNum:function(type,num){
+      this[type].num=num;
+      this.$refs[type].blueCircle(num);
+    }
   }
 };
 </script>

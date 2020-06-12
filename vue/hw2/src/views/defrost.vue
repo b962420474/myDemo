@@ -6,34 +6,38 @@
       <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png">
     </div>
     <div class="timer">
-      <MyCircle
+      <Ring
         v-show="button.type=='start'"
-        :title="list.name"
-        :base="list.base"
-        :isshow="list.isshow"
-        :num="list.num"
-        :ref="list.name"
-        :start="list.start"
-        :unit="list.unit"
-        :wea_show="list.wea_show"
-        :my_type="list.type"
-        :current_wea="list.current_wea"
-        @click.native="pressKey()"
-      ></MyCircle>
-      <MyCircle
-        v-show="button.type=='pause'"
-        :title="timmer1.name"
-        :base="timmer1.base"
-        :isshow="timmer1.isshow"
-        :num="timmer1.num"
-        :ref="timmer1.name"
-        :start="timmer1.start"
-        :unit="timmer1.unit"
-        :wea_show="timmer1.wea_show"
-        :my_type="timmer1.type"
-        :current_wea="timmer1.current_wea"
-        :extra="timmer1.extra"
-      ></MyCircle>
+        class="center"
+        :base="weight.base"
+        :isshow="weight.isshow"
+        :num="weight.num"
+        ref="weight"
+        :start="weight.start"
+        @click.native="pressKey(weight)"
+      >
+        <div class="ClassyCountdown-value" v-if="weight.unit">
+          <div>{{weight.name}}</div>
+          <div class="num">
+            {{weight.num}}
+            <span style="font-size:10px;position: absolute;color:#ffffff6e;">{{weight.unit}}</span>
+          </div>
+        </div>
+        <div class="ClassyCountdown-value" v-else>
+          <div>{{weight.name}}</div>
+          <div class="num">
+            {{getNum}}
+          </div>
+        </div>
+      </Ring>
+      <div
+       v-show="button.type=='pause'"
+        class="center timmer">
+        <div class="ClassyCountdown-value">
+          <div>{{timer.name}}</div>
+          <div class="num">{{getTNum}}</div>
+        </div>
+      </div>
     </div>
     <div class="button">
       <img :src="button.img_url" @click="start()">
@@ -44,108 +48,123 @@
   </div>
 </template>
 <script>
-import MyCircle from "../components/MyCircle.vue";
+import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 import Pause from "../components/Pause.vue";
-var $time;
+import { start, init, pause } from "../util/time";
 export default {
-  components: { MyCircle, Tip, Timmer, Pause },
+  components: { Ring, Tip, Timmer, Pause },
   data() {
     return {
-      title:this.$i18n.t("defrost_complete"),
-      list: {
-        name: "Weight",
-        isshow: true,
-        base: 1400,
-        num: 1500,
-        start: 100,
-        unit: "g",
-        wea_show: false,
-        defaultNum: 1500,
-        current_wea: 30
-      },
-      timmer1: {
-        name: "Timer",
-        isshow: false,
-        base: 60,
-        num: 20,
-        start: 0,
-        wea_show: false,
-        current_wea: 30,
-        type: "timmer",
-        extra:{
-            getTitle:function(){
-                return "Timer"
-            }
-        }
-      },
+      title: this.$i18n.t("defrost_complete"),
+      weight: {},
+      timer: {},
       button: {
         img_url: require("../assets/img/HPMLayerDefStartButton_BackgroundImage.png"),
         pause: require("../assets/img/MWMLayerStopButton_BackgroundImage.png"),
         start: require("../assets/img/HPMLayerDefStartButton_BackgroundImage.png"),
         type: "start"
       },
-      timer: false
+      plugin:null
     };
   },
-  inject:['reload'],
-  beforeMount: function() {},
-  mounted: function() {
-    
+  inject: ["reload",'getDatas'],
+  beforeMount: function() {
+    this.plugin=this.getDatas().plugin;
+    var type = this.$route.params.id;
+    switch(type){
+      case 'meat':
+      this.weight={name: "Weight",isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"weight"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'bird':
+      this.weight={name: "Weight",isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"weight"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      break;
+      case 'fish':
+      this.weight={name: "Weight",isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"weight"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'vegetables':
+      this.weight={name: "Weight",isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"weight"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'manual':
+      this.weight={name: "Timer",isshow: true,base: 220,num: 110,start: 30,key:"timer"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 110,start: 0,key:"timer"};
+      break;
+    }
+    try{
+        if(type=="vegetables"){
+          this.plugin.setting("setdefrost","vegetables_"+this.weight.key,this.weight.num);
+        }
+        else{
+          this.plugin.setting("setdefrost",this.weight.key,this.weight.num);
+        }
+      }catch(e){}
+    init(this.timer.num,this.tip,this.update,540);
   },
-  computed: {},
+  destroyed: function() {
+    pause();
+  },
+  computed: {
+    getTNum:function(){
+      return (this.timer.num/60<10?"0"+Math.floor(this.timer.num/60):this.timer.num/60)+":"+(this.timer.num%60<10?"0"+this.timer.num%60:this.timer.num%60);
+    },
+    getNum:function(){
+      return (this.weight.num/60<10?"0"+Math.floor(this.weight.num/60):this.weight.num/60)+":"+(this.weight.num%60<10?"0"+this.weight.num%60:this.weight.num%60);
+    }
+  },
   methods: {
     back: function() {
+      pause();
       if (this.button.type == "pause") {
         this.reload();
       } else {
       }
     },
     pressKey: function() {
-      this.list.isshow = this.list.isshow ? false : true;
+      try{
+        if(this.$route.params.id=="vegetables"){
+          this.plugin.setting("setdefrost","vegetables_"+this.weight.key,this.weight.num);
+        }
+        else{
+          this.plugin.setting("setdefrost",this.weight.key,this.weight.num);
+        }
+      }catch(e){}
+    },
+    updateNum:function(type,num){
+      this.weight.num=num;
+      this.$refs.weight.blueCircle(num);
     },
     tip: function() {
+      this.button.type = "start";
+      this.button.img_url = this.button.start;
       this.$refs.tip.show();
     },
-    clearTime: function() {
-      clearInterval(this.timer);
-    },
     start: function() {
-      this.clearTime();
       if (this.button.type == "start") {
         console.log("start .......");
         this.button.type = "pause";
         this.button.img_url = this.button.pause;
-        if (this.timmer1.num > 0) {
-          this.startTime();
-        }
+        start();
       } else {
         console.log("pause .......");
         this.$refs.pause.show();
-        this.clearTime();
+        pause();
       }
-    },
-    startTime: function() {
-        var self = this;
-      this.timer = setInterval(function() {
-        self.timmer1.num--;
-        console.log(self.timmer1.num);
-        if (self.timmer1.num == 0) {
-          self.tip();
-          self.clearTime();
-        }
-      }, 60000);
     },
     startlock() {
       this.$emit("lock");
     },
     next() {
-        this.startTime();
+      start();
     },
-    handleOk:function(){
-
-    }
+    update(num) {
+      this.timer.num = num;
+    },
+    handleOk: function() {}
   }
 };
 </script>
@@ -162,25 +181,16 @@ export default {
   display: -webkit-flex;
   width: 100%;
 }
-.date {
-  position: relative;
-  -webkit-align-self: center;
-  width: 66%;
+.timmer {
+  display: inline-block;
+    position: relative;
+    width: 150px;
+    height: 150px;
 }
 .item {
   /* margin: 20px auto; */
   display: -webkit-flex;
   -webkit-justify-content: center;
-}
-.icon {
-  -webkit-align-self: center;
-}
-.icon div {
-  margin: 30px;
-}
-.week div {
-  margin: 0 4px;
-  font-size: 14px;
 }
 .button {
   /* margin-top: 10px; */

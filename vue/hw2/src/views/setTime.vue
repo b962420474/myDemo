@@ -1,50 +1,80 @@
 <template>
   <div class="main_content">
    <div class="timer">
-      <MyCircle
-      v-for="(item,index) in list"
-      :key="index"
-      :title="item.name"
-      :base="item.base"
-      :isshow="item.isshow"
-      :num="item.num"
-      :ref="item.name"
-      :start="item.start"
-      @click.native="pressKey(index)"
-    ></MyCircle>
+    <Ring
+        class="center"
+        :base="hour.base"
+        :isshow="hour.isshow"
+        :num="hour.num"
+        ref="hour"
+        :start="hour.start"
+        @click.native="pressKey(hour)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{hour.name}}</div>
+          <div class="num">{{hour.num}}</div>
+        </div>
+      </Ring>
+      <Ring
+        class="center"
+        :base="minute.base"
+        :isshow="minute.isshow"
+        :num="minute.num"
+        ref="minute"
+        :start="minute.start"
+        @click.native="pressKey(minute)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{minute.name}}</div>
+          <div class="num">{{minute.num}}</div>
+        </div>
+      </Ring>
    </div>
     <div class="button" @click="tip()"> <img src="../assets/img/HWMLayerCmpltngConfirmButton_BackgroundImage.png"></div>
     <Tip :title="title" ref="tip"></Tip>
   </div>
 </template>
 <script>
-import MyCircle from "../components/MyCircle.vue";
+import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 export default {
-  components: { MyCircle,Tip },
+  components: { Ring,Tip },
+  inject:['getDatas'],
   data() {
     return {
       title:this.$i18n.t('time_set'),
-      list: [
-        { name: this.$i18n.t('hour'), isshow: false, base: 23 ,num:5,start:0},
-        { name: this.$i18n.t('minute'), isshow: false, base: 59 ,num:5,start:0}
-      ]
+      hour:{ name: this.$i18n.t('hour'), isshow: true, base: 23 ,num:5,start:0,key:"hour"},
+      minute: { name: this.$i18n.t('minute'), isshow: false, base: 59 ,num:5,start:0,key:"minute"},
+      plugin:null
     };
   },
-  beforeMount: function() {},
+  created:function(){
+    this.plugin=this.getDatas().plugin;
+  },
+  beforeMount: function() {
+    const date = new Date();
+    this.hour.num = date.getHours();
+    this.minute.num = date.getMinutes();
+    try{
+      this.plugin.setting("setTime",this.hour.key,this.hour.num);
+    }catch(e){}
+  },
   computed: {},
   methods: {
-    pressKey: function(index) {
-      this.list.forEach((element, i) => {
-        if (i === index) {
-          element.isshow = true;
-        } else {
-          element.isshow = false;
-        }
-      });
+    pressKey: function(item) {
+      this.hour.isshow=false;
+      this.minute.isshow=false;
+      item.isshow = true;
+      try{
+        this.plugin.setting("setTime",item.key,item.num);
+      }catch(e){}
     },
     tip:function(){
       this.$refs.tip.show();
+    },
+    updateNum:function(type,num){
+      this[type].num=num;
+      this.$refs[type].blueCircle(num);
     }
   }
 };
@@ -58,6 +88,7 @@ export default {
 .timer{
     display: -webkit-flex;
     width: 100%;
+    margin-top: 50px;
 }
 .date {
   position: relative;
@@ -71,16 +102,6 @@ export default {
 }
 .time {
   font-size: 60px;
-}
-.icon {
-  -webkit-align-self: center;
-}
-.icon div {
-  margin: 30px;
-}
-.week div {
-  margin: 0 4px;
-  font-size: 14px;
 }
 .button{
   margin-top: 10px;

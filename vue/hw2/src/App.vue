@@ -1,52 +1,90 @@
 <template>
   <div id="app">
-    <router-view @lock="lock()" v-if="isRouterAlive"/>
+    <router-view @lock="lock()" ref="route" v-if="isRouterAlive" :key="$route.fullPath"/>
     <Lock ref="lock"></Lock>
-    <object ref="DemoPlugin" type="brown/DemoPlugin" style="visibility:hidden; width:0px; height:0px;" @onRouter="onRouter"></object>
+    <object
+      ref="DemoPlugin"
+      type="brown/UartPlugin"
+      style="visibility:hidden; width:0px; height:0px;"
+      @onRoute="onRouter"
+      @onSetting="receive"
+    ></object>
   </div>
 </template>
 
 <script>
-import Lock from "./components/Lock.vue"
+import Lock from "./components/Lock.vue";
 export default {
   name: "App",
-  components:{Lock},
-  provide(){
+  components: { Lock },
+  provide() {
     return {
-      reload:this.reload
+      reload: this.reload,
+      getDatas:this.getDatas
+    };
+  },
+  created: function() {
+    var self = this;
+  },
+  mounted: function() {
+    var self = this;
+    try{
+      this.$refs.DemoPlugin.uart_init();
+    }catch(e){
+
     }
   },
-   created:function(){
-    var self=this;
-  },
-  data(){
+  data() {
     return {
-      isRouterAlive:true
-    }
+      isRouterAlive: true,
+      datas:{
+        plugin:this.$refs.DemoPlugin
+      }
+    };
   },
-  methods:{
-    lock(){
+  methods: {
+    lock() {
       console.log("lock......");
       this.$refs.lock.show();
-  },
-  reload:function(){
-    this.isRouterAlive=false;
-    this.$nextTick(function(){
-      this.isRouterAlive=true;
-    })
-  },
-  onRouter(path){
-    console.log(".....receive router....");
-    console.log(path);
-    let p=path.splice("/");
-    let view=p[1];
-    switch(p[0]){
-      case "setting":
-      this.$router.push({name:view});
+    },
+    reload: function() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
+    },
+    onRouter(path) {
+      console.log(".....receive router....");
+      console.log(path);
+      let p = path.split("?");
+      let view = "/"+p[1];
+      switch (p[0]) {
+        case "setting":
+          this.$router.push({ path: view });
+          break;
+        case "defrost":
+          this.$router.push({ path: "/defrost"+view });
+          break;
+        case "presets":
+          this.$router.push({ path: "/presets"+view });
+          break;
+        case "heating":
+          this.$router.push({ path: "/heating"+view });
+          break;
+        case "main":
+          this.$router.push({ path: "/"});
+          break;
+      }
+    },
+    receive:function(path,type,num){
+      console.log(path+","+type+","+num);
+      this.$refs.route.updateNum(type,num);
+    },
+    getDatas:function(){
+      return this.datas;
     }
   }
-}
-}
+};
 </script>
 
 <style>
@@ -62,5 +100,26 @@ export default {
   overflow: hidden;
   background: black;
   position: relative;
+}
+.center {
+  margin: auto;
+}
+.ClassyCountdown-value {
+  width: 100%;
+  line-height: 1em;
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  left: 0;
+  display: block;
+  font-family: "Open Sans";
+  font-weight: 300;
+  -webkit-transform: translateY(-50%);
+  font-size: 15px;
+}
+.num {
+  font-size: 30px;
+  margin-top: 10px;
+  font-weight: 500;
 }
 </style>

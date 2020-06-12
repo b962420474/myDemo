@@ -17,13 +17,13 @@
 import Back from "../components/Back.vue";
 export default {
   components: { Back },
-  inject:['getPlugin'],
+  inject:['getDatas'],
   data() {
     return {
       list: [
         {
           img_url: require("../assets/img/SSLayerDefTimeSmallRadioBox_BackgroundImage.png"),
-          name: "time",
+          name: "setTime",
           img_url_down: require("../assets/img/SSLayerDefTimeSmallRadioBox_CheckedImage.png")
         },
         {
@@ -38,17 +38,17 @@ export default {
         },
         {
           img_url: require("../assets/img/SSLayerDefBrightnessSmallRadioBox_BackgroundImage.png"),
-          name: "brightness",
+          name: "voice/brightness",
           img_url_down: require("../assets/img/SSLayerDefBrightnessSmallRadioBox_CheckedImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefVolumeSmallRadioBox_BackgroundImage.png"),
-          name: "voice",
+          name: "voice/volume",
           img_url_down: require("../assets/img/SSLayerDefVolumeSmallRadioBox_CheckedImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefResetSmallRadioBox_BackgroundImage.png"),
-          name: "setup",
+          name: "setting",
           img_url_down: require("../assets/img/SSLayerDefResetSmallRadioBox_CheckedImage.png")
         }
       ],
@@ -56,12 +56,12 @@ export default {
     };
   },
   created:function(){
-    this.plugin=this.getPlugin();
+    this.plugin=this.getDatas().plugin;
   },
   methods: {
     next: function(name) {
-      console.log("push setting/"+name);
-      this.plugin.route("setting/"+name);
+      console.log("push setting?"+name);
+      this.plugin.route("setting?"+name);
     },
     changeImage(item) {
       item.img_url = item.img_url_down;

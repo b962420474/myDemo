@@ -25,10 +25,10 @@ export default {
   computed: {},
   methods: {
     whiteCircle: function() {
-      this.context.save();
+      //this.context.save();
       this.context.beginPath();
       this.context.strokeStyle = "#9e9e9e";
-      this.context.fillStyle = "#9e9e9e"; //C
+      // this.context.fillStyle = "#9e9e9e"; //C
       this.context.lineWidth = 14;
       this.context.arc(
         this.centerX,
@@ -39,17 +39,25 @@ export default {
         false
       );
       this.context.stroke();
-      this.context.closePath();
-      this.context.restore();
+      // this.context.closePath();
+      // this.context.restore();
     },
     blueCircle: function(n) {
       this.clearCanvas();
-      this.whiteCircle();
-      this.context.save();
+      this.context.beginPath();
+      this.context.strokeStyle = "#9e9e9e";
+      this.context.lineWidth = 14;
+      this.context.arc(
+        this.centerX,
+        this.centerY,
+        this.canvas.width / 2 - 14,
+        0,
+        Math.PI * 2,
+        false
+      );
+      this.context.stroke();
       this.context.beginPath();
       this.context.strokeStyle = "#49f";
-      this.context.fillStyle = "#49f"; //C
-      this.context.lineWidth = 14;
       this.context.lineCap = "round";
       this.context.arc(
         this.centerX,
@@ -60,7 +68,6 @@ export default {
         false
       );
       this.context.stroke();
-      this.context.restore();
     },
     setCanvas: function() {
       var width = this.canvas.width,

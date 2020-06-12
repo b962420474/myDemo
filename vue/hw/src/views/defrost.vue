@@ -18,39 +18,57 @@
 import Back from "../components/Back.vue";
 export default {
   components: { Back },
+  inject:['getDatas'],
   data() {
     return {
       list: [
         {
           img_url: require("../assets/img/DSLayerButton0_BackgroundImage.png"),
           name: "meat",
-          img_url_down: require("../assets/img/DSLayerButton0_PressImage.png")
+          img_url_down: require("../assets/img/DSLayerButton0_PressImage.png"),
+          title:''
         },
         {
           img_url: require("../assets/img/DSLayerButton1_BackgroundImage.png"),
-          name: "birds",
-          img_url_down: require("../assets/img/DSLayerButton1_PressImage.png")
+          name: "bird",
+          img_url_down: require("../assets/img/DSLayerButton1_PressImage.png"),
+          title:''
         },
         {
           img_url: require("../assets/img/DSLayerButton2_BackgroundImage.png"),
           name: "fish",
-          img_url_down: require("../assets/img/DSLayerButton2_PressImage.png")
+          img_url_down: require("../assets/img/DSLayerButton2_PressImage.png"),
+          title:''
         },
         {
           img_url: require("../assets/img/DSLayerButton3_BackgroundImage.png"),
           name: "vegetables",
-          img_url_down: require("../assets/img/DSLayerButton3_PressImage.png")
+          img_url_down: require("../assets/img/DSLayerButton3_PressImage.png"),
+          title:''
         },
         {
           img_url: require("../assets/img/DSLayerButton4_BackgroundImage.png"),
           name: "manual",
-          img_url_down: require("../assets/img/DSLayerButton4_PressImage.png")
+          img_url_down: require("../assets/img/DSLayerButton4_PressImage.png"),
+          title:''
         }
-      ]
+      ],
+      plugin:null
     };
+  },
+   created:function(){
+    this.plugin=this.getDatas().plugin;
   },
   methods: {
     next: function(item) {
+      const path="defrost?"+item.name;
+        console.log(path);
+        try{
+          this.plugin.route(path);
+        }
+        catch(e){
+          console.log("this is no iBrowser");
+        }
       var message={
         "title":item.name,
         "imgurl":item.img_url,

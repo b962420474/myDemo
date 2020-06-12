@@ -2,7 +2,7 @@
   <div id="app">
     <router-view @Greyscreen="Greyscreen()"/>
     <Greyscreen ref="Greyscreen" :isshow="isshow"></Greyscreen>
-    <object ref="DemoPlugin" type="brown/DemoPlugin" style="visibility:hidden; width:0px; height:0px;"></object>
+    <object ref="DemoPlugin" type="brown/UartPlugin" style="visibility:hidden; width:0px; height:0px;"></object>
   </div>
 
 </template>
@@ -13,24 +13,36 @@ export default {
   components:{Greyscreen},
   data(){
     return {
-      isshow:false
+      isshow:false,
+      datas:{
+        plugin:this.$refs.DemoPlugin
+      }
     }
   },
   provide(){
     return {
-      getPlugin:this.getPlugin
+      getDatas:this.getDatas
     }
   },
   created:function(){
     var self=this;  
+  },
+  mounted:function(){
+    try{
+      this.$refs.DemoPlugin.uart_init();
+    }
+    catch(e){
+
+    }
+    
   },
   methods:{
     Greyscreen(){
       console.log("lock......");
       this.isshow=true;
     },
-    getPlugin:function(){
-      return this.$refs.DemoPlugin;
+    getDatas:function(){
+      return this.datas;
     }
   },
   name: "App"

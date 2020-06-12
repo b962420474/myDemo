@@ -43,15 +43,15 @@ export default {
           },
           next:"/defrostOption"
         },
-        {
-          img_url: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
-          name: "microwave",
-          urls: {
-            up: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
-            down: require("../assets/img/MMSLayerDefMicroButton_PressImage.png")
-          },
-          next:"/microwaveItem"
-        }
+        // {
+        //   img_url: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
+        //   name: "microwave",
+        //   urls: {
+        //     up: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
+        //     down: require("../assets/img/MMSLayerDefMicroButton_PressImage.png")
+        //   },
+        //   next:"/microwaveItem"
+        // }
       ],
       data:{
         backurl:"/presets",

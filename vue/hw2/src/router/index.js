@@ -50,19 +50,19 @@ export default new Router({
     }
     ,
     {
-      path: '/heating',
+      path: '/heating/:id',
       name: 'heating',
       component: heating
     }
     ,
     {
-      path: '/defrost',
+      path: '/defrost/:id',
       name: 'defrost',
       component: defrost
     }
     ,
     {
-      path: '/presets',
+      path: '/presets/:id',
       name: 'presets',
       component: presets
     }

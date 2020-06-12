@@ -6,21 +6,34 @@
       <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png">
     </div>
     <div class="timer">
-      <MyCircle
-        v-for="(item,index) in list"
-        :key="index"
-        :title="item.name"
-        :base="item.base"
-        :isshow="item.isshow"
-        :num="item.num"
-        :ref="item.name"
-        :start="item.start"
-        :unit="item.unit"
-        :wea_show="item.wea_show"
-        :my_type="item.type"
-        :current_wea="item.current_wea"
-        @click.native="pressKey(index)"
-      ></MyCircle>
+      <Ring
+        class="center"
+        :base="temperature.base"
+        :isshow="temperature.isshow"
+        :num="temperature.num"
+        ref="temperature"
+        :start="temperature.start"
+        @click.native="pressKey(temperature)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{temperature.name}}</div>
+          <div class="num">{{temperature.num}}<span style="font-size:10px;position: absolute;color:#ffffff6e;">{{temperature.unit}}</span></div>
+        </div>
+      </Ring>
+      <Ring
+        class="center"
+        :base="timer.base"
+        :isshow="timer.isshow"
+        :num="timer.num"
+        ref="timer"
+        :start="timer.start"
+        @click.native="pressKey(timer)"
+      >
+        <div class="ClassyCountdown-value">
+          <div>{{timer.name}}</div>
+          <div class="num">{{timer.num}}</div>
+        </div>
+      </Ring>
     </div>
     <div class="button">
       <img :src="button.img_url" @click="start()">
@@ -31,71 +44,117 @@
   </div>
 </template>
 <script>
-import MyCircle from "../components/MyCircle.vue";
+import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 import Pause from "../components/Pause.vue";
+import {start,init,pause} from "../util/time";
 export default {
-  components: { MyCircle, Tip, Timmer, Pause },
+  components: { Ring, Tip, Timmer, Pause },
   data() {
     return {
-      title:this.$i18n.t("timer_complete"),
-      list: [
-        {
-          name: "Temperature",
-          isshow: true,
-          base: 220,
-          num: 180,
-          start: 30,
-          unit: "℃",
-          wea_show: true,
-          current_wea: 30
-        },
-        {
-          name: "Timer",
-          isshow: false,
-          base: 60,
-          num: 1,
-          start: 1,
-          wea_show: false,
-          current_wea: 30,
-          type: "timmer"
-        }
-      ],
+      title: this.$i18n.t("timer_complete"),
+      temperature: {},
+      timer: {},
       button: {
         img_url: require("../assets/img/HPMLayerDefStartButton_BackgroundImage.png"),
         pause: require("../assets/img/MWMLayerStopButton_BackgroundImage.png"),
         start: require("../assets/img/HPMLayerDefStartButton_BackgroundImage.png"),
         type: "start"
       },
-      timer: false
+      plugin:null
     };
   },
-  inject:['reload'],
-  beforeMount: function() {},
-  mounted: function() {},
+  inject: ["reload",'getDatas'],
+  beforeMount: function() {
+    this.plugin=this.getDatas().plugin;
+    var type = this.$route.params.id;
+    switch(type){
+      case 'Standard':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Convection':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 100,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      break;
+      case 'ECO':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 150,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Fanned':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 120,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Grills':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 110,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Grill_Fans':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 105,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Double_grills':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 200,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Bottom':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 210,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Slow_cooks':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Preserve':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 70,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Warm_plate':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 30,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Dry':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 50,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+      case 'Pizzas':
+      this.temperature={name: "Temperature",isshow: true,base: 220,num: 40,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      break;
+    }
+    try{
+      this.plugin.setting("setheating",this.temperature.key,this.temperature.num);
+      }catch(e){}
+    init(this.timer.num,this.tip,this.update,540);
+  },
+  destroyed: function() {
+    pause();
+  },
   computed: {},
   methods: {
-     back: function() {
+    back: function() {
+      pause();
       if (this.button.type == "pause") {
         this.reload();
       } else {
       }
     },
-    pressKey: function(index) {
-      this.list.forEach((element, i) => {
-        if (i === index) {
-          element.isshow = true;
-        } else {
-          element.isshow = false;
-        }
-      });
+    pressKey: function(item) {
+     this.hideCircle();
+      item.isshow = true;
+      try{
+        this.plugin.setting("setheating",item.key,item.num);
+      }catch(e){}
+    },
+    updateNum:function(type,num){
+      this[type].num=num;
+      this.$refs[type].blueCircle(num);
     },
     tip: function() {
+      this.button.type = "start";
+      this.button.img_url = this.button.start;
       this.$refs.tip.show();
-    },
-    clearTime: function() {
-      clearInterval(this.timer);
     },
     start: function() {
       this.clearTime();
@@ -104,40 +163,26 @@ export default {
         console.log("start .......");
         this.button.type = "pause";
         this.button.img_url = this.button.pause;
-        this.startTime();
+        start()
       } else {
         console.log("pause .......");
         this.$refs.pause.show();
-        this.clearTime();
-      }
-    },
-    startTime: function() {
-      var self = this;
-      if (this.list[1].num > 0) {
-        this.timer = setInterval(function() {
-          self.list[1].num--;
-          console.log(self.list[1].num);
-          if (self.list[1].num == 0) {
-            self.tip();
-            self.clearTime();
-          }
-        }, 60000);
-      } else {
-        this.timer = setInterval(function() {
-          self.list[1].num++;
-          if (self.list[1].num == 540) {
-            self.tip();
-            self.clearTime();
-          }
-        }, 60000);
+        pause();
       }
     },
     next() {
-      this.startTime();
+      start()
+    },
+    update(num){
+      this.timer.num=num;
     },
     startlock() {
       this.$emit("lock");
-    }
+    },
+     hideCircle: function() {
+      this.timer.isshow = false;
+      this.temperature.isshow = false;
+    },
   }
 };
 </script>
@@ -154,32 +199,7 @@ export default {
   display: -webkit-flex;
   width: 100%;
 }
-.date {
-  position: relative;
-  -webkit-align-self: center;
-  width: 66%;
-}
-.item {
-  /* margin: 20px auto; */
-  display: -webkit-flex;
-  -webkit-justify-content: center;
-}
-.time {
-  font-size: 20px;
-  width: 340px;
-  text-align: center;
-  line-height: 54px;
-}
-.icon {
-  -webkit-align-self: center;
-}
-.icon div {
-  margin: 30px;
-}
-.week div {
-  margin: 0 4px;
-  font-size: 14px;
-}
+
 .button {
   /* margin-top: 10px; */
   display: -webkit-flex;

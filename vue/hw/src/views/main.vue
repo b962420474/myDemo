@@ -14,6 +14,7 @@
 </template>
 <script>
 export default {
+  inject:['getDatas'],
   data() {
     return {
       menuList: [
@@ -33,14 +34,14 @@ export default {
             down: require("../assets/img/MMSLayerDefDefrostSmallButton_PressImage.png")
           }
         },
-        {
-          img_url: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
-          name: "microwave",
-          urls: {
-            up: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
-            down: require("../assets/img/MMSLayerDefMicroButton_PressImage.png")
-          }
-        },
+        // {
+        //   img_url: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
+        //   name: "microwave",
+        //   urls: {
+        //     up: require("../assets/img/MMSLayerDefMicroButton_BackgroundImage.png"),
+        //     down: require("../assets/img/MMSLayerDefMicroButton_PressImage.png")
+        //   }
+        // },
         {
           img_url: require("../assets/img/MMSLayerDefPresetsSmallButton_BackgroundImage.png"),
           name: "presets",
@@ -57,8 +58,13 @@ export default {
             down: require("../assets/img/MMSLayerDefSettingsSmallButton_PressImage.png")
           }
         }
-      ]
+      ],
+      plugin:null
     };
+  },
+   created:function(){
+    this.plugin=this.getDatas().plugin;
+    this.plugin.route("main?main");
   },
   methods: {
     next: function(e) {
@@ -81,7 +87,7 @@ export default {
   /* -webkit-justify-content: center; */
 }
 .item {
-  margin: 20px 56px;
+  margin: 20px 36px;
   display: inline-block;
 }
 </style>

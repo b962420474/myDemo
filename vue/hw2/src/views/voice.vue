@@ -27,31 +27,64 @@ import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 export default {
   components: { Ring, Tip },
+  inject:['getDatas'],
   data() {
     return {
       item: { name: "Brightness", isshow: false, base: 9, num: 1, start: 0 },
-      tipTitle: "Brightness Set"
+      tipTitle: "Brightness Set",
+      plugin:null
     };
   },
   beforeMount: function() {
-     var type=this.$route.params.id;
-     if(type==="volume"){
-       this.item={ name: this.$i18n.t('volume'), isshow: true, base: 9, num: 1, start: 0 };
-       this.tipTitle= this.$i18n.t('volume_set')
-     }
-     else{
-       this.item={ name: this.$i18n.t('brightness'), isshow: false, base: 9, num: 1, start: 0 };
-       this.tipTitle= this.$i18n.t('brightness_set')
-     }
+    var type = this.$route.params.id;
+    this.plugin=this.getDatas().plugin;
+    if (type === "volume") {
+      this.item = {
+        name: this.$i18n.t("volume"),
+        isshow: true,
+        base: 3,
+        num: 1,
+        start: 0,
+        key: "volume"
+      };
+      this.tipTitle = this.$i18n.t("volume_set");
+      try {
+        this.plugin.setting("setVolume", this.item.key, this.item.num);
+      } catch (e) {}
+    } else {
+      this.item = {
+        name: this.$i18n.t("brightness"),
+        isshow: false,
+        base: 9,
+        num: 1,
+        start: 0,
+        key: "brightness"
+      };
+      this.tipTitle = this.$i18n.t("brightness_set");
+      try {
+        this.plugin.setting("setBrightness", this.item.key, this.item.num);
+      } catch (e) {}
+    }
   },
   computed: {},
   methods: {
     pressKey: function() {
       this.item.isshow = true;
-      this.$refs.ring.blueCircle(++this.item.num);
+      var type = this.$route.params.id;
+      var name="setVolume";
+      if (type != "volume"){
+        name='setBrightness';
+      }
+      try {
+        this.plugin.setting(name, this.item.key, this.item.num);
+      } catch (e) {}
     },
     tip: function() {
       this.$refs.tip.show();
+    },
+    updateNum:function(type,num){
+      this.item.num=num;
+      this.$refs.ring.blueCircle(num);
     }
   }
 };
@@ -66,26 +99,6 @@ export default {
   display: -webkit-flex;
   width: 100%;
   margin-top: 50px;
-}
-.center {
-  margin: auto;
-}
-.ClassyCountdown-value {
-  width: 100%;
-  line-height: 1em;
-  position: absolute;
-  top: 50%;
-  text-align: center;
-  left: 0;
-  display: block;
-  font-family: "Open Sans";
-  font-weight: 300;
-  margin-top: -34px;
-  font-size: 18px;
-}
-.num {
-  font-size: 30px;
-  margin-top: 10px;
 }
 .button {
   margin-top: 10px;
