@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Back path="/" postTitle="Presets"></Back>
+    <Back path="/" :postTitle="title"></Back>
     <div class="add" @click="add()">
       <img :src="upload.img_url">
-      <div>Save a preset</div>
+      <div>{{$t('save_a_preset')}}</div>
     </div>
     <div class="menu" :style="{width:mywidth+'px'}">
       <div v-for="(item,index) in getItems" :key="index" class="menu_item" @mousedown="mousedown($event)">
@@ -14,8 +14,8 @@
             </div>
             <div class="item wea">{{data.wea}}</div>
             <div class="item time">
-              <div>{{data.time.hour}}hr</div>
-              <div>{{data.time.min}}min</div>
+              <div>{{data.time.hour+$t('hr')}}</div>
+              <div>{{data.time.min+$t('min')}}</div>
             </div>
             <div class="item" @click="handelDel(i)">
               <img src="../assets/img/HWMLayerRsmCancelButton_BackgroundImage.png">
@@ -38,6 +38,7 @@ export default {
   components: { Back,Delete,Lines},
   data() {
     return {
+      title:this.$i18n.t("presets"),
       list: [
           {
             img_url: require("../assets/img/DSLayerButton0_BackgroundImage.png"),

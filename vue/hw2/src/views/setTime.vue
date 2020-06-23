@@ -11,7 +11,7 @@
         @click.native="pressKey(hour)"
       >
         <div class="ClassyCountdown-value">
-          <div>{{hour.name}}</div>
+          <div>{{$t(hour.name)}}</div>
           <div class="num">{{hour.num}}</div>
         </div>
       </Ring>
@@ -25,13 +25,13 @@
         @click.native="pressKey(minute)"
       >
         <div class="ClassyCountdown-value">
-          <div>{{minute.name}}</div>
+          <div>{{$t(minute.name)}}</div>
           <div class="num">{{minute.num}}</div>
         </div>
       </Ring>
    </div>
     <div class="button" @click="tip()"> <img src="../assets/img/HWMLayerCmpltngConfirmButton_BackgroundImage.png"></div>
-    <Tip :title="title" ref="tip"></Tip>
+    <Tip :title="$t(title)" ref="tip"></Tip>
   </div>
 </template>
 <script>
@@ -42,9 +42,9 @@ export default {
   inject:['getDatas'],
   data() {
     return {
-      title:this.$i18n.t('time_set'),
-      hour:{ name: this.$i18n.t('hour'), isshow: true, base: 23 ,num:5,start:0,key:"hour"},
-      minute: { name: this.$i18n.t('minute'), isshow: false, base: 59 ,num:5,start:0,key:"minute"},
+      title:'time_set',
+      hour:{ name: 'hour', isshow: true, base: 23 ,num:5,start:0,key:"hour"},
+      minute: { name: 'minute', isshow: false, base: 59 ,num:5,start:0,key:"minute"},
       plugin:null
     };
   },
@@ -71,6 +71,10 @@ export default {
     },
     tip:function(){
       this.$refs.tip.show();
+      try{
+        console.log("settime "+this.hour.num+":"+this.minute.num);
+        this.plugin.setTime(this.hour.num,this.minute.num);
+      }catch(e){}
     },
     updateNum:function(type,num){
       this[type].num=num;

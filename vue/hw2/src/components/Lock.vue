@@ -1,6 +1,7 @@
 <template>
   <div class="shade" id="lock">
     <div class="lock">
+      <div v-show="on" class='ts'>{{num}}</div>
       <img :src="lock.img_url" @mousedown="mousedown()" @mouseup="mouseup()">
     </div>
   </div>
@@ -17,7 +18,9 @@ export default {
         }
       },
       t1: 0,
-      timer: null
+      timer: null,
+      on:false,
+      num:3
     };
   },
   methods: {
@@ -25,18 +28,29 @@ export default {
       document.getElementById("lock").style.display = "none";
     },
     show: function() {
+      this.on=false;
       document.getElementById("lock").style.display = "block";
     },
     mousedown: function() {
       this.t1 = new Date().getTime();
       this.lock.img_url = this.lock.urls.down;
+      this.on=false;
     },
     mouseup: function() {
       this.lock.img_url = this.lock.urls.up;
-      clearTimeout(this.timer);
+      clearInterval(this.timer);
       let t2 = new Date().getTime();
       if (t2 - this.t1 > 3000) {
-        this.timer = setTimeout(this.close, 3000);
+        this.num=3;
+        this.on=true;
+        this.timer = setInterval(()=>{
+          this.num--;
+          console.log('倒计时：'+this.num);
+          if(this.num===0){
+            clearInterval(this.timer);
+            this.close();
+          }
+        }, 1000);
       }
     }
   }
@@ -54,12 +68,17 @@ export default {
   display: none;
 }
 .lock {
-  display: -webkit-flex;
-  -webkit-justify-content: center;
-  height: 100%;
+    -webkit-transform: translateY(-50%);
+    top: 50%;
+    position: relative;
+    width: 150px;
+    margin: auto;
 }
 .lock img {
   -webkit-align-self: center;
+}
+.ts{
+  font-size: 50px;
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="backs">
-    <router-link :to="path">
+    <router-link :to="path" @click.native="sendRora()">
       <div class="back iconfont">&#xe655;</div>
     </router-link>
     <div class="title">{{postTitle}}</div>
@@ -9,8 +9,19 @@
 <script>
 export default {
   props: ["postTitle", "path"],
+  inject:['getDatas'],
   data() {
-    return {};
+    return {
+      plugin:null
+    };
+  }
+  ,created:function(){
+    this.plugin=this.getDatas().plugin;
+  },
+  methods: {
+    sendRora:function(){
+      this.fns.roar(this.plugin);
+    }
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Back path="/" postTitle="Settings"></Back>
+    <Back path="/" :postTitle="$t('settings')"></Back>
     <div class="menu_item">
       <li
         v-for="data in list"
@@ -24,32 +24,38 @@ export default {
         {
           img_url: require("../assets/img/SSLayerDefTimeSmallRadioBox_BackgroundImage.png"),
           name: "setTime",
-          img_url_down: require("../assets/img/SSLayerDefTimeSmallRadioBox_CheckedImage.png")
+          img_url_down: require("../assets/img/SSLayerDefTimeSmallRadioBox_CheckedImage.png"),
+          img_url_up: require("../assets/img/SSLayerDefTimeSmallRadioBox_BackgroundImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefDateSmallRadioBox_BackgroundImage.png"),
           name: "date",
-          img_url_down: require("../assets/img/SSLayerDefDateSmallRadioBox_CheckedImage.png")
+          img_url_down: require("../assets/img/SSLayerDefDateSmallRadioBox_CheckedImage.png"),
+          img_url_up: require("../assets/img/SSLayerDefDateSmallRadioBox_BackgroundImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefLanguageSmallRadioBox_BackgroundImage.png"),
           name: "language",
-          img_url_down: require("../assets/img/SSLayerDefLanguageSmallRadioBox_CheckedImage.png")
+          img_url_down: require("../assets/img/SSLayerDefLanguageSmallRadioBox_CheckedImage.png"),
+          img_url_up: require("../assets/img/SSLayerDefLanguageSmallRadioBox_BackgroundImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefBrightnessSmallRadioBox_BackgroundImage.png"),
           name: "voice/brightness",
-          img_url_down: require("../assets/img/SSLayerDefBrightnessSmallRadioBox_CheckedImage.png")
+          img_url_down: require("../assets/img/SSLayerDefBrightnessSmallRadioBox_CheckedImage.png"),
+          img_url_up: require("../assets/img/SSLayerDefBrightnessSmallRadioBox_BackgroundImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefVolumeSmallRadioBox_BackgroundImage.png"),
           name: "voice/volume",
-          img_url_down: require("../assets/img/SSLayerDefVolumeSmallRadioBox_CheckedImage.png")
+          img_url_down: require("../assets/img/SSLayerDefVolumeSmallRadioBox_CheckedImage.png"),
+          img_url_up: require("../assets/img/SSLayerDefVolumeSmallRadioBox_BackgroundImage.png")
         },
         {
           img_url: require("../assets/img/SSLayerDefResetSmallRadioBox_BackgroundImage.png"),
           name: "setting",
-          img_url_down: require("../assets/img/SSLayerDefResetSmallRadioBox_CheckedImage.png")
+          img_url_down: require("../assets/img/SSLayerDefResetSmallRadioBox_CheckedImage.png"),
+          img_url_up: require("../assets/img/SSLayerDefResetSmallRadioBox_BackgroundImage.png")
         }
       ],
       plugin:null
@@ -64,6 +70,9 @@ export default {
       this.plugin.route("setting?"+name);
     },
     changeImage(item) {
+      this.list.forEach(element => {
+        element.img_url = element.img_url_up;
+      });
       item.img_url = item.img_url_down;
     }
   }

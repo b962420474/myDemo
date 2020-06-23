@@ -5,8 +5,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import "./assets/checkboxes.min.css"
+import {fns} from '@/util/plugin'
 Vue.config.productionTip = false
-
+Vue.prototype.fns= fns
 /* eslint-disable no-new */
 var vue=new Vue({
   el: '#app',

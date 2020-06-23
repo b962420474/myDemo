@@ -147,7 +147,36 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/charts',
+    component: Layout,
+    redirect: '/charts/line',
+    name: 'charts',
+    meta: {
+      title: 'Charts',
+      icon: 'charts'
+    },
+    children: [
+      {
+        path: 'line',
+        component: () => import('@/views/charts/line'), // Parent router-view
+        name: 'LineChart',
+        meta: { title: 'LineChart' },
+      },
+      {
+        path: 'pie',
+        component: () => import('@/views/charts/pie'), // Parent router-view
+        name: 'PieChart',
+        meta: { title: 'PieChart' },
+      },
+      {
+        path: 'dataset',
+        component: () => import('@/views/charts/dataset'), // Parent router-view
+        name: 'DatasetChart',
+        meta: { title: 'DatasetChart' },
+      },
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,

@@ -4,16 +4,16 @@
       <div slot="header" class="clearfix">
         <el-form
           autocomplete="on"
-          :model="ruleForm2"
+          :model="loginForm"
           status-icon
           :rules="rules2"
-          ref="ruleForm2"
+          ref="loginForm"
           class="demo-ruleForm"
         >
           <el-form-item prop="userName">
             <el-input
               type="text"
-              v-model="ruleForm2.userName"
+              v-model="loginForm.userName"
               auto-complete="on"
               placeholder="请输入用户名"
             >
@@ -25,7 +25,7 @@
           <el-form-item prop="password">
             <el-input
               :type="pwdType"
-              v-model="ruleForm2.password"
+              v-model="loginForm.password"
               auto-complete="on"
               placeholder="请输入密码"
             >
@@ -38,8 +38,8 @@
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm2')">登陆</el-button>
-            <el-button @click="resetForm('ruleForm2')">注册</el-button>
+            <el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
+            <el-button @click="resetForm('loginForm')">注册</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -48,6 +48,7 @@
 </template>
 <script>
 import { isvalidUsername } from "@/util/validate";
+import { setCookie ,getCookie} from "@/util/cookie";
 export default {
   data() {
     var validateUserName = (rule, value, callback) => {
@@ -65,7 +66,7 @@ export default {
       }
     };
     return {
-      ruleForm2: {
+      loginForm: {
         userName: "",
         password: ""
       },
@@ -78,11 +79,21 @@ export default {
       pwdType: "password"
     };
   },
+  created:function(){
+    this.loginForm.userName=getCookie("username");
+    this.loginForm.password=getCookie("password");
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          this.$store.dispatch('Login',this.loginForm).then(()=>{
+            setCookie("username",this.loginForm.userName,15);
+            setCookie("password",this.loginForm.password,15);
+            this.$router.push({path:'/'});
+          }).catch((error)=>{
+            console.log("zhanghaomima cuowu ");
+          });
         } else {
           console.log("参数不合法!!");
           return false;

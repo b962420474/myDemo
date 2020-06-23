@@ -48,6 +48,6 @@ export function pause() {
     clear();
 }
 
-function clear() {
+export function clear() {
     clearInterval(timmer.timer);
 }

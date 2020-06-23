@@ -1,6 +1,6 @@
 <template>
   <div class="list" @mousedown="mousedown($event)" @mouseup="mouseup($event)">
-    <ul :style="{'-webkit-transform':'translateY('+getStyle()+')'}">
+    <ul :style="{'-webkit-transform':'translateY('+getStyle()+')'}" ref="ul">
       <li v-for="(item ,index) in list" :key="index" :class="{active:item.isactive}">{{item.name}}</li>
     </ul>
   </div>
@@ -97,8 +97,6 @@ export default {
       var oldindex = getIndex($active);
       var newIndex = Math.round((-length + 2 * offset) / offset);
       if (newIndex != oldindex) {
-        // this.list[oldindex].isactive=false;
-        // this.list[newIndex].isactive=true;
         $active.classList.remove("active");
         ul.querySelectorAll("li")[newIndex].classList.add("active");
       }
@@ -122,7 +120,15 @@ export default {
       var ul = target.querySelector("ul");
       var $active = ul.querySelector(".active");
       var oldindex = getIndex($active);
+      ul.style["-webkit-transform"] = "translateY(" + (40*(2-oldindex)) + "px)";
+      ul.style["transition"] = "all 0.2s";
       this.$emit("selectHandle",oldindex);
+    },
+    init(index){
+      const ul=this.$refs.ul;
+      ul.style["-webkit-transform"] = "translateY(" + (40*(2-index)) + "px)";
+      ul.querySelector(".active").classList.remove("active");
+      ul.querySelectorAll("li")[index].classList.add("active");
     }
   }
 };
@@ -143,11 +149,13 @@ export default {
   line-height: 30px;
   font-size: 20px;
   /* padding: 5px; */
-  color: dimgrey;
+  opacity: 0.4;
 }
 .list .active {
-  -webkit-transform: scale(1.5);
+  -webkit-transform: scale(1.2,1);
+  font-size: 25px;
   color: white;
+  opacity:1;
 }
 * {
   list-style: none;

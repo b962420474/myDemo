@@ -75,24 +75,24 @@ export default {
     var type = this.$route.params.id;
     switch(type){
       case 'meat':
-      this.weight={name: "Weight",isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"weight"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"weight"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'bird':
-      this.weight={name: "Weight",isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"weight"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"weight"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 10,start: 0,key:"timer"};
       break;
       case 'fish':
-      this.weight={name: "Weight",isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"weight"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"weight"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'vegetables':
-      this.weight={name: "Weight",isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"weight"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"weight"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'manual':
-      this.weight={name: "Timer",isshow: true,base: 220,num: 110,start: 30,key:"timer"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 110,start: 0,key:"timer"};
+      this.weight={name: this.$i18n.t('timer'),isshow: true,base: 220,num: 110,start: 30,key:"timer"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 110,start: 0,key:"timer"};
       break;
     }
     try{

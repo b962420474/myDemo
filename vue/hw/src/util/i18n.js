@@ -14,9 +14,9 @@ const messages = {
   'spa': require('../static/i18n/spa.js'),
   'tur': require('../static/i18n/tur.js'),
 }
- 
+var language=localStorage.language?localStorage.language:'eng'; 
 // 最后 export default，这一步肯定要写的。
 export default new VueI18n({
-  locale : 'rus', // set locale 默认显示英文
+  locale : language, // set locale 默认显示英文
   messages : messages // set locale messages
 })

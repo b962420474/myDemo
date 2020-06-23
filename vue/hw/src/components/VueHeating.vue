@@ -12,7 +12,7 @@
           v-for="(data,i) in item"
           :key="i"
           @mouseup="next(i,$event)"
-          @mousedown="changeImage(i,$event)"
+          @mousedown="changeImage(data,i,$event)"
         >
           <img :src="data.img_url">
         </li>
@@ -39,9 +39,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstStandardSmallButton_BackgroundImage.png"),
             name: "Standard",
             img_url_down: require("../assets/img/HSLayerDMFrstStandardSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstStandardSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Standard",
+                title: this.$i18n.t("Standard"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -51,9 +52,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstConvectionSmallButton_BackgroundImage.png"),
             name: "Convection",
             img_url_down: require("../assets/img/HSLayerDMFrstConvectionSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstConvectionSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Convection",
+                title: this.$i18n.t("convection"),
                 backurl: "/healthy"
               },
               mwo: true
@@ -63,9 +65,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstEcoSmallButton_BackgroundImage.png"),
             name: "ECO",
             img_url_down: require("../assets/img/HSLayerDMFrstEcoSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstEcoSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "ECO",
+                title: this.$i18n.t("ECO"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -75,9 +78,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstFannedSmallButton_BackgroundImage.png"),
             name: "Fanned",
             img_url_down: require("../assets/img/HSLayerDMFrstFannedSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstFannedSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Fanned",
+                title: this.$i18n.t("fanned"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -87,9 +91,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstGrillSmallButton_BackgroundImage.png"),
             name: "Grills",
             img_url_down: require("../assets/img/HSLayerDMFrstGrillSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstGrillSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Grill",
+                title: this.$i18n.t("grill"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -99,9 +104,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstGrillFanSmallButton_BackgroundImage.png"),
             name: "Grill_Fans",
             img_url_down: require("../assets/img/HSLayerDMFrstGrillFanSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstGrillFanSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Grill&Fan",
+                title: this.$i18n.t("grill_Fan"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -111,9 +117,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstDoubleGrillSmallButton_BackgroundImage.png"),
             name: "Double_grills",
             img_url_down: require("../assets/img/HSLayerDMFrstDoubleGrillSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstDoubleGrillSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Double grill",
+                title: this.$i18n.t("double_grill"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -123,9 +130,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMFrstBottomSmallButton_BackgroundImage.png"),
             name: "Bottom",
             img_url_down: require("../assets/img/HSLayerDMFrstBottomSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMFrstBottomSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Bottom",
+                title: this.$i18n.t("bottom"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -137,9 +145,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMScndSlowCookSmallButton_BackgroundImage.png"),
             name: "Slow_cooks",
             img_url_down: require("../assets/img/HSLayerDMScndSlowCookSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMScndSlowCookSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Slow cook",
+                title: this.$i18n.t("slow_cook"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -149,9 +158,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMScndPreserveSmallButton_BackgroundImage.png"),
             name: "Preserve",
             img_url_down: require("../assets/img/HSLayerDMScndPreserveSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMScndPreserveSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Preserve",
+                title: this.$i18n.t("preserve"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -161,9 +171,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMScndWarmPlateSmallButton_BackgroundImage.png"),
             name: "Warm_plate",
             img_url_down: require("../assets/img/HSLayerDMScndWarmPlateSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMScndWarmPlateSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Warm plate",
+                title: this.$i18n.t("warm_plate"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -173,9 +184,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMScndDrySmallButton_BackgroundImage.png"),
             name: "Dry",
             img_url_down: require("../assets/img/HSLayerDMScndDrySmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMScndDrySmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Dry",
+                title: this.$i18n.t("dry"),
                 backurl: "/healthy"
               },
               mwo: false
@@ -185,9 +197,10 @@ export default {
             img_url: require("../assets/img/HSLayerDMScndPizzaSmallButton_BackgroundImage.png"),
             name: "Pizzas",
             img_url_down: require("../assets/img/HSLayerDMScndPizzaSmallButton_PressImage.png"),
+            img_url_up: require("../assets/img/HSLayerDMScndPizzaSmallButton_BackgroundImage.png"),
             datas: {
               head: {
-                title: "Pizza",
+                title: this.$i18n.t("Pizza"),
                 backurl: "/healthy"
               },
               mwo: true
@@ -218,11 +231,12 @@ export default {
       length += X;
       target.style["-webkit-transform"] = "translateX(" + length + "px)";
       target.style["transition"] = "all 0s";
+      //this.list[this.activeIndex][this.itemIndex].img_url=this.list[this.activeIndex][this.itemIndex].img_url_up;
     },
     next: function(i, e) {
       console.log("next");
     },
-    changeImage(i, e) {
+    changeImage(item,i, e) {
       console.log("changeImage");
       this.isItem = true;
       this.itemIndex=i;

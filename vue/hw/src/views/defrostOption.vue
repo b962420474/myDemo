@@ -50,7 +50,7 @@ export default {
           img_url_down: require("../assets/img/DSLayerButton4_PressImage.png")
         }
       ],
-       title: "Presets",
+       title:this.$i18n.t("presets"),
        plugin:null
     };
   },

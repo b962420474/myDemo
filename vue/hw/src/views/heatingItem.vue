@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Back path="/healthyOption" postTitle="Presets"></Back>
+    <Back path="/healthyOption" :postTitle="title"></Back>
     <router-link to="/" class="home">
       <img src="../assets/img/HPSLayerDefHomepageButton_BackgroundImage.png">
     </router-link>
@@ -19,6 +19,7 @@ export default {
     return {
       data: {},
       isshow:true,
+      title:this.$i18n.t("presets")
     };
   },
   created:function(){

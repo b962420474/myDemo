@@ -1,104 +1,44 @@
-<!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>CSS画矩形、圆、半圆、弧形、半圆、小三角、疑问框</title>
-        <style type="text/css">
-            div {
-                width: 200px;
-                height: 200px;
-                line-height: 200px;
-                text-align: center;
-                margin: 200px auto;
-                background-color: red;
-            }
-            /*圆形 
-            原理：四个角都是圆角：四个角的取值为50%或为宽和高一样的值（此处即100px） */
-            
-            .circle {
-                border-radius: 50%;
-                /*border-radius圆角的四个值按顺序取值分别为：左上、右上、右下、左下。*/
-            }
-            /*半圆
-            原理：左上、右上角是圆角，右下、左下角是直角： 左上角、右上角的值为宽和高一样的值。右下角、左下角的值不变（等于0）。另外。由于还要设置高度值为原来高度的一半才是标准的半圆。*/
-            
-            .semi-circle {
-                border-radius: 200px 200px 0 0;
-                height: 100px;
-            }
-            /*扇形
-            原理：左上角是圆角。其余三个角都是直角：左上角的值为宽和高一样的值，其它三个角的值不变（等于0）。*/
-            
-            .sector {
-                border-radius: 200px 0 0;
-            }
-            /*弧形
-            原理：两个对角变，另外两个对角不变：比方，左上角、右下角取值为宽和高一样的值。右上角、左下角的值不变（等于0） .加入transform属性可旋转成平躺的弧形，类似人的嘴巴形状，(*^__^*) 嘻嘻……*/
-            
-            .arc {
-                border-radius: 200px 0;
-                -webkit-transform: rotate(45deg);
-                -ms-transform: rotate(45deg);
-                -o-transform: rotate(45deg);
-                transform: rotate(45deg);
-            }
-            /*三角形
-            原理：设置边框，并把原来div的宽和高的值设置为0，即把原来的矩形压缩成仅仅有边框，但由于设置的边框值比較大（为了保证三角形看起来不会太小或者太细），然后设置每个边框的颜色不同。就能够看出三角形事实上就能够是由边框变换而来的。若仅仅想显示某一块三角形，能够把其它的边框颜色设置为透明，即transparent。*/
-            
-            .triangle {
-                border: 100px solid green;
-                width: 0;
-                height: 0;
-                border-top-color: yellow;
-                border-right-color: blue;
-                border-bottom-color: pink;
-                border-left-color: orange;
-            }
-            
-            .arrow {
-                background: none;
-                /*为了清除前面div设置的背景颜色*/
-                border: 100px solid red;
-                width: 0;
-                height: 0;
-                border-color: red transparent transparent transparent;
-            }
-            /*疑问框
-            原理：由圆角矩形和一个小三角组成：可结合伪元素、定位实现。*/
-            /*圆角矩形*/
-            
-            .rectangle {
-                width: 200px;
-                height: 100px;
-                line-height: 100px;
-                border-radius: 15px;
-                position: relative;
-            }
-            /*小三角*/
-            
-            .rectangle::before {
-                content: "";
-                width: 0;
-                height: 0;
-                border: 15px solid red;
-                border-color: red transparent transparent transparent;
-                position: absolute;
-                bottom: -30px;
-                left: 40px;
-            }
-        </style>
-    </head>
+<head>
+    <meta charset="utf-8">
+</head>
 
-    <body>
-        <div>矩形</div>
-        <div class="circle">圆形</div>
-        <div class="semi-circle">半圆</div>
-        <div class="sector">扇形</div>
-        <div class="arc">弧形</div>
-        <div class="triangle"></div>
-        <div class="arrow"></div>
-        <div class="rectangle">疑问框</div>
-    </body>
+<body>
+    <button onclick="check()" style="width:100px;margin:auto">检查网络</button>
+    <button onclick="StartMonitor()" style="width:100px;margin:auto">StartMonitor</button>
+    <button onclick="StopMonitor()" style="width:100px;margin:auto">StopMonitor</button>
+    <div id="result" style="width:800px;height:400px;margin:auto"></div>
+    <object id="obj" type="brown/home" style="visibility:hidden; width:0px; height:0px;"></object>
+</body>
+<script>
+
+    var obj = document.getElementById("obj");
+    obj.addEventListener('onCheckNetwork', onCheckNetwork );
+    obj.addEventListener('onCheckThreeTimes', StopMonitor );
+    function onCheckNetwork(msg) {
+        console.log(msg);
+        var li=document.createElement('li');
+        li.innerHTML=msg;
+        document.getElementById('result').appendChild(li);
+    }
+    function check() {
+        document.getElementById('result').style.display='block';
+        document.getElementById('result').innerHTML = "";
+        for(var i=0;i<3;i++){
+            obj.CheckNetConnect();
+        }
+    }
+    function StartMonitor() {
+        document.getElementById('result').innerHTML = "";
+        console.log("1111");
+        obj.StopCheckNetWork();
+        obj.StartCheckNetWork();
+    }
+    function StopMonitor() {
+        obj.StopCheckNetWork();
+    }
+
+</script>
 
 </html>

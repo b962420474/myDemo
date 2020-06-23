@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Back path="/presetsItem" postTitle="Presets"></Back>
+    <Back path="/presetsItem" :postTitle="title"></Back>
      <router-link to="/" class="home">
       <img src="../assets/img/HPSLayerDefHomepageButton_BackgroundImage.png">
     </router-link>
@@ -14,6 +14,7 @@ export default {
   components: { Back, VueHeating },
   data() {
     return {
+      title:this.$i18n.t("presets")
     };
   },
   mounted: function() {

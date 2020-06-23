@@ -55,7 +55,7 @@ export default {
       ],
       data:{
         backurl:"/presets",
-        title:"Presets"
+        title:this.$i18n.t("presets")
       }
     };
   },

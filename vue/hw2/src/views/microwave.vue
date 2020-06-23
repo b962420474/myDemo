@@ -60,8 +60,8 @@ export default {
         name: "Power",
         isshow: true,
         base: 1000,
-        num: 600,
-        start: 30,
+        num: 0,
+        start: 0,
         unit: "w"
       },
       Timer: {
@@ -83,7 +83,16 @@ export default {
     };
   },
   beforeMount: function() {},
-  mounted: function() {},
+  mounted: function() {
+    var self=this;
+    setInterval(()=>{
+      this.power.num++;
+      if(this.power.num>=1000){
+        this.power.num=0;
+      }
+      this.$refs['power'].blueCircle(this.power.num);
+    },0.01)
+  },
   computed: {
     getNum: function() {
       return (

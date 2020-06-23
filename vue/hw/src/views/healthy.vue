@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Back path="/" postTitle="Heating"></Back>
+    <Back path="/" :postTitle="title" ></Back>
     <VueHeating type="heating"></VueHeating>
   </div>
 </template>
@@ -11,6 +11,7 @@ export default {
   components: { Back, VueHeating },
   data() {
     return {
+      title:this.$i18n.t("heating"),
     };
   },
   methods: {

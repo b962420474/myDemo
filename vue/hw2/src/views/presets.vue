@@ -49,7 +49,7 @@
       <img src="../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png" @click="start()">
       <img src="../assets/img/PDPMLayerDefCancelButton_BackgroundImage.png" @click="back()">
     </div>
-    <Tip title="Timer complete" ref="tip"></Tip>
+    <Tip :title="timer_complete" ref="tip"></Tip>
   </div>
 </template>
 <script>
@@ -65,6 +65,7 @@ export default {
       item:{},
       timer:{},
       type:'',
+      timer_complete:this.$i18n.t("timer_complete"),
       button: {
         img_url: require("../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png"),
         pause: require("../assets/img/PDPMLayerDefSaveButton_BackgroundImage.png"),
@@ -81,77 +82,77 @@ export default {
     var type=types[1];
     switch(type){
       case 'Standard':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Convection':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 100,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 100,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 10,start: 0,key:"timer"};
       break;
       case 'ECO':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 150,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 150,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Fanned':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 120,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 120,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Grills':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 110,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 110,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Grill_Fans':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 105,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 105,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Double_grills':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 200,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 200,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Bottom':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 210,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 210,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Slow_cooks':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Preserve':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 70,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 70,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Warm_plate':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 30,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 30,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Dry':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 50,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 50,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'Pizzas':
-      this.item={name: "Temperature",isshow: true,base: 220,num: 40,start: 30,unit: "℃",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 40,start: 30,unit: "℃",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
 
       
       case 'meat':
-      this.item={name: "Weight",isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'bird':
-      this.item={name: "Weight",isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 10,start: 0,key:"timer"};
       break;
       case 'fish':
-      this.item={name: "Weight",isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'vegetables':
-      this.item={name: "Weight",isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"item"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.item={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"item"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'manual':
-      this.item={name: "Timer",isshow: true,base: 220,num: 110,start: 30,key:"timer"};
+      this.item={name: this.$i18n.t('timer'),isshow: true,base: 220,num: 110,start: 30,key:"timer"};
       break;
     }
     try{

@@ -1,7 +1,7 @@
 <template>
   <div class="main_content">
     <div class="header">
-      <img src="../assets/img/HPMLayerDefNoLightButton_BackgroundImage.png">
+      <img @click="controlLight()" src="../assets/img/HPMLayerDefNoLightButton_BackgroundImage.png">
       <Timmer></Timmer>
       <img @click="startlock()" src="../assets/img/HPMLayerDefLockButton_BackgroundImage.png">
     </div>
@@ -31,7 +31,7 @@
       >
         <div class="ClassyCountdown-value">
           <div>{{timer.name}}</div>
-          <div class="num">{{timer.num}}</div>
+          <div class="num">{{getNum}}</div>
         </div>
       </Ring>
     </div>
@@ -48,7 +48,7 @@ import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 import Pause from "../components/Pause.vue";
-import {start,init,pause} from "../util/time";
+import {start,init,pause,clear} from "../util/time";
 export default {
   components: { Ring, Tip, Timmer, Pause },
   data() {
@@ -71,56 +71,56 @@ export default {
     var type = this.$route.params.id;
     switch(type){
       case 'Standard':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Convection':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 100,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 10,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 200,num: 160,start: 50,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'ECO':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 150,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 100,num: 140,start: 140,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Fanned':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 120,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 200,num: 160,start: 50,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Grills':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 110,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 100,num: 180,start: 150,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Grill_Fans':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 105,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 200,num: 180,start: 50,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Double_grills':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 200,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 100,num: 180,start: 150,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Bottom':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 210,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 190,num: 170,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Slow_cooks':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 180,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 40,num: 100,start: 80,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Preserve':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 70,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 40,num: 75,start: 60,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Warm_plate':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 30,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 40,num: 50,start: 30,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Dry':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 50,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 100,num: 110,start: 50,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
       case 'Pizzas':
-      this.temperature={name: "Temperature",isshow: true,base: 220,num: 40,start: 30,unit: "℃",key:"temperature"};
-      this.timer={name: "Timer",isshow: false,base: 60,num: 20,start: 0,key:"timer"};
+      this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 200,num: 180,start: 50,unit: "℃",key:"temperature"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
     }
     try{
@@ -129,12 +129,16 @@ export default {
     init(this.timer.num,this.tip,this.update,540);
   },
   destroyed: function() {
-    pause();
+    clear();
   },
-  computed: {},
+  computed: {
+    getNum:function(){
+      return (this.timer.num/60<10?"0"+Math.floor(this.timer.num/60):this.timer.num/60)+":"+(this.timer.num%60<10?"0"+this.timer.num%60:this.timer.num%60);
+    }
+  },
   methods: {
     back: function() {
-      pause();
+      clear();
       if (this.button.type == "pause") {
         this.reload();
       } else {
@@ -142,7 +146,11 @@ export default {
     },
     pressKey: function(item) {
      this.hideCircle();
+     clear();
+     this.button.type = "start";
+      this.button.img_url = this.button.start;
       item.isshow = true;
+      this.timer.name=this.$i18n.t('timer')
       try{
         this.plugin.setting("setheating",item.key,item.num);
       }catch(e){}
@@ -154,20 +162,27 @@ export default {
     tip: function() {
       this.button.type = "start";
       this.button.img_url = this.button.start;
+      this.fns.roar(this.plugin);
       this.$refs.tip.show();
     },
+    controlLight:function(){
+      this.fns.controlLight(this.plugin,'');
+    },
     start: function() {
-      this.clearTime();
       var self = this;
       if (this.button.type == "start") {
         console.log("start .......");
         this.button.type = "pause";
         this.button.img_url = this.button.pause;
-        start()
+        this.timer.name=this.$i18n.t('cooking_time');
+        this.hideCircle();
+        this.fns.heating(this.plugin);
+        start();
       } else {
         console.log("pause .......");
         this.$refs.pause.show();
         pause();
+        this.fns.pause(this.plugin);
       }
     },
     next() {

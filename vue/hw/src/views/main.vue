@@ -69,6 +69,9 @@ export default {
   methods: {
     next: function(e) {
       console.log(e.currentTarget.dataset);
+      try{
+        this.plugin.route("gray");
+      }catch(error){}
       this.$router.push({ path: "/" + e.currentTarget.dataset.url });
     },
     changeImage(item){

@@ -15,7 +15,7 @@ export default {
     return {
       isshow:false,
       datas:{
-        plugin:this.$refs.DemoPlugin
+        plugin:null
       }
     }
   },
@@ -28,6 +28,7 @@ export default {
     var self=this;  
   },
   mounted:function(){
+    this.datas.plugin=this.$refs.DemoPlugin;
     try{
       this.$refs.DemoPlugin.uart_init();
     }

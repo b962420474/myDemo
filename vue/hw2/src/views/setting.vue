@@ -23,6 +23,10 @@ export default {
       close:function(){
       },
       ok:function(){
+        try{
+          this.plugin.setDate(2018,0,1);
+          this.plugin.clear();
+        }catch(e){}
         this.close();
       },
   }

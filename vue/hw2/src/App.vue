@@ -2,6 +2,7 @@
   <div id="app">
     <router-view @lock="lock()" ref="route" v-if="isRouterAlive" :key="$route.fullPath"/>
     <Lock ref="lock"></Lock>
+    <Greyscreen :isshow="isshow"></Greyscreen>
     <object
       ref="DemoPlugin"
       type="brown/UartPlugin"
@@ -14,9 +15,10 @@
 
 <script>
 import Lock from "./components/Lock.vue";
+import Greyscreen from "./components/Greyscreen.vue";
 export default {
   name: "App",
-  components: { Lock },
+  components: { Lock,Greyscreen },
   provide() {
     return {
       reload: this.reload,
@@ -28,17 +30,19 @@ export default {
   },
   mounted: function() {
     var self = this;
+    this.datas.plugin=this.$refs.DemoPlugin;
     try{
       this.$refs.DemoPlugin.uart_init();
     }catch(e){
-
+      
     }
   },
   data() {
     return {
       isRouterAlive: true,
+      isshow:false,
       datas:{
-        plugin:this.$refs.DemoPlugin
+        plugin:null
       }
     };
   },
@@ -60,19 +64,27 @@ export default {
       let view = "/"+p[1];
       switch (p[0]) {
         case "setting":
+        this.isshow=false;
           this.$router.push({ path: view });
           break;
         case "defrost":
+        this.isshow=false;
           this.$router.push({ path: "/defrost"+view });
           break;
         case "presets":
+        this.isshow=false;
           this.$router.push({ path: "/presets"+view });
           break;
         case "heating":
+        this.isshow=false;
           this.$router.push({ path: "/heating"+view });
           break;
         case "main":
+        this.isshow=false;
           this.$router.push({ path: "/"});
+          break;
+        case "gray":
+          this.isshow=true;
           break;
       }
     },

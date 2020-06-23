@@ -11,7 +11,7 @@
         @click.native="pressKey()"
       >
         <div class="ClassyCountdown-value">
-          <div>{{item.name}}</div>
+          <div>{{$t(item.name)}}</div>
           <div class="num">{{item.num}}</div>
         </div>
       </Ring>
@@ -19,7 +19,7 @@
     <div class="button" @click="tip()">
       <img src="../assets/img/HWMLayerCmpltngConfirmButton_BackgroundImage.png">
     </div>
-    <Tip :title="tipTitle" ref="tip"></Tip>
+    <Tip :title="$t(tipTitle)" ref="tip"></Tip>
   </div>
 </template>
 <script>
@@ -40,27 +40,27 @@ export default {
     this.plugin=this.getDatas().plugin;
     if (type === "volume") {
       this.item = {
-        name: this.$i18n.t("volume"),
+        name: "volume",
         isshow: true,
         base: 3,
-        num: 1,
+        num: 3,
         start: 0,
         key: "volume"
       };
-      this.tipTitle = this.$i18n.t("volume_set");
+      this.tipTitle = "volume_set";
       try {
         this.plugin.setting("setVolume", this.item.key, this.item.num);
       } catch (e) {}
     } else {
       this.item = {
-        name: this.$i18n.t("brightness"),
+        name: "brightness",
         isshow: false,
         base: 9,
-        num: 1,
+        num: 8,
         start: 0,
         key: "brightness"
       };
-      this.tipTitle = this.$i18n.t("brightness_set");
+      this.tipTitle = "brightness_set";
       try {
         this.plugin.setting("setBrightness", this.item.key, this.item.num);
       } catch (e) {}
@@ -80,6 +80,17 @@ export default {
       } catch (e) {}
     },
     tip: function() {
+       try{
+        if(this.$route.params.id=="volume"){
+          console.log("setVolume "+this.item.num);
+          this.plugin.setVolume(this.item.num);
+        }
+        else{
+          console.log("setBrightness "+this.item.num);
+          this.plugin.setBrightness(this.item.num);
+        }
+      }
+      catch(e){}
       this.$refs.tip.show();
     },
     updateNum:function(type,num){

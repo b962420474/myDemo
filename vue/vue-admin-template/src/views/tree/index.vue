@@ -16,7 +16,7 @@
 
 <script>
 export default {
-
+  name :'Tree',
   data() {
     return {
       filterText: '',
@@ -66,7 +66,12 @@ export default {
       this.$refs.tree2.filter(val)
     }
   },
-
+activated:function(){
+  console.log("activated")
+},
+created:function(){
+  console.log("created")
+},
   methods: {
     filterNode(value, data) {
       if (!value) return true
