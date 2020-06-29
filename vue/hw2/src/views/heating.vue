@@ -7,6 +7,7 @@
     </div>
     <div class="timer">
       <Ring
+      v-focus
         class="center"
         :base="temperature.base"
         :isshow="temperature.isshow"
@@ -14,6 +15,8 @@
         ref="temperature"
         :start="temperature.start"
         @click.native="pressKey(temperature)"
+        @keydown.native="keyEvent($event,temperature)"
+        tabindex="1"
       >
         <div class="ClassyCountdown-value">
           <div>{{temperature.name}}</div>
@@ -28,6 +31,8 @@
         ref="timer"
         :start="timer.start"
         @click.native="pressKey(timer)"
+        @keydown.native="keyEvent($event,timer)"
+        tabindex="1"
       >
         <div class="ClassyCountdown-value">
           <div>{{timer.name}}</div>
@@ -49,6 +54,7 @@ import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 import Pause from "../components/Pause.vue";
 import {start,init,pause,clear} from "../util/time";
+import {update} from '@/util/knobUtil'
 export default {
   components: { Ring, Tip, Timmer, Pause },
   data() {
@@ -104,7 +110,7 @@ export default {
       break;
       case 'Slow_cooks':
       this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 40,num: 100,start: 80,unit: "℃",key:"temperature"};
-      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 600,num: 0,start: 0,key:"timer"};
       break;
       case 'Preserve':
       this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 40,num: 75,start: 60,unit: "℃",key:"temperature"};
@@ -116,16 +122,13 @@ export default {
       break;
       case 'Dry':
       this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 100,num: 110,start: 50,unit: "℃",key:"temperature"};
-      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
+      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 600,num: 0,start: 0,key:"timer"};
       break;
       case 'Pizzas':
       this.temperature={name: this.$i18n.t('temperature'),isshow: true,base: 200,num: 180,start: 50,unit: "℃",key:"temperature"};
       this.timer={name: this.$i18n.t('timer'),isshow: false,base: 240,num: 0,start: 0,key:"timer"};
       break;
     }
-    try{
-      this.plugin.setting("setheating",this.temperature.key,this.temperature.num);
-      }catch(e){}
     init(this.timer.num,this.tip,this.update,540);
   },
   destroyed: function() {
@@ -151,9 +154,11 @@ export default {
       this.button.img_url = this.button.start;
       item.isshow = true;
       this.timer.name=this.$i18n.t('timer')
-      try{
-        this.plugin.setting("setheating",item.key,item.num);
-      }catch(e){}
+    },
+    keyEvent:function(e,item){
+      console.log("keyCode:"+e.keyCode);
+      item.num=update(e.keyCode,item.key+"/"+this.$route.params.id,item.num);
+      this.$refs[item.key].blueCircle(item.num);
     },
     updateNum:function(type,num){
       this[type].num=num;

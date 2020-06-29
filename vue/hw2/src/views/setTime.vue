@@ -2,6 +2,7 @@
   <div class="main_content">
    <div class="timer">
     <Ring
+        v-focus
         class="center"
         :base="hour.base"
         :isshow="hour.isshow"
@@ -9,6 +10,8 @@
         ref="hour"
         :start="hour.start"
         @click.native="pressKey(hour)"
+        @keydown.native="keyEvent($event,hour)"
+        tabindex="1"
       >
         <div class="ClassyCountdown-value">
           <div>{{$t(hour.name)}}</div>
@@ -23,6 +26,8 @@
         ref="minute"
         :start="minute.start"
         @click.native="pressKey(minute)"
+        @keydown.native="keyEvent($event,minute)"
+        tabindex="1"
       >
         <div class="ClassyCountdown-value">
           <div>{{$t(minute.name)}}</div>
@@ -37,6 +42,7 @@
 <script>
 import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
+import {update} from '@/util/knobUtil'
 export default {
   components: { Ring,Tip },
   inject:['getDatas'],
@@ -55,9 +61,6 @@ export default {
     const date = new Date();
     this.hour.num = date.getHours();
     this.minute.num = date.getMinutes();
-    try{
-      this.plugin.setting("setTime",this.hour.key,this.hour.num);
-    }catch(e){}
   },
   computed: {},
   methods: {
@@ -79,6 +82,16 @@ export default {
     updateNum:function(type,num){
       this[type].num=num;
       this.$refs[type].blueCircle(num);
+    },
+    keyEvent:function(e,item){
+      console.log("keyCode:"+e.keyCode);
+      item.num=update(e.keyCode,item.key,item.num);
+      this.$refs[item.key].blueCircle(item.num);
+    },
+    updateNumTest:function(){
+      console.log("get_hour:"+this.plugin.get_hour);
+      this.hour.num=this.plugin.get_hour;
+      this.$refs.hour.blueCircle(this.hour.num);
     }
   }
 };

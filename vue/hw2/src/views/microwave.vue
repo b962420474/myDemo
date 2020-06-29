@@ -20,6 +20,7 @@
           <div class="num">
             {{power.num}}
             <span style="font-size:10px;position: absolute;color:#ffffff6e;">{{power.unit}}</span>
+            <span style="font-size:10px;position: absolute;color:#ffffff6e;">帧数{{f}}</span>
           </div>
         </div>
       </Ring>
@@ -79,19 +80,30 @@ export default {
         start: require("../assets/img/HPMLayerDefStartButton_BackgroundImage.png"),
         type: "start"
       },
-      timer: false
+      timer: false,
+      Frames:0,
+      f:0
     };
   },
   beforeMount: function() {},
   mounted: function() {
     var self=this;
+    var t1=new Date().getTime();
     setInterval(()=>{
-      this.power.num++;
+      this.power.num+=1;
+      var t2=new Date().getTime();
+      if((t2-t1)>1000){
+        console.log(this.f);
+        this.f=this.Frames;
+        this.Frames=0;
+        t1=t2;
+      }
+      this.Frames++;
       if(this.power.num>=1000){
         this.power.num=0;
       }
       this.$refs['power'].blueCircle(this.power.num);
-    },0.01)
+    },1)
   },
   computed: {
     getNum: function() {

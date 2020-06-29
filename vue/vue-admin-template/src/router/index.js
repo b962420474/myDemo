@@ -175,6 +175,31 @@ export const constantRoutes = [
         name: 'DatasetChart',
         meta: { title: 'DatasetChart' },
       },
+      {
+        path: 'dataZoom',
+        component: () => import('@/views/charts/dataZoom'), // Parent router-view
+        name: 'DataZoomChart',
+        meta: { title: 'DataZoomChart' },
+      },
+      {
+        path: 'adaptation',
+        component: () => import('@/views/charts/adaptation'), // Parent router-view
+        name: 'adaptationChart',
+        meta: { title: 'adaptationChart' },
+      },
+    ]
+  },
+  {
+    path: '/upload',
+    component: Layout,
+    redirect: '/upload/imageupload',
+    children: [
+      {
+        path: 'imageupload',
+        name: 'imageupload',
+        component: () => import('@/views/upload/imageupload'),
+        meta: { title: 'imageupload', icon: 'imageupload' }
+      }
     ]
   },
   {

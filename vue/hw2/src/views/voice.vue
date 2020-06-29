@@ -2,6 +2,7 @@
   <div class="main_content">
     <div class="timer">
       <Ring
+        v-focus
         class="center"
         :base="item.base"
         :isshow="item.isshow"
@@ -9,6 +10,8 @@
         ref="ring"
         :start="item.start"
         @click.native="pressKey()"
+        @keydown.native="keyEvent($event,item)"
+        tabindex="1"
       >
         <div class="ClassyCountdown-value">
           <div>{{$t(item.name)}}</div>
@@ -25,6 +28,7 @@
 <script>
 import Ring from "../components/Ring.vue";
 import Tip from "../components/Tip.vue";
+import {update} from '@/util/knobUtil'
 export default {
   components: { Ring, Tip },
   inject:['getDatas'],
@@ -54,7 +58,7 @@ export default {
     } else {
       this.item = {
         name: "brightness",
-        isshow: false,
+        isshow: true,
         base: 9,
         num: 8,
         start: 0,
@@ -92,6 +96,11 @@ export default {
       }
       catch(e){}
       this.$refs.tip.show();
+    },
+    keyEvent:function(e,item){
+      console.log("keyCode:"+e.keyCode);
+      item.num=update(e.keyCode,item.key,item.num);
+      this.$refs['ring'].blueCircle(item.num);
     },
     updateNum:function(type,num){
       this.item.num=num;

@@ -9,6 +9,7 @@
       style="visibility:hidden; width:0px; height:0px;"
       @onRoute="onRouter"
       @onSetting="receive"
+      @onSettingTest="receive1"
     ></object>
   </div>
 </template>
@@ -92,6 +93,10 @@ export default {
       console.log(path+","+type+","+num);
       this.$refs.route.updateNum(type,num);
     },
+    receive1:function(e){
+      console.log("setting_test");
+      this.$refs.route.updateNumTest();
+    },
     getDatas:function(){
       return this.datas;
     }
@@ -100,6 +105,9 @@ export default {
 </script>
 
 <style>
+*{
+  outline: none;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -1,0 +1,51 @@
+const pulgin={
+    el:null,
+    init:function(el){
+        this.el=el;
+    },
+    getWifiList:()=>{
+        try{
+            return this.el.getWifiList();
+        }
+        catch(e){
+            console.log(e);
+            return [
+                {name:"iserverNetwork",encryption:true,level:4},
+                {name:"fdgfxvxcv",encryption:true,level:3},
+                {name:"xcxcvcxvv",encryption:true,level:2},
+                {name:"xerewrefgggdW",encryption:true,level:1},
+                {name:"fsdffds",encryption:true,level:4},
+                {name:"xerewrfxvefgggdW",encryption:true,level:4},
+                {name:"ddsfdfdxcv",encryption:true,level:4},
+                {name:"xerewvdfrcxvefgggdW",encryption:true,level:4},
+                {name:"aer",encryption:true,level:4},
+                {name:"awerer",encryption:false,level:4},
+            ];
+        }
+    },
+    connect:(name,pwd)=>{
+        try{
+           this.el.connect(name,pwd);
+        }
+        catch(e){
+            console.log(e);
+        }
+    },
+    setVolume:(num)=>{
+        try{
+           this.el.setVolume(num);
+        }
+        catch(e){
+            console.log(e);
+        }
+    },
+    setBrightness:(num)=>{
+        try{
+           this.el.setBrightness(num);
+        }
+        catch(e){
+            console.log(e);
+        }
+    },
+}
+export default pulgin

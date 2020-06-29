@@ -7,6 +7,7 @@
     </div>
     <div class="timer">
       <Ring
+        v-focus
         v-show="button.type=='start'"
         class="center"
         :base="weight.base"
@@ -15,6 +16,8 @@
         ref="weight"
         :start="weight.start"
         @click.native="pressKey(weight)"
+        @keydown.native="keyEvent($event,weight)"
+        tabindex="1"
       >
         <div class="ClassyCountdown-value" v-if="weight.unit">
           <div>{{weight.name}}</div>
@@ -53,6 +56,7 @@ import Tip from "../components/Tip.vue";
 import Timmer from "../components/Timmer.vue";
 import Pause from "../components/Pause.vue";
 import { start, init, pause } from "../util/time";
+import {update} from '@/util/knobUtil'
 export default {
   components: { Ring, Tip, Timmer, Pause },
   data() {
@@ -75,34 +79,28 @@ export default {
     var type = this.$route.params.id;
     switch(type){
       case 'meat':
-      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 180,start: 30,unit: "w",key:"weight"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 1400,num: 200,start: 100,unit: "g",key:"weight"};
       this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'bird':
-      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 100,start: 30,unit: "w",key:"weight"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 1400,num: 200,start: 100,unit: "g",key:"weight"};
       this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 10,start: 0,key:"timer"};
       break;
       case 'fish':
-      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 150,start: 30,unit: "w",key:"weight"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 1400,num: 200,start: 100,unit: "g",key:"weight"};
       this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'vegetables':
-      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 220,num: 120,start: 30,unit: "w",key:"weight"};
+      this.weight={name: this.$i18n.t('weight'),isshow: true,base: 300,num: 150,start: 150,unit: "g",key:"weight"};
       this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 20,start: 0,key:"timer"};
       break;
       case 'manual':
-      this.weight={name: this.$i18n.t('timer'),isshow: true,base: 220,num: 110,start: 30,key:"timer"};
-      this.timer={name: this.$i18n.t('timer'),isshow: false,base: 60,num: 110,start: 0,key:"timer"};
+      this.weight={name: this.$i18n.t('timer'),isshow: true,base: 600,num: 110,start: 0,key:"defrosting_time"};
+      this.timer={name: this.$i18n.t('defrosting_time'),isshow: false,base: 60,num: 110,start: 0,key:"timer"};
       break;
     }
-    try{
-        if(type=="vegetables"){
-          this.plugin.setting("setdefrost","vegetables_"+this.weight.key,this.weight.num);
-        }
-        else{
-          this.plugin.setting("setdefrost",this.weight.key,this.weight.num);
-        }
-      }catch(e){}
+    this.weight={name: this.$i18n.t('timer'),isshow: true,base: 600,num: 110,start: 0,key:"defrosting_time"};
+    this.timer={name: this.$i18n.t('defrosting_time'),isshow: false,base: 60,num: 110,start: 0,key:"timer"};
     init(this.timer.num,this.tip,this.update,540);
   },
   destroyed: function() {
@@ -137,6 +135,16 @@ export default {
     updateNum:function(type,num){
       this.weight.num=num;
       this.$refs.weight.blueCircle(num);
+    },
+    keyEvent:function(e,item){
+      console.log("keyCode:"+e.keyCode);
+      var type=item.key;
+      // if(this.$route.params.id=="vegetables"){
+      //     type="vegetables_"+type
+      // }
+      item.num=update(e.keyCode,type,item.num);
+      this.timer.num=item.num;
+      this.$refs.weight.blueCircle(item.num);
     },
     tip: function() {
       this.button.type = "start";

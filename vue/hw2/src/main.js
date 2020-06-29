@@ -10,6 +10,13 @@ import Router from 'vue-router'; //如果已引用，不需要重复引用
 import {fns} from '@/util/plugin'
 Vue.use(Router) //如果已引用，不需要重复引用
 Vue.prototype.fns= fns
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
 const VueRouterPush = Router.prototype.push 
 Router.prototype.push = function push (to) {
     return VueRouterPush.call(this, to).catch(err => err)

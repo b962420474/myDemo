@@ -78,28 +78,28 @@ export default {
             type: "bar",
             xAxisIndex: 2,
             yAxisIndex: 2,
-            encode: {
-              x: "Milk Tea",
-              y: "product",
-            }
+            // encode: {
+            //   x: "Milk Tea",
+            //   y: "product",
+            // }
           },
           {
             type: "bar",
             xAxisIndex: 2,
             yAxisIndex: 2,
-            encode: {
-              x: ["Matcha Latte"],
-              y: "product",
-            }
+            // encode: {
+            //   x: ["Matcha Latte"],
+            //   y: "product",
+            // }
           },
           {
             type: "bar",
             xAxisIndex: 2,
             yAxisIndex: 2,
-            encode: {
-              x: "Cheese Cocoa",
-              y: "product",
-            }
+            // encode: {
+            //   x: "Cheese Cocoa",
+            //   y: "product",
+            // }
           },
           {
             type: "bar",

@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import main from '@/views/main'
 import setTime from '@/views/setTime'
 import language from '@/views/language'
 import date from '@/views/date'
-import brightness from '@/views/brightness'
 import setting from '@/views/setting'
 import heating from '@/views/heating'
 import defrost from '@/views/defrost'
@@ -35,12 +33,6 @@ export default new Router({
       path: '/date',
       name: 'date',
       component: date
-    }
-    ,
-    {
-      path: '/brightness',
-      name: 'brightness',
-      component: brightness
     }
     ,
     {
