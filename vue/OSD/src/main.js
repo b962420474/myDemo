@@ -6,6 +6,11 @@ import router from './router'
 import plugin from './util/plugin'
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
+
+import promise from 'es6-promise';
+ 
+// 兼容 Promise
+promise.polyfill();
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.prototype.plugin=plugin;

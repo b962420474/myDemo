@@ -7,7 +7,7 @@
          <div class="item">
              <div>音量调节</div>
              <Slider v-model="volume" :tip-format="format" @on-change="setVolume"></Slider></div>
-    </div>
+        </div>
 </template>
 <script>
     export default {

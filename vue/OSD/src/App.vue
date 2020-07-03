@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view ref="view"/>
     <object
       ref="plugin"
-      type="brown/UartPlugin"
+      type="brown/home"
       style="visibility:hidden; width:0px; height:0px;"
+      @WifiScanFinish="WifiScanFinish"
+      @WifiConnectResult="WifiConnectResult"
     ></object>
   </div>
 </template>
@@ -12,8 +14,47 @@
 <script>
 export default {
   name: "App",
-  mounted:function(){
+  mounted: function() {
     this.plugin.init(this.$refs.plugin);
+    this.plugin.start();
+    // setTimeout(()=>{
+    //   this.WifiScanFinish();
+    // },4000);
+    // setTimeout(()=>{
+    //   this.WifiConnectResult('{"ssid":"iserverNetwork","state":1}');
+    // },14000);
+  },
+  methods: {
+    WifiScanFinish: function() {
+      let data = window.iBrowser
+        ? this.plugin.el.scan_result
+        : JSON.stringify({
+            wifilist: [
+              { ssid: "iserverNetwork", encrypt: 1, signalSTR: 4 },
+              { ssid: "fdgfxvxcv", encrypt: 0, signalSTR: 3 },
+              { ssid: "xcxcvcxvv", encrypt: true, signalSTR: 2 },
+              { ssid: "xerewrefgggdW", encrypt: true, signalSTR: 1 },
+              { ssid: "fsdffds", encrypt: true, signalSTR: 4 },
+              { ssid: "xerewrfxvefgggdW", encrypt: true, signalSTR: 4 },
+              { ssid: "ddsfdfdxcv", encrypt: true, signalSTR: 4 },
+              { ssid: "xerewvdfrcxvefgggdW", encrypt: true, signalSTR: 4 },
+              { ssid: "aer", encrypt: true, signalSTR: 4 },
+              { ssid: "awerer", encrypt: false, signalSTR: 4 }
+            ]
+          });
+      console.log(data);
+      const a = JSON.parse(data).wifilist;
+      const arry = a.map(ele => {
+        ele.state = 0;
+        return ele;
+      });
+      this.$refs.view.WifiScanFinish&&this.$refs.view.WifiScanFinish(arry);
+    },
+    WifiConnectResult:function(result){
+      console.log("result:"+result);
+      result=JSON.parse(result);
+      this.$refs.view.updateState&&this.$refs.view.updateState(result);
+    }
   }
 };
 </script>
@@ -37,8 +78,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-*{
+* {
   list-style: none;
-  margin:0
+  margin: 0;
 }
 </style>

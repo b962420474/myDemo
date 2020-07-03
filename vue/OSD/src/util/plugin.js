@@ -3,35 +3,23 @@ const pulgin={
     init:function(el){
         this.el=el;
     },
-    getWifiList:()=>{
+    connect:function(name,pwd){
         try{
-            return this.el.getWifiList();
-        }
-        catch(e){
-            console.log(e);
-            return [
-                {name:"iserverNetwork",encryption:true,level:4},
-                {name:"fdgfxvxcv",encryption:true,level:3},
-                {name:"xcxcvcxvv",encryption:true,level:2},
-                {name:"xerewrefgggdW",encryption:true,level:1},
-                {name:"fsdffds",encryption:true,level:4},
-                {name:"xerewrfxvefgggdW",encryption:true,level:4},
-                {name:"ddsfdfdxcv",encryption:true,level:4},
-                {name:"xerewvdfrcxvefgggdW",encryption:true,level:4},
-                {name:"aer",encryption:true,level:4},
-                {name:"awerer",encryption:false,level:4},
-            ];
-        }
-    },
-    connect:(name,pwd)=>{
-        try{
-           this.el.connect(name,pwd);
+           this.el.StartConnect(name,pwd);
         }
         catch(e){
             console.log(e);
         }
     },
-    setVolume:(num)=>{
+    Disconnect:function(){
+        try{
+            this.el.Disconnect();
+         }
+         catch(e){
+             console.log(e);
+         }
+    },
+    setVolume:function(num){
         try{
            this.el.setVolume(num);
         }
@@ -39,7 +27,7 @@ const pulgin={
             console.log(e);
         }
     },
-    setBrightness:(num)=>{
+    setBrightness:function(num){
         try{
            this.el.setBrightness(num);
         }
@@ -47,5 +35,21 @@ const pulgin={
             console.log(e);
         }
     },
+    start:function(){
+        try{
+            this.el.start();
+         }
+         catch(e){
+             console.log(e);
+         }
+    },
+    StartScan:function(){
+        try{
+            this.el.StartScan();
+         }
+         catch(e){
+             console.log(e);
+         }
+    }
 }
 export default pulgin

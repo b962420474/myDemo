@@ -70,7 +70,7 @@ export default {
   min-width: 390px;
   max-width: 800px;
   height: 50%;
-  margin: auto;
+  margin: 0 10px;
   position: relative;
   -webkit-align-items: center;
   -webkit-justify-content: center;
@@ -85,16 +85,18 @@ export default {
   position: absolute;
   font-size: 5px;
   line-height: 35px;
-  border: 1px solid;
+  border-left: 1px solid;
   width: 36px;
   border-radius: 5px;
   right:0;
+  transform: translateY(-50%);
+  top: 50%;
 }
 .btn {
   display: -webkit-flex;
   min-width: 390px;
   max-width: 800px;
-  margin: auto;
+  margin: 0 10px;
   position: relative;
   -webkit-justify-content: center;
   height: 18%;

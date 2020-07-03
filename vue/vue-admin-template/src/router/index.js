@@ -203,6 +203,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/animation',
+    component: Layout,
+    redirect: '/animation/test',
+    children: [
+      {
+        path: 'test',
+        name: 'test',
+        component: () => import('@/views/animation/swiper/test'),
+        meta: { title: 'swipertest', icon: 'test' }
+      }
+    ]
+  },
+  {
     path: 'external-link',
     component: Layout,
     children: [

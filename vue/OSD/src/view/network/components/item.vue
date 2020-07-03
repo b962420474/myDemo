@@ -2,8 +2,8 @@
     <li @click="input_password(item)" class="li">
         <div class="item">
           <span class="iconfont wifi" v-html="getLevel"></span>
-          <div>{{item.name}}</div>
-          <div class="iconfont wifi right">{{item.encryption?"&#xe7ab;":"&#xe630;"}}</div>
+          <div>{{item.ssid}}</div>
+          <div class="iconfont wifi right">{{item.encrypt?"&#xe7ab;":"&#xe630;"}}</div>
         </div>
         <div class="state" v-show="item.state">{{getState(item)}}</div>
     </li>
@@ -25,21 +25,23 @@ export default {
             msg = "未连接";
             break;
           case 1:
-            msg = "连接成功";
+            msg = "已连接";
             break;
-          case 2:
-            msg = "连接失败,密码错误";
-            break;
-          case 3:
-            msg = "wifi连接中。。。";
-            break;
+          // case 2:
+          //   msg = "连接失败,密码错误";
+          //   break;
+          // case 3:
+          //   msg = "wifi连接中。。。";
+          //   break;
+          default:
+           msg=item.state;
         }
         return msg;
       };
     },
     getLevel:function(){
       let msg="";
-      switch (this.item.level) {
+      switch (this.item.signalSTR) {
           case 1:
             msg = "&#xe673;";
             break;
