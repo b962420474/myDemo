@@ -103,7 +103,7 @@ export default {
     this.timer={name: this.$i18n.t('defrosting_time'),isshow: false,base: 60,num: 110,start: 0,key:"timer"};
     init(this.timer.num,this.tip,this.update,540);
   },
-  destroyed: function() {
+  beforeDestroy: function() {
     pause();
   },
   computed: {

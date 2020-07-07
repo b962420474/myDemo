@@ -69,7 +69,8 @@ export default {
           up: require("../assets/img/MMMLayerDefLockSmallButton_BackgroundImage.png"),
           down: require("../assets/img/MMMLayerDefLockSmallButton_PressImage.png")
         }
-      }
+      },
+      timer:null
     };
   },
   beforeMount: function() {
@@ -100,6 +101,9 @@ export default {
       };
     }
   },
+  beforeDestroy(){
+    clearTimeout(this.timer);
+  },
   methods: {
     changeImage(item) {
       item.img_url = item.urls.down;
@@ -116,7 +120,7 @@ export default {
       if (this.time.h == 24) {
         this.time.h = 0;
       }
-      setTimeout(function() {
+      this.timer=setTimeout(function() {
         self.time.m++;
         self.updateTime();
       }, 60000);

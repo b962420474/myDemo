@@ -131,7 +131,7 @@ export default {
     }
     init(this.timer.num,this.tip,this.update,540);
   },
-  destroyed: function() {
+  beforeDestroy: function() {
     clear();
   },
   computed: {

@@ -33,10 +33,11 @@ export default {
         }
     },
     created:function(){
-
+        this.switch1=localStorage.switch1?eval(localStorage.switch1.toLowerCase()):false;
+        this.refesh();
     },
     destroyed:function(){
-        //this.clear();
+        localStorage.switch1=this.switch1;
     },
     methods:{
         openInput(item){
@@ -83,6 +84,8 @@ export default {
                     }
                     else{
                         //this.wifiList[index].state=data.errnum;
+                        // this.connectWifi=JSON.parse(JSON.stringify(this.wifiList[index]));
+                        // this.connectWifi.state=data.errnum;
                         this.connectWifi={};
                     }
                 }

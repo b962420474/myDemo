@@ -21,7 +21,7 @@ export default {
     //   this.WifiScanFinish();
     // },4000);
     // setTimeout(()=>{
-    //   this.WifiConnectResult('{"ssid":"iserverNetwork","state":1}');
+    //   this.WifiConnectResult('{"ssid":"iserverNetwork","state":0,"errnum":0}');
     // },14000);
   },
   methods: {
@@ -81,5 +81,16 @@ export default {
 * {
   list-style: none;
   margin: 0;
+}
+.ivu-slider-button-wrap .ivu-slider-button :hover{
+  -webkit-transform: scale(1.5)
+}
+.ivu-slider-wrap .ivu-slider-button-wrap {
+    top: -8px;
+}
+.ivu-slider-button-wrap .ivu-slider-button {
+    width: 20px;
+    height: 20px;
+
 }
 </style>

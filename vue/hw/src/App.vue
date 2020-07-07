@@ -9,6 +9,7 @@
 
 <script>
 import Greyscreen from "./components/Greyscreen.vue"
+import test from "@/test/test.js"
 export default {
   components:{Greyscreen},
   data(){
@@ -35,7 +36,7 @@ export default {
     catch(e){
 
     }
-    
+    test(this.$router);
   },
   methods:{
     Greyscreen(){

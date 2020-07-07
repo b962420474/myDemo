@@ -39,8 +39,18 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'),
+        resolve('node_modules/babel-plugin-import'),
+        resolve('node_modules/view-design'),
+      ]
       },
+    //   {
+    //     test: /\.(mp3)(\?.*)?$/,
+    //     loader: 'url-loader',
+    //     options: {
+    //      name: utils.assetsPath('assets/[name].[hash:7].[ext]')
+    //     }
+    //  },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',

@@ -10,7 +10,8 @@ export default {
         m: 0,
         s: 0
       },
-      html: ""
+      html: "",
+      timer:null
     };
   },
   beforeMount: function() {},
@@ -18,11 +19,14 @@ export default {
     this.getTime();
     this.updateTime();
   },
+   beforeDestroy(){
+    clearTimeout(this.timer);
+  },
   computed: {},
   methods: {
     updateTime: function() {
       let self = this;
-      setTimeout(function() {
+      this.timer=setTimeout(function() {
         self.getTime();
         // console.log(self.html+" : "+self.time.s);
         self.updateTime();
