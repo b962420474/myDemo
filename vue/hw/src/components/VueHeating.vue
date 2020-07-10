@@ -221,6 +221,12 @@ export default {
   mounted: function() {
     offset = document.getElementById("menu_content").querySelector(".menu_item").offsetWidth;
   },
+  beforeDestroy(){
+    startX=null;X=null;moveEndX=null;
+    translateX=null;
+    offset=null;
+    hasMove=null
+  },
   methods: {
     mousemove: function(e) {
       var target = e.currentTarget;

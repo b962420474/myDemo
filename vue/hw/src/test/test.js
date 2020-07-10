@@ -488,15 +488,13 @@ function checke(router) {
     const msg = b[0].params ? { message: b[0].params } : {};
     console.log({ name: b[0].path, params: msg });
     b[0].path?router.push({ name: b[0].path, params: msg }):false;
-    try {
+    if(window.iBrowser){
         b[0].mn ? document.getElementsByTagName("object")[0].route(b[0].mn) : false;
     }
-    catch (e) {
+    else{
         console.log("route:"+b[0].mn);
     }
-    finally {
-        b.shift();
-    }
+    b.shift();
 
 }
 

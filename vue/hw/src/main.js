@@ -9,7 +9,7 @@ import {fns} from '@/util/plugin'
 Vue.config.productionTip = false
 Vue.prototype.fns= fns
 /* eslint-disable no-new */
-var vue=new Vue({
+new Vue({
   el: '#app',
   router,
   i18n,

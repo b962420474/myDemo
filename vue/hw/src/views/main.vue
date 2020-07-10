@@ -64,14 +64,19 @@ export default {
   },
    created:function(){
     this.plugin=this.getDatas().plugin;
-    this.plugin.route("main?main");
+    if(window.iBrowser){
+      this.plugin.route("main?main");
+    }
+  },
+  beforeDestroy(){
+    this.menuList=null;
+    this.plugin=null;
   },
   methods: {
     next: function(e) {
-      console.log(e.currentTarget.dataset);
-      try{
+      if(window.iBrowser){
         this.plugin.route("gray");
-      }catch(error){}
+      }
       this.$router.push({ path: "/" + e.currentTarget.dataset.url });
     },
     changeImage(item){

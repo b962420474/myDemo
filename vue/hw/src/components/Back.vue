@@ -1,6 +1,6 @@
 <template>
   <div class="backs">
-    <router-link :to="path" @click.native="sendRora()">
+    <router-link :to="path" >
       <div class="back iconfont">&#xe655;</div>
     </router-link>
     <div class="title">{{postTitle}}</div>
@@ -19,9 +19,9 @@ export default {
     this.plugin=this.getDatas().plugin;
   },
   methods: {
-    sendRora:function(){
-      this.fns.roar(this.plugin);
-    }
+    // sendRora:function(){
+    //   this.fns.roar(this.plugin);
+    // }
   }
 };
 </script>

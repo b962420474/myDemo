@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view @Greyscreen="Greyscreen()"/>
+    <router-view/>
     <Greyscreen ref="Greyscreen" :isshow="isshow"></Greyscreen>
     <object ref="DemoPlugin" type="brown/UartPlugin" style="visibility:hidden; width:0px; height:0px;"></object>
   </div>
@@ -26,7 +26,7 @@ export default {
     }
   },
   created:function(){
-    var self=this;  
+    console.log("......");
   },
   mounted:function(){
     this.datas.plugin=this.$refs.DemoPlugin;

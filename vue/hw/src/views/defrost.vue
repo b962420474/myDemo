@@ -60,9 +60,11 @@ export default {
    created:function(){
     this.plugin=this.getDatas().plugin;
   },
+  beforeDestroy(){
+  },
   methods: {
     next: function(item) {
-      const path="defrost?"+item.name;
+      let path="defrost?"+item.name;
         console.log(path);
         try{
           this.plugin.route(path);

@@ -203,6 +203,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/canvas',
+    component: Layout,
+    redirect: '/canvas/canvas',
+    children: [
+      {
+        path: 'canvas',
+        name: 'canvas',
+        component: () => import('@/views/canvas/canvas'),
+        meta: { title: 'canvas', icon: 'canvas' }
+      }
+    ]
+  },
+  {
     path: '/animation',
     component: Layout,
     redirect: '/animation/test',
