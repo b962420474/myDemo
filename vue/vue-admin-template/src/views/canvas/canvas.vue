@@ -128,17 +128,20 @@ export default {
         return num + total;
       });
       let end=0,start=0;
-      this.context.beginPath();
+      this.context.lineWidth=1;
       array.forEach(element => {
+          this.context.beginPath();
           start=end;
-          end=start+element/sum*360;
-          console.log(start+":"+end)
-          this.context.arc(this.canvas.width/2,this.canvas.height/2,100,start/180*Math.PI,end/180*Math.PI,false);
-          this.context.fillStyle = getRandomColor();
+          end=start+element/sum*2*Math.PI;
+          this.context.moveTo(this.canvas.width/2,this.canvas.height/2);
+          this.context.arc(this.canvas.width/2,this.canvas.height/2,this.canvas.height/2*element/sum,start,end,false);
+          var color=getRandomColor()
+          this.context.fillStyle = color;
+          this.context.strokeStyle = color;
+          this.context.closePath();
           this.context.fill();
-          this.context.stroke();
       });
-      
+      this.context.stroke();
     }
   }
 };
