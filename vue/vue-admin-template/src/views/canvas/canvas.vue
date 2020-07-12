@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { getMax, getMaxN } from "@/utils/math.js";
+import { getMax, getMaxN, getTextSize } from "@/utils/math.js";
 import { getRandomColor } from "@/utils/util.js";
 export default {
   data() {
@@ -18,9 +18,14 @@ export default {
       this.canvas = document.getElementById("cavsElem");
       this.context = this.canvas.getContext("2d");
       //this.drawTriangle();
-    //   this.draw([1, 4, 3, 8, 2, 6], "line");
-    //   this.draw([1, 4, 3, 8, 2, 6], "bar");
-      this.drawArc([1, 4, 3, 8, 2, 6]);
+      //   this.draw([1, 4, 3, 8, 2, 6], "line");
+      //   this.draw([1, 4, 3, 8, 2, 6], "bar");
+      this.drawArc([
+        { name: "c", data: 50 },
+        { name: "jaya", data: 38},
+        { name: "js", data: 40 },
+        { name: "python", data: 5 }
+      ]);
       // this.drawLine([0.8,0.9,3]);
       // this.drawLine([0.8,0.9,0.3]);
       // this.drawLine([8,9,10]);
@@ -80,8 +85,8 @@ export default {
       this.context.beginPath();
       for (var i = 0; i < array.length; i++) {
         this.context.lineTo(
-          x + (w / array.length) * (i + 0.5),
-          y - (array[i] / l) * h
+          x + w / array.length * (i + 0.5),
+          y - array[i] / l * h
         );
       }
     },
@@ -114,10 +119,10 @@ export default {
       this.context.beginPath();
       for (var i = 0; i < array.length; i++) {
         this.context.rect(
-          x + (w / array.length) * (i + 0.2),
-          y - (array[i] / l) * h,
-          (w / array.length) * 0.6,
-          (array[i] / l) * h
+          x + w / array.length * (i + 0.2),
+          y - array[i] / l * h,
+          w / array.length * 0.6,
+          array[i] / l * h
         );
       }
       this.context.fillStyle = "yellow";
@@ -125,21 +130,47 @@ export default {
     },
     drawArc(array) {
       var sum = array.reduce((num, total) => {
-        return num + total;
-      });
-      let end=0,start=0;
-      this.context.lineWidth=1;
+        return {data:num.data + total.data};
+      }).data;
+      let end = -Math.PI / 2,
+        start = -Math.PI / 2;
+      this.context.lineWidth = 1;
       array.forEach(element => {
-          this.context.beginPath();
-          start=end;
-          end=start+element/sum*2*Math.PI;
-          this.context.moveTo(this.canvas.width/2,this.canvas.height/2);
-          this.context.arc(this.canvas.width/2,this.canvas.height/2,this.canvas.height/2*element/sum,start,end,false);
-          var color=getRandomColor()
-          this.context.fillStyle = color;
-          this.context.strokeStyle = color;
-          this.context.closePath();
-          this.context.fill();
+        this.context.beginPath();
+        start = end;
+        end = start + element.data / sum * 2 * Math.PI;
+        let r = this.canvas.height / 4+this.canvas.height / 4 * element.data / sum;
+        console.log(start+"  "+element.data+"  "+r );
+        this.context.moveTo(this.canvas.width / 2, this.canvas.height / 2);
+        this.context.arc(
+          this.canvas.width / 2,
+          this.canvas.height / 2,
+          r,
+          start,
+          end,
+          false
+        );
+        var color = getRandomColor();
+        this.context.fillStyle = color;
+        this.context.strokeStyle = color;
+        this.context.closePath();
+        var { x, y ,rad} = getTextSize(
+          this.canvas.width / 2,
+          this.canvas.height / 2,
+          start,
+          end,
+         r+20
+        );
+        this.context.font = '20px "微软雅黑"'; //设置字体
+        if(rad>-Math.PI/2&&rad<Math.PI/2){
+          this.context.textAlign="right";
+        }
+        else{
+          this.context.textAlign="left";
+        }
+        this.context.textBaseline = "bottom"; //设置字体底线对齐绘制基线
+        this.context.fillText(element.name, x, y);
+        this.context.fill();
       });
       this.context.stroke();
     }

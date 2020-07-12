@@ -30,3 +30,11 @@ export function getSum(array){
         return num+total;
     })
 }
+export function getTextSize(x,y,start,end,r){
+    let rad=start+(end-start)/2;
+    return {
+        x:x+r*Math.cos(rad),
+        y:y+r*Math.sin(rad),
+        rad:rad
+    }
+}
