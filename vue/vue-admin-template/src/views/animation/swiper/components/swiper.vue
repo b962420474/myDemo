@@ -1,8 +1,9 @@
 <template>
   <div @mousedown="onButtonDown" @touchstart="onButtonDown" :style="wrapperStyle">
-    <div v-for="(item,index) in list" :key="index" style="width:100%;" ref="$list">
-      <slot name="todo" v-bind:item="item" v-bind:index="index"></slot>
+    <div v-for="(item,index) in list" :key="index" :style="{width:100/num+'%'}" ref="$list">
+      <slot name="todo" v-bind:item="item" v-bind:index="index" :isClick="isClick"></slot>
     </div>
+    <slot name="btn" :left="left" :right="right"></slot>
   </div>
 </template>
 <script>
@@ -11,6 +12,10 @@ export default {
     list: {
       type: Array,
       default: () => []
+    },
+    num:{
+      type:Number,
+      default:1
     }
   },
   data() {
@@ -33,14 +38,16 @@ export default {
       if (this.dragging) {
         return {
           transform: "translateX(" + this.newPosition + "px)",
+          "-webkit-transform": "translateX(" + this.newPosition + "px)",
           transition: "all 0s",
-          width: this.list.length * 100 + "%"
+          width: this.list.length * 100/this.num + "%"
         };
       } else {
         return {
           transform: "translateX(" + this.newPosition + "px)",
+          "-webkit-transform": "translateX(" + this.newPosition + "px)",
           transition: "all 0.2s",
-          width: this.list.length * 100 + "%"
+          width: this.list.length * 100/this.num + "%"
         };
       }
     }
@@ -90,16 +97,22 @@ export default {
       }
     },
     setPosition(newPosition) {
-      if((newPosition-this.startPosition)*2>=this.$refs.$list[0].clientWidth){
-        this.newPosition = (this.startPosition + this.$refs.$list[0].clientWidth)>0?0:(this.startPosition + this.$refs.$list[0].clientWidth);
+      if((newPosition-this.startPosition)*3>=this.$refs.$list[0].clientWidth){
+        this.newPosition = (this.startPosition + this.$refs.$list[0].clientWidth)>this.$refs.$list[0].clientWidth*(this.num>1?1:0)?this.$refs.$list[0].clientWidth*(this.num>1?1:0):(this.startPosition + this.$refs.$list[0].clientWidth);
       }
-      else if((newPosition-this.startPosition)*2<=-this.$refs.$list[0].clientWidth){
-        const end=-this.$refs.$list[0].clientWidth*(this.$refs.$list.length-1)
+      else if((newPosition-this.startPosition)*3<=-this.$refs.$list[0].clientWidth){
+        const end=-this.$refs.$list[0].clientWidth*(this.$refs.$list.length-2)
         this.newPosition = (this.startPosition -this.$refs.$list[0].clientWidth)<end?end:(this.startPosition -this.$refs.$list[0].clientWidth);
       }
       else{
         this.newPosition = this.startPosition;
       }
+    },
+    left(){
+      this.setPosition(this.startPosition+ this.$refs.$list[0].clientWidth);
+    },
+    right(){
+      this.setPosition(this.startPosition -this.$refs.$list[0].clientWidth);
     }
   }
 };

@@ -36,7 +36,7 @@ export default {
     catch(e){
 
     }
-    test(this.$router);
+    //test(this.$router);
   },
   methods:{
     Greyscreen(){

@@ -29,6 +29,7 @@ const pulgin={
     },
     setBrightness:function(num){
         try{
+           localStorage.brightnes=num;
            this.el.setBrightness(num);
         }
         catch(e){

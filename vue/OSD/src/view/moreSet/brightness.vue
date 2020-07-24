@@ -22,6 +22,7 @@
         },
         created:function(){
             this.volume=this.plugin.el.volume?this.plugin.el.volume:this.volume;
+            this.brightness=localStorage.brightness?parseInt(localStorage.brightness):50;
             console.log("volume:"+this.volume);
         },
         methods: {

@@ -17,6 +17,8 @@ export default {
   mounted: function() {
     this.plugin.init(this.$refs.plugin);
     this.plugin.start();
+    var brightnes=localStorage.brightness?parseInt(localStorage.brightness):50;
+    this.plugin.setBrightness(brightnes);
     // setTimeout(()=>{
     //   this.WifiScanFinish();
     // },4000);
