@@ -6,6 +6,7 @@ function CEvent(target,e){
     this.offsetX=this.x-target.left;
     this.offsetY=this.y-target.top;
 }
+var eventList=[];
 CEvent.prototype.stopPropagation=function(){
     this.isPropagation=false;
 }
@@ -36,7 +37,8 @@ function bind(e, m, name) {
     const x = e.offsetX;
     const y = e.offsetY;
     var target=null;
-    self.body&&self.body.children&&(target=EventCapture(self.body.children,x,y));
+    target=EventCapture1(x,y)
+    //self.body&&self.body.children&&(target=EventCapture(self.body.children,x,y));
     if(target==null) return;
     var event=new CEvent(target,e);
     target&&target.events[name]&&target.events[name].call(target,event);
@@ -60,11 +62,22 @@ function EventCapture(doms,x,y){
     }
     return target;
 }
+function EventCapture1(x,y){
+    var target=null;
+    for(var i=0;i<eventList.length;i++){
+        if (eventList[i].isPointInPath(x, y)){
+            target=eventList[i];
+            break;
+        }
+    }
+    return target;
+}
 isMove = false;
 isDown = false;
 Canvas.prototype.init = function () {
     this.body = null;
     this.clear();
+    eventList=[];
 }
 Canvas.prototype.clear = function () {
     this.cxt.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -161,10 +174,31 @@ class CClass {
     }
     addEventListener(name,fnc){
         this.events[name]=fnc;
+        var index;
+        if(eventList.length<1){
+            eventList.push(this);
+        }
+        else if((index=isChild(this))>-1){
+            eventList.splice(index,1);
+            eventList.push(this);
+        }
     }
     removeEventListener(name){
         this.events[name]=null;
     }
+}
+function isChild(child){
+    var a=-1;
+    for(var i=0;i<eventList.length;i++){
+        while(child&&child.parent&&child.parent!=eventList[i]){
+            child=child.parent;
+        }
+        if(child.parent===eventList[i]){
+            a=i;
+            break;
+        }
+    }
+    return a;
 }
 class CDiv extends CClass {
     constructor({ canvas,left=0,top=0, width = 0, height = 0,border = 0, margin = 0, background,position}) {

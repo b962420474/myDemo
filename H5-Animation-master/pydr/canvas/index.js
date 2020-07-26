@@ -1,8 +1,8 @@
 function init() {
-    var list = ["../img/MMSLayerDefHeatingSmallButton_BackgroundImage.png",
-        "../img/MMSLayerDefDefrostSmallButton_BackgroundImage.png",
-        "../img/MMSLayerDefPresetsSmallButton_BackgroundImage.png",
-        "../img/MMSLayerDefSettingsSmallButton_BackgroundImage.png"];
+    var list = [ "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",];
     canvas = document.getElementById("canvas");
     can = new Canvas(canvas);
     setCenter(list, can);
@@ -10,17 +10,17 @@ function init() {
 var canvas, can;
 function init2() {
     can.init();
-    var list = ["../img/HSLayerDMFrstBottomSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstConvectionSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstDoubleGrillSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstEcoSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstFannedSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstGrillFanSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstGrillSmallButton_PressImage.png",
-        "../img/HSLayerDMFrstStandardSmallButton_PressImage.png",
-        "../img/HSLayerDMScndPizzaSmallButton_PressImage.png",
-        "../img/HSLayerDMScndDrySmallButton_PressImage.png",
-        "../img/HSLayerDMScndPizzaSmallButton_PressImage.png",
+    var list = [ "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
+    "../img/fish/fish1.png",
     ];
     var body=can.createbody();
     var div=can.createDiv({
@@ -29,6 +29,7 @@ function init2() {
     });
     body.add(div);
     div.addEventListener("mousedown", function (e) {
+        console.log("div");
         // this.cxt.translate(100, 0);
         // this.children.forEach(ele=>{
         //     ele.render();
@@ -61,6 +62,9 @@ function init2() {
             top = 37;
         }
         div.add(c);
+        c.addEventListener("mousedown", function (e) {
+            console.log("c");
+        })
     });
     console.log(body);
 }
