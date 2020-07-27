@@ -1,3 +1,5 @@
+var HGAME=new Object();
+var METHOD = new Object();
 function CEvent(target,e){
     this.isPropagation=true;
     this.target=target;
@@ -6,12 +8,15 @@ function CEvent(target,e){
     this.offsetX=this.x-target.left;
     this.offsetY=this.y-target.top;
 }
-var eventList=[];
 CEvent.prototype.stopPropagation=function(){
     this.isPropagation=false;
 }
 function Canvas(el) {
     this.canvas = el;
+    this.events={
+        startX:0,
+        startY:0
+    }
     this.cxt = this.canvas.getContext("2d");
     this.canvas.addEventListener("mouseup", (e) => {
         bind(e, this, "mouseup");
@@ -23,10 +28,13 @@ function Canvas(el) {
     })
     this.canvas.addEventListener("mousedown", (e) => {
         isDown = true;
+        this.events.startX=e.clientX;
+        this.events.startY=e.clientY
         bind(e, this, "mousedown")
     })
     this.canvas.addEventListener("mousemove", (e) => {
-        if (isDown) {
+        if (isDown&&(this.events.startX !== e.clientX || this.events.startY !== e.clientY)) {
+            console.log("move..");
             isMove = true;
             bind(e, this, "mousemove")
         }
@@ -37,8 +45,7 @@ function bind(e, m, name) {
     const x = e.offsetX;
     const y = e.offsetY;
     var target=null;
-    target=EventCapture1(x,y)
-    //self.body&&self.body.children&&(target=EventCapture(self.body.children,x,y));
+    self.body&&self.body.children&&(target=EventCapture(self.body.children,x,y));
     if(target==null) return;
     var event=new CEvent(target,e);
     target&&target.events[name]&&target.events[name].call(target,event);
@@ -62,22 +69,11 @@ function EventCapture(doms,x,y){
     }
     return target;
 }
-function EventCapture1(x,y){
-    var target=null;
-    for(var i=0;i<eventList.length;i++){
-        if (eventList[i].isPointInPath(x, y)){
-            target=eventList[i];
-            break;
-        }
-    }
-    return target;
-}
 isMove = false;
 isDown = false;
 Canvas.prototype.init = function () {
     this.body = null;
     this.clear();
-    eventList=[];
 }
 Canvas.prototype.clear = function () {
     this.cxt.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -92,7 +88,7 @@ Canvas.prototype.createDiv = function (option) {
     var div=new CDiv(option);
     return div;
 }
-Canvas.prototype.createbody = function (background) {
+Canvas.prototype.createbody = function ({background,background_url}) {
     const option={
         left: 0,
         top: 0,
@@ -104,6 +100,12 @@ Canvas.prototype.createbody = function (background) {
     var div=new CDiv(option);
     this.body=div;
     div.render();
+    if(background_url){
+        var c = this.createCImage({
+            url: background_url
+        });
+        div.add(c);
+    }
     return div;
 }
 class CClass {
@@ -144,6 +146,8 @@ class CClass {
     calposition(){
         var parentLeft=this.parent?this.parent.left:0;
         var parentTop=this.parent?this.parent.top:0;
+        this.left+=this.border/2;
+        this.top+=this.border/2;
         switch(this.position){
             case "relative":
                 if(!this.display||this.display=="inline-block"){
@@ -174,33 +178,47 @@ class CClass {
     }
     addEventListener(name,fnc){
         this.events[name]=fnc;
-        var index;
-        if(eventList.length<1){
-            eventList.push(this);
-        }
-        else if((index=isChild(this))>-1){
-            eventList.splice(index,1);
-            eventList.push(this);
-        }
     }
     removeEventListener(name){
         this.events[name]=null;
     }
 }
-function isChild(child){
-    var a=-1;
-    for(var i=0;i<eventList.length;i++){
-        while(child&&child.parent&&child.parent!=eventList[i]){
-            child=child.parent;
+class CDiv extends CClass {
+    constructor({ canvas,left=0,top=0, width = 0, height = 0,border = 0, margin = 0, background,position,border_radis=0}) {
+        super({ canvas: canvas,left:left,top:top, border: border, margin: margin, width: width, height: height, background: background,position });
+        this.border_radis=border_radis;
+    }
+    render(){
+        this.calposition();
+        if(this.border_radis){
+            var min=Math.min(this.width,this.height);
+            var r=this.border_radis=Math.min(min,this.border_radis);
+            this.cxt.moveTo(this.left,this.top+r);
+            this.cxt.lineTo(this.left,this.top+this.height-r);
+            this.cxt.arcTo(this.left,this.top+this.height,this.left+r,this.top+this.height,r);
+            this.cxt.lineTo(this.left+this.width-r,this.top+this.height);
+            this.cxt.arcTo(this.left+this.width,this.top+this.height,this.left+this.width,this.top+this.height-r,r);
+            this.cxt.lineTo(this.left+this.width,this.top+r);
+            this.cxt.arcTo(this.left+this.width,this.top,this.left+this.width-r,this.top,r);
+            this.cxt.lineTo(this.left+r,this.top);
+            this.cxt.arcTo(this.left,this.top,this.left,this.top+r,r);
+            this.cxt.stroke();
         }
-        if(child.parent===eventList[i]){
-            a=i;
-            break;
+        else{
+            this.cxt.rect(this.left,this.top,this.width,this.height);
+        }
+        if(this.background){
+            this.cxt.fill();
         }
     }
-    return a;
+    isPointInPath(x, y){
+        return x > this.left && x < this.left + this.width && y > this.top && y < this.top + this.height;
+    }
+    setText(){
+
+    }
 }
-class CDiv extends CClass {
+class CButton extends CDiv {
     constructor({ canvas,left=0,top=0, width = 0, height = 0,border = 0, margin = 0, background,position}) {
         super({ canvas: canvas,left:left,top:top, border: border, margin: margin, width: width, height: height, background: background,position });
     }
@@ -219,20 +237,15 @@ class CDiv extends CClass {
     }
 }
 class CImage extends CClass{
-    constructor({ url, x, y, w, border = 0, margin = 0,background = 'rgba(255, 255, 255, 0)', canvas,position }){
+    constructor({ img, x, y, w, border = 0, margin = 0,background = 'rgba(255, 255, 255, 0)', canvas,position }){
         super({ canvas: canvas,left:x,top:y, border: border, margin: margin,background: background,position })
-        this.img = new Image();
-        this.width = w ? w : -1;
-        this.url = url;
+        this.img = img;
+        this.width = w ? w : this.img.width;
+        this.height = this.width / this.img.width * this.img.height;
     }
     render(){
-        this.img.onload = () => {
-            this.width= this.width > 0 ? this.width : this.img.width;
-            this.height = this.width / this.img.width * this.img.height;
-            this.calposition();
-            this.canvas.getContext('2d').drawImage(this.img, this.left, this.top, this.width, this.height);
-        }
-        this.img.src = this.url;
+        this.calposition();
+        this.canvas.getContext('2d').drawImage(this.img, this.left, this.top, this.width, this.height);
     }
     isPointInPath(x, y){
         return x > this.left && x < this.left + this.width && y > this.top && y < this.top + this.height;
