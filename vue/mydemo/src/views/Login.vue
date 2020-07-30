@@ -21,6 +21,7 @@
 </template>
 <script>
 import service from "../libs/service";
+import axios from 'axios'
 import $ from 'jquery'
 export default {
   name: "Login",
@@ -36,19 +37,30 @@ export default {
   methods: {
     login: function() {
       var param = {
-        name: this.name,
+        username: this.name,
         password: this.password
       };
-      service.ajax
-        .post("login", param)
-        .then(res => {
-          console.log("登陆成功");
-          this.$router.push({path:"/"});
-        })
-        .catch(res => {
-          console.log(res);
-        });
+      // service.ajax
+      //   .post("/login", param)
+      //   .then(res => {
+      //     if(res.code===200){
+      //       console.log("登陆成功");
+      //       this.$router.push({path:"/"});
+      //     }
+      //     else{
+      //       this.$message.error(res.message);
+      //     }
+      //   })
+      //   .catch(res => {
+      //     console.log(res);
+      //   });
+      this.$store.dispatch('user/login',param).then(()=>{
+        console.log("登陆成功");
         this.$router.push({path:"/"});
+      }).catch(error=>{
+        this.$message.error(error.message);
+      })
+        //this.$router.push({path:"/"});
     },
     focus: function() {
       this.iconShow = true;

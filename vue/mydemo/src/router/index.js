@@ -1,12 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Login from '@/components/Login'
-import MainPage from '@/components/MainPage'
-import PersonPage from '@/components/PersonPage'
-import article from '@/components/article'
-import personHome from '@/components/personHome'
-import edit from '@/components/edit'
 Vue.use(Router)
 
 export default new Router({
@@ -15,35 +8,35 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: ()=> import('@/views/Login')
     },
     {
       path:'/edit',
-      component:edit
+      component:()=> import('@/views/edit')
     },
     {
       path: '/',
       name: 'Home',
-      component: Home,
+      component: ()=> import('@/views/Home'),
       children:[
         {
           path:"/",
-          component:MainPage,
+          component:()=> import('@/views/MainPage'),
           props: (route) => ({ id: route.query.id })
         },
         {
           path:":userid",
-          component:PersonPage,
+          component:()=> import('@/views/PersonPage'),
           props:true,
           children:[
             {
               path:"/",
-              component:personHome,
+              component:()=> import('@/views/personHome'),
               props:true
             },
             {
               path:"article/:articleId",
-              component:article,
+              component:()=> import('@/views/article'),
               props:true
             }
           ]

@@ -9,7 +9,7 @@
     </div>
     <div class="right">
       <ul>
-        <li v-for="item in list" :key="item.title">
+        <li v-for="item in getList" :key="item.title">
           <div>
             <h2>
               <a @click="toPerson">{{item.title}}</a>
@@ -18,6 +18,15 @@
           </div>
         </li>
       </ul>
+      <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[2, 4, 6, 8]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="list.length">
+    </el-pagination>
     </div>
   </div>
 </template>
@@ -28,8 +37,22 @@ export default {
   data() {
     return {
       items: [],
-      list: []
+      list: [],
+      pagesize:2,
+      currentPage:1
     };
+  },
+  mounted:function(){
+    console.log('monuted');
+  },
+  computed:{
+    getList(){
+      var l=[];
+      for(let i=(this.currentPage-1)*this.pagesize;i<this.pagesize*this.currentPage&&i<this.list.length;i++){
+        l.push(this.list[i]);
+      }
+      return l;
+    }
   },
   methods: {
     handlePage: function(e) {
@@ -59,7 +82,13 @@ export default {
     toPerson() {
       var arcitleId='123456';
       this.$router.push({ path: "/chao/article/123456" });
-    }
+    },
+    handleSizeChange(size){
+      this.pagesize=size;
+    },
+    handleCurrentChange(page){
+      this.currentPage=page;
+    },
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

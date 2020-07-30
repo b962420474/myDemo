@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <article>
+        <article v-html="article.content">
         </article>
     </div>
 </template>
