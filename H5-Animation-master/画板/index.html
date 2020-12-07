@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{cursor:url('cursor.png');}
+    </style>
+</head>
+
+<body style="overflow:hidden">
+    <canvas id="canvas" style="background:white;"></canvas>
+    <script>
+        var canvas, context;
+        window.onload = function () {
+            canvas = document.getElementById('canvas');
+            context = canvas.getContext('2d');
+            resizeCanvas(context);
+            canvas.addEventListener("mousedown", start);
+            canvas.addEventListener("touchstart", start);
+        }
+        function resizeCanvas(context) {
+            canvas.setAttribute("width", window.innerWidth);
+            canvas.setAttribute("height", window.innerHeight);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        };
+        function start(e) {
+            canvas.addEventListener("mousemove", move);
+            canvas.addEventListener("mouseup", mouseUp);
+            canvas.addEventListener("touchmove", move);
+            canvas.addEventListener("touchend", mouseUp);
+            context.beginPath();
+            if (e.type === "touchstart") {
+                e.offsetY = e.touches[0].pageY;
+                e.offsetX = e.touches[0].pageX;
+            }
+            context.moveTo(e.offsetX, e.offsetY);
+        }
+        function move(e) {
+            if (e.type === "touchmove") {
+                e.offsetY = e.touches[0].pageY;
+                e.offsetX = e.touches[0].pageX;
+            }
+            console.log(e.offsetX);
+            context.lineTo(e.offsetX, e.offsetY);
+            context.stroke();
+        }
+        function mouseUp(e) {
+            canvas.removeEventListener("mousemove", move);
+            canvas.removeEventListener("mouseup", mouseUp);
+            canvas.removeEventListener("touchmove", move);
+            canvas.removeEventListener("touchend", mouseUp);
+        }
+    </script>
+</body>
+
+</html>
