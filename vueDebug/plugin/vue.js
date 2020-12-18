@@ -776,8 +776,8 @@
   Dep.target = null;
   var targetStack = [];
 
-  function pushTarget (target) {
-    targetStack.push(target);
+  function pushTarget (target) { //pushTarget 函数的作用就是用来为 Dep.target 属性赋值的
+    targetStack.push(target);  //Dep.target 保存着一个观察者对象，其实这个观察者对象就是即将要收集的目标
     Dep.target = target;
   }
 
@@ -1024,20 +1024,20 @@
    * 尝试为值创建观察者实例，如果观察成功，则返回新的观察者，或者现有的观察者（如果值已经有）
    */
   function observe (value, asRootData) {
-    if (!isObject(value) || value instanceof VNode) {
+    if (!isObject(value) || value instanceof VNode) {//对象和vnode return
       return
     }
     var ob;
-    if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+    if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {//如果被观测，则返回被观测的Observer实例
       ob = value.__ob__;
     } else if (
       shouldObserve &&
       !isServerRendering() &&
       (Array.isArray(value) || isPlainObject(value)) &&
-      Object.isExtensible(value) &&
+      Object.isExtensible(value) &&     //不是服务端渲染，是数组或纯对象的时候，被观测的数据对象必须是可扩展的，不是Vue 实例对象
       !value._isVue
     ) {
-      ob = new Observer(value);
+      ob = new Observer(value);// 即创建一个 Observer 实例
     }
     if (asRootData && ob) {
       ob.vmCount++;
@@ -1075,10 +1075,10 @@
       enumerable: true,
       configurable: true,
       get: function reactiveGetter () {
-        var value = getter ? getter.call(obj) : val;
-        if (Dep.target) {
-          dep.depend();
-          if (childOb) {
+        var value = getter ? getter.call(obj) : val;//获取正确值,保证属性的原有读取操作正常运作
+        if (Dep.target) {//Dep.target 中保存的值就是要被收集的依赖(观察者)，所以如果 Dep.target 存在的话说明有依赖需要被收集，这个时候才需要执行 if 语句块内的代码，如果 Dep.target 不存在就意味着没有需要被收集的依赖
+          dep.depend();//执行 dep 对象的 depend 方法将依赖收集到 dep 这个“筐”中
+          if (childOb) {  //childOb==val.__ob__    触发时机是在使用 $set 或 Vue.set 给数据对象添加新属性时触发
             childOb.dep.depend();
             if (Array.isArray(value)) {
               dependArray(value);
@@ -1088,24 +1088,24 @@
         return value
       },
       set: function reactiveSetter (newVal) {
-        var value = getter ? getter.call(obj) : val;
+        var value = getter ? getter.call(obj) : val;//获取修改前的值
         /* eslint-disable no-self-compare */
-        if (newVal === value || (newVal !== newVal && value !== value)) {
+        if (newVal === value || (newVal !== newVal && value !== value)) {//如果新旧值全等,或新旧值为NaN
           return
         }
         /* eslint-enable no-self-compare */
-        if (customSetter) {
+        if (customSetter) {//这就是 customSetter 函数的作用，用来打印辅助信息，当然除此之外你可以将 customSetter 用在任何适合使用它的地方。
           customSetter();
         }
         // #7981: for accessor properties without setter
         if (getter && !setter) { return }
-        if (setter) {
+        if (setter) {   //有原定义的setter就调用setter，否则使用新值。
           setter.call(obj, newVal);
         } else {
           val = newVal;
         }
-        childOb = !shallow && observe(newVal);
-        dep.notify();
+        childOb = !shallow && observe(newVal);//假如我们为属性设置的新值是一个数组或者纯对象，那么该数组或纯对象是未被观测的，所以需要对新值进行观测
+        dep.notify();//触发依赖
       }
     });
   }
@@ -4053,13 +4053,15 @@
     };
   }
 
-  function mountComponent (
+  function mountComponent (    //真正的挂在函数
     vm,
     el,
     hydrating
   ) {
     vm.$el = el;
-    if (!vm.$options.render) {
+    //如果渲染函数不存在，这时将会执行 if 语句块内的代码，
+     //在 if 语句块内首先将 vm.$options.render 的值设置为 createEmptyVNode 函数，也就是说此时渲染函数的作用将仅仅渲染一个空的 vnode 对象，然后在非生产环境下会根据相应的情况打印警告信息。
+    if (!vm.$options.render) { 
       vm.$options.render = createEmptyVNode;
       {
         /* istanbul ignore if */
@@ -4079,9 +4081,9 @@
         }
       }
     }
-    callHook(vm, 'beforeMount');
+    callHook(vm, 'beforeMount'); //执行了 callHook 函数，触发 beforeMount 生命周期钩子
 
-    var updateComponent;
+    var updateComponent;  //定义并初始化 updateComponent 函数 这个函数将用作创建 Watcher 实例时传递给 Watcher 构造函数的第二个参数
     /* istanbul ignore if */
     if (config.performance && mark) {
       updateComponent = function () {
@@ -4116,6 +4118,11 @@
         }
       }
     }, true /* isRenderWatcher */);
+
+    //在上面的代码中 Watcher 观察者实例将对 updateComponent 函数求值，
+    //我们知道 updateComponent 函数的执行会间接触发渲染函数(vm.$options.render)的执行，
+    //而渲染函数的执行则会触发数据属性的 get 拦截器函数，从而将依赖(观察者)收集，当数据变化时将重新执行 updateComponent 函数，
+    //这就完成了重新渲染。同时我们把上面代码中实例化的观察者对象称为 渲染函数的观察者
     hydrating = false;
 
     // manually mounted instance, call mounted on self
@@ -4453,13 +4460,15 @@
    * A watcher parses an expression, collects dependencies,
    * and fires callback when the expression value changes.
    * This is used for both the $watch() api and directives.
+   * 观察程序分析表达式，收集依赖项，并在表达式值更改时触发回调。它同时用于$watch（）api和指令。
+   * 观察者对象
    */
   var Watcher = function Watcher (
-    vm,
-    expOrFn,
-    cb,
-    options,
-    isRenderWatcher
+    vm,//组件实例对象 vm
+    expOrFn,//要观察的表达式 expOrFn
+    cb,//当被观察的表达式的值变化时的回调函数 cb
+    options,//一些传递给当前观察者对象的选项 options 
+    isRenderWatcher//一个布尔值 isRenderWatcher 用来标识该观察者实例是否是渲染函数的观察者。
   ) {
     this.vm = vm;
     if (isRenderWatcher) {
@@ -4468,29 +4477,29 @@
     vm._watchers.push(this);
     // options
     if (options) {
-      this.deep = !!options.deep;
-      this.user = !!options.user;
-      this.lazy = !!options.lazy;
-      this.sync = !!options.sync;
-      this.before = options.before;
+      this.deep = !!options.deep; //是否深度观测
+      this.user = !!options.user;  
+      this.lazy = !!options.lazy;//用来标识当前观察者实例对象是否是计算属性的观察者
+      this.sync = !!options.sync; //当数据变化时是否同步求值并执行回调
+      this.before = options.before; //可以理解为 Watcher 实例的钩子，当数据变化之后，触发更新之前，调用在创建渲染函数的观察者实例对象时传递的 before 选项
     } else {
       this.deep = this.user = this.lazy = this.sync = false;
     }
     this.cb = cb;
-    this.id = ++uid$2; // uid for batching
+    this.id = ++uid$2; // uid for batching  观察者实例对象的唯一标识
     this.active = true;
     this.dirty = this.lazy; // for lazy watchers
     this.deps = [];
     this.newDeps = [];
     this.depIds = new _Set();
-    this.newDepIds = new _Set();
+    this.newDepIds = new _Set();///用来实现避免收集重复依赖，且移除无用依赖的功能也依赖于它们
     this.expression = expOrFn.toString();
     // parse expression for getter
     if (typeof expOrFn === 'function') {
-      this.getter = expOrFn;
+      this.getter = expOrFn;   //如果 expOrFn 是函数，那么直接使用 expOrFn 作为 this.getter
     } else {
-      this.getter = parsePath(expOrFn);
-      if (!this.getter) {
+      this.getter = parsePath(expOrFn);   //// 表达式   
+      if (!this.getter) {  //非法表达式
         this.getter = noop;
         warn(
           "Failed watching path: \"" + expOrFn + "\" " +
@@ -4501,14 +4510,14 @@
       }
     }
     this.value = this.lazy
-      ? undefined
-      : this.get();
+      ? undefined  //计算属性求值
+      : this.get();  //其他求值
   };
 
   /**
    * Evaluate the getter, and re-collect dependencies.
    */
-  Watcher.prototype.get = function get () {
+  Watcher.prototype.get = function get () {//求值的目的有两个，第一个是能够触发访问器属性的 get 拦截器函数，第二个是能够获得被观察目标的值
     pushTarget(this);
     var value;
     var vm = this.vm;
@@ -4996,7 +5005,7 @@
   var uid$3 = 0;
 
   function initMixin (Vue) {
-    Vue.prototype._init = function (options) {
+    Vue.prototype._init = function (options) {  //vue 初始化函数
       var vm = this;
       // a uid
       vm._uid = uid$3++;
@@ -11917,10 +11926,10 @@
     el,
     hydrating
   ) {
-    el = el && query(el);
+    el = el && query(el);//如果传递了 el 参数，那么就使用 query 函数获取到指定的 DOM 元素并重新赋值给 el 变量
 
     /* istanbul ignore if */
-    if (el === document.body || el === document.documentElement) {
+    if (el === document.body || el === document.documentElement) {//检测了挂载点是不是 <body> 元素或者 <html> 元素
       warn(
         "Do not mount Vue to <html> or <body> - mount to normal elements instead."
       );
@@ -11929,11 +11938,11 @@
 
     var options = this.$options;
     // resolve template/el and convert to render function
-    if (!options.render) {
+    if (!options.render) {   //$options中是否包含render函数，包含则直接渲染，不包含 则使用 template 或 el 选项构建渲染函数
       var template = options.template;
-      if (template) {
-        if (typeof template === 'string') {
-          if (template.charAt(0) === '#') {
+      if (template) {  //如果template存在  则使用template编译成渲染函数
+        if (typeof template === 'string') {//template 的类型是字符串
+          if (template.charAt(0) === '#') {//如果第一个字符是 #，那么会把该字符串作为 id选择器去选中对应的元素，并把该元素的 innerHTML 作为模板
             template = idToTemplate(template);
             /* istanbul ignore if */
             if (!template) {
@@ -11942,8 +11951,8 @@
                 this
               );
             }
-          }
-        } else if (template.nodeType) {
+          }   //如果第一个字符不是 #，那么什么都不做，就用 template 自身的字符串值作为模板
+        } else if (template.nodeType) { //template 的类型是元素节点(template.nodeType 存在) 则使用该元素的 innerHTML 作为模板
           template = template.innerHTML;
         } else {
           {
@@ -11951,7 +11960,7 @@
           }
           return this
         }
-      } else if (el) {
+      } else if (el) {//el存在的话则使用 el.outerHTML 作为 template 的值
         template = getOuterHTML(el);
       }
       if (template) {
@@ -11960,7 +11969,7 @@
           mark('compile');
         }
 
-        var ref = compileToFunctions(template, {
+        var ref = compileToFunctions(template, {   //compileToFunctions 函数将模板(template)字符串编译为渲染函数(render)，并将渲染函数添加到 vm.$options 
           outputSourceRange: "development" !== 'production',
           shouldDecodeNewlines: shouldDecodeNewlines,
           shouldDecodeNewlinesForHref: shouldDecodeNewlinesForHref,
@@ -11979,7 +11988,7 @@
         }
       }
     }
-    return mount.call(this, el, hydrating)
+    return mount.call(this, el, hydrating)  //调用运行时mount函数
   };
 
   /**
