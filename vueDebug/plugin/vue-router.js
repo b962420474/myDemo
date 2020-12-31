@@ -40,6 +40,7 @@
       }
     },
     render: function render (_, ref) {
+      console.log("RouterView render start");
       var props = ref.props;
       var children = ref.children;
       var parent = ref.parent;
@@ -139,7 +140,7 @@
         });
         fillPropsinData(component, data, route, configProps);
       }
-
+      console.log("router render");
       return h(component, data, children)
     }
   };
@@ -1251,6 +1252,7 @@
         registerInstance(this, this);
       },
       destroyed: function destroyed () {
+        console.log("destroyed");
         registerInstance(this);
       }
     });
@@ -2023,6 +2025,7 @@
             match.components[key] = resolvedDef;
             pending--;
             if (pending <= 0) {
+              console.log(def);
               next();
             }
           });

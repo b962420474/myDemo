@@ -3201,6 +3201,7 @@
       var componentInstance = vnode.componentInstance;
       if (!componentInstance._isDestroyed) {
         if (!vnode.data.keepAlive) {
+          console.log("componentVNodeHooks destroy");
           componentInstance.$destroy();
         } else {
           deactivateChildComponent(componentInstance, true /* direct */);
@@ -3297,7 +3298,6 @@
 
     // install component management hooks onto the placeholder node
     installComponentHooks(data);
-
     // return a placeholder vnode
     var name = Ctor.options.name || tag;
     var vnode = new VNode(
@@ -3563,6 +3563,7 @@
     };
 
     Vue.prototype._render = function () {
+      console.log("vm._render")
       var vm = this;
       var ref = vm.$options;
       var render = ref.render;
@@ -3972,6 +3973,7 @@
 
   function lifecycleMixin (Vue) {
     Vue.prototype._update = function (vnode, hydrating) {
+      console.log("_update")
       var vm = this;
       var prevEl = vm.$el;
       var prevVnode = vm._vnode;
@@ -4010,6 +4012,7 @@
     };
 
     Vue.prototype.$destroy = function () {
+      console.log("$destroy");
       var vm = this;
       if (vm._isBeingDestroyed) {
         return
@@ -4085,6 +4088,8 @@
 
     var updateComponent;  //定义并初始化 updateComponent 函数 这个函数将用作创建 Watcher 实例时传递给 Watcher 构造函数的第二个参数
     /* istanbul ignore if */
+    console.log(vm)
+    console.log("mounted");
     if (config.performance && mark) {
       updateComponent = function () {
         var name = vm._name;
@@ -4424,9 +4429,9 @@
    */
   function queueWatcher (watcher) {
     var id = watcher.id;
-    if (has[id] == null) {
+    if (has[id] == null) {  //避免将相同的观察者重复入队的
       has[id] = true;
-      if (!flushing) {
+      if (!flushing) {  //当更新开始时会将 flushing 变量的值设置为 true,当队列没有执行更新时才会简单地将观察者追加到队列的尾部
         queue.push(watcher);
       } else {
         // if already flushing, splice the watcher based on its id
@@ -4536,7 +4541,7 @@
         traverse(value);
       }
       popTarget();
-      this.cleanupDeps();
+      this.cleanupDeps(); // newDepIds 属性都会被清空
     }
     return value
   };
@@ -4560,7 +4565,7 @@
    */
   Watcher.prototype.cleanupDeps = function cleanupDeps () {
     var i = this.deps.length;
-    while (i--) {
+    while (i--) {   //移除废弃的观察者
       var dep = this.deps[i];
       if (!this.newDepIds.has(dep.id)) {
         dep.removeSub(this);
@@ -4571,8 +4576,8 @@
     this.newDepIds = tmp;
     this.newDepIds.clear();
     tmp = this.deps;
-    this.deps = this.newDeps;
-    this.newDeps = tmp;
+    this.deps = this.newDeps;//depIds 和 deps 这两个属性的值所存储的总是上一次求值过程中所收集到的 Dep 实例对象
+    this.newDeps = tmp;  //newDepIds 和 newDeps 这两个属性的值所存储的总是当次求值所收集到的 Dep 实例对象
     this.newDeps.length = 0;
   };
 
@@ -4597,12 +4602,14 @@
    */
   Watcher.prototype.run = function run () {
     if (this.active) {
-      var value = this.get();
+      var value = this.get();   //重新求值   等价于重新执行渲染函数，最终结果就是重新生成了虚拟DOM并更新真实DOM，这样就完成了重新渲染的过程
       if (
         value !== this.value ||
         // Deep watchers and watchers on Object/Arrays should fire even
         // when the value is the same, because the value may
         // have mutated.
+        //不相等的情况下才需要执行回调
+        //新值的类型是否是对象，如果是对象的话即使值不变也需要执行回调
         isObject(value) ||
         this.deep
       ) {
@@ -4981,20 +4988,20 @@
       options
     ) {
       var vm = this;
-      if (isPlainObject(cb)) {
+      if (isPlainObject(cb)) {    //cb为纯对象
         return createWatcher(vm, expOrFn, cb, options)
       }
-      options = options || {};
-      options.user = true;
-      var watcher = new Watcher(vm, expOrFn, cb, options);
-      if (options.immediate) {
+      options = options || {}; //如果没有传递 options 选项参数，那么会给其一个默认的空对象
+      options.user = true;  //代表该观察者实例是用户创建的
+      var watcher = new Watcher(vm, expOrFn, cb, options);  //创建观察者实例
+      if (options.immediate) { //immediate 选项用来在属性或函数被侦听后立即执行回调
         try {
           cb.call(vm, watcher.value);
         } catch (error) {
           handleError(error, vm, ("callback for immediate watcher \"" + (watcher.expression) + "\""));
         }
       }
-      return function unwatchFn () {
+      return function unwatchFn () { //返回取消观察函数
         watcher.teardown();
       }
     };
@@ -5046,6 +5053,7 @@
       initInjections(vm); // resolve injections before data/props
       initState(vm);
       initProvide(vm); // resolve provide after data/props
+      console.log("init created");
       callHook(vm, 'created');
 
       /* istanbul ignore if */
@@ -5191,6 +5199,7 @@
       }
 
       var Sub = function VueComponent (options) {
+        console.log("new vuecomponent");
         this._init(options);
       };
       Sub.prototype = Object.create(Super.prototype);
@@ -6153,7 +6162,10 @@
       var i, j;
       var data = vnode.data;
       if (isDef(data)) {
-        if (isDef(i = data.hook) && isDef(i = i.destroy)) { i(vnode); }
+        if (isDef(i = data.hook) && isDef(i = i.destroy)) {
+          console.log("vnode destroy") 
+          i(vnode); 
+        }
         for (i = 0; i < cbs.destroy.length; ++i) { cbs.destroy[i](vnode); }
       }
       if (isDef(i = vnode.children)) {
@@ -6168,6 +6180,7 @@
         var ch = vnodes[startIdx];
         if (isDef(ch)) {
           if (isDef(ch.tag)) {
+            console.log("removeVnodes")
             removeAndInvokeRemoveHook(ch);
             invokeDestroyHook(ch);
           } else { // Text node
