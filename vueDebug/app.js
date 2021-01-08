@@ -36,14 +36,23 @@ export default {
   mounted() {
     this.message = "xxx";
     //window.addEventListener("keydown", this.throttle(this.keybord,1000))
-    window.addEventListener("keydown", this.keybord)
+    //window.addEventListener("keydown", this.keybord)
     console.log();
   },
   methods: {
     keybord(e) {
       console.log("-------------------"+String.fromCharCode(e.which))
       if(String.fromCharCode(e.which)=="Q"){
-        this.$router.push({path: '/about'})
+        this.$router.push({path: '/about'}).then(()=>{
+          console.log("push end.....");
+        })
+        var m={a:3}
+        Object.defineProperty(m,"a",{
+          get:function(val){
+            console.log("get.....")
+          }
+        })
+        console.log(m.a);
       }
       else if(String.fromCharCode(e.which)=="W"){
         this.$router.push({path: '/dashboard'})
@@ -52,6 +61,7 @@ export default {
         this.$router.push({path: '/login'})
       }
     },
+    mm(){},
     throttle(fn,delay){
       var t=Date.now();
       var num=0;

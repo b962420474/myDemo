@@ -3563,7 +3563,7 @@
     };
 
     Vue.prototype._render = function () {
-      console.log("vm._render")
+      console.log(this._uid+"._render")
       var vm = this;
       var ref = vm.$options;
       var render = ref.render;
@@ -3973,7 +3973,7 @@
 
   function lifecycleMixin (Vue) {
     Vue.prototype._update = function (vnode, hydrating) {
-      console.log("_update")
+      console.log(this._uid+"_update")
       var vm = this;
       var prevEl = vm.$el;
       var prevVnode = vm._vnode;
@@ -4012,7 +4012,7 @@
     };
 
     Vue.prototype.$destroy = function () {
-      console.log("$destroy");
+      console.log(this._uid+"$destroy");
       var vm = this;
       if (vm._isBeingDestroyed) {
         return
@@ -5201,6 +5201,7 @@
       var Sub = function VueComponent (options) {
         console.log("new vuecomponent");
         this._init(options);
+        console.log(this._uid+"init end")
       };
       Sub.prototype = Object.create(Super.prototype);
       Sub.prototype.constructor = Sub;
@@ -6180,7 +6181,6 @@
         var ch = vnodes[startIdx];
         if (isDef(ch)) {
           if (isDef(ch.tag)) {
-            console.log("removeVnodes")
             removeAndInvokeRemoveHook(ch);
             invokeDestroyHook(ch);
           } else { // Text node
@@ -6268,6 +6268,7 @@
             ? oldKeyToIdx[newStartVnode.key]
             : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
           if (isUndef(idxInOld)) { // New element
+            console.log("createElm:"+newStartVnode.tag)
             createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
           } else {
             vnodeToMove = oldCh[idxInOld];
@@ -6276,6 +6277,7 @@
               oldCh[idxInOld] = undefined;
               canMove && nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm);
             } else {
+              console.log("createElm")
               // same key but different element. treat as new element
               createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
             }
@@ -6287,6 +6289,7 @@
         refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm;
         addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue);
       } else if (newStartIdx > newEndIdx) {
+        console.log("removeVnodes")
         removeVnodes(oldCh, oldStartIdx, oldEndIdx);
       }
     }
@@ -6371,7 +6374,9 @@
       }
       if (isUndef(vnode.text)) {
         if (isDef(oldCh) && isDef(ch)) {
-          if (oldCh !== ch) { updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); }
+          if (oldCh !== ch) {
+            console.log("updateChildren:"+vnode.tag); 
+            updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly); }
         } else if (isDef(ch)) {
           {
             checkDuplicateKeys(ch);

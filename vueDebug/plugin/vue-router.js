@@ -2241,15 +2241,15 @@
 
     var queue = [].concat(
       // in-component leave guards
-      extractLeaveGuards(deactivated),
+      extractLeaveGuards(deactivated),//提取出deactivated中所有需要销毁的组件内的“beforeRouteLeave”的守卫
       // global before hooks
-      this.router.beforeHooks,
+      this.router.beforeHooks,  //获取全局VueRouter对象beforeEach的守卫
       // in-component update hooks
-      extractUpdateHooks(updated),
+      extractUpdateHooks(updated),  //使用extractUpdateHooks函数，提取出update组件中所有的beforeRouteUpdate的守卫。
       // in-config enter guards
-      activated.map(function (m) { return m.beforeEnter; }),
+      activated.map(function (m) { return m.beforeEnter; }), //获取activated的options配置中beforeEnter守卫
       // async components
-      resolveAsyncComponents(activated)
+      resolveAsyncComponents(activated)  //获取所有的异步组件
     );
 
     this.pending = route;
