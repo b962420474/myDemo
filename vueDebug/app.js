@@ -38,6 +38,7 @@ export default {
     //window.addEventListener("keydown", this.throttle(this.keybord,1000))
     //window.addEventListener("keydown", this.keybord)
     console.log();
+    window.addEventListener("mousemove",this.mm)
   },
   methods: {
     keybord(e) {
@@ -61,7 +62,13 @@ export default {
         this.$router.push({path: '/login'})
       }
     },
-    mm(){},
+    mm(){
+      console.log("start");
+      Promise.resolve().then(function () {
+        console.log('two');
+      });
+      console.log("end");
+    },
     throttle(fn,delay){
       var t=Date.now();
       var num=0;
