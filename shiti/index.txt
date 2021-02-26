@@ -1,0 +1,75 @@
+1、水平垂直居中
+
+{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+{
+    width:100px;
+    height:100px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+2、使用css实现一个持续的动画效果
+{
+    animation: mymove 5s infinite;
+    @keyframes mymove{
+        from {top:0px;}
+        to {top:100px;}
+    }
+}
+
+3、封装一个函数，参数是定时器的时间，.then执行回调函数。
+function sleep(dealy){
+    return new Promise((resolve)=>{
+        settimeout(resolve,dealy);
+    })
+}
+
+
+3、obj = {
+    name: 'a',
+    getName : function () {
+        console.log(this.name);
+    }
+}
+
+var fn = obj.getName  //window
+obj.getName() //obj
+var fn2 = obj.getName()  //obj
+fn();
+// a a ""
+
+
+4、一行代码实现数组去重
+[...new Set([4,4,5,6,3,5])]
+
+
+5、使用addEventListener点击li弹出内容，并且动态添加li之后有效
+<ul id="ul">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+
+document.getElementById("ul").addEventListener("click",function(e){
+    var target=e.target;
+    if(target.nodename.toLowerCase()=="li"){
+        //
+    }
+})
+
+6、怎么判断两个对象相等？
+function compareObject(obj1,obg2){
+    return JSON.stringify(obj1)==JSON.stringify(obj2)
+}
+
+7、vue中的性能优化？
+    1、组件路由懒加载
+    2、使用Object.freeze();

@@ -63,11 +63,11 @@ export default {
       }
     },
     mm(){
-      console.log("start");
-      Promise.resolve().then(function () {
-        console.log('two');
-      });
-      console.log("end");
+      // console.log("start");
+      // Promise.resolve().then(function () {
+      //   console.log('two');
+      // });
+      // console.log("end");
     },
     throttle(fn,delay){
       var t=Date.now();

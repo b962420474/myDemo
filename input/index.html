@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            cursor: url('cursor.png');
+        }
+    </style>
+</head>
+
+<body style="overflow:hidden">
+    <canvas id="canvas" style="background:white;"></canvas>
+    <script src="./tesseract.min.js"></script>
+    <script>
+        var createWorker = Tesseract.createWorker;
+        const worker = createWorker({
+            workerPath: './worker.min.js',
+            langPath: './lang-data',
+            corePath: './tesseract-core.wasm.js',
+            logger: function (m) { console.log(m) },
+        });
+
+        // (async () => {
+        //     await worker.load();
+        //     await worker.loadLanguage('chi_sim');
+        //     await worker.initialize('chi_sim');
+        //     const { data: { text } } = await worker.recognize('./img/chinese.png');
+        //     //这里我使用了我自己的图片目录，
+        //     //在实际使用时需要改成你自己的图片路径
+        //     console.log(text);
+        //     await worker.terminate();
+        // })();
+        var canvas, context;
+        window.onload = function () {
+            canvas = document.getElementById('canvas');
+            context = canvas.getContext('2d');
+            resizeCanvas(context);
+            canvas.addEventListener("mousedown", start);
+            canvas.addEventListener("touchstart", start);
+        }
+        function resizeCanvas(context) {
+            canvas.setAttribute("width", window.innerWidth);
+            canvas.setAttribute("height", window.innerHeight);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        };
+        function start(e) {
+            canvas.addEventListener("mousemove", move);
+            canvas.addEventListener("mouseup", mouseUp);
+            canvas.addEventListener("touchmove", move);
+            canvas.addEventListener("touchend", mouseUp);
+            context.beginPath();
+            if (e.type === "touchstart") {
+                e.offsetY = e.touches[0].pageY;
+                e.offsetX = e.touches[0].pageX;
+            }
+            context.moveTo(e.offsetX, e.offsetY);
+        }
+        function move(e) {
+            if (e.type === "touchmove") {
+                e.offsetY = e.touches[0].pageY;
+                e.offsetX = e.touches[0].pageX;
+            }
+            //console.log(e.offsetX);
+            context.lineTo(e.offsetX, e.offsetY);
+            context.stroke();
+        }
+        function mouseUp(e) {
+            canvas.removeEventListener("mousemove", move);
+            canvas.removeEventListener("mouseup", mouseUp);
+            canvas.removeEventListener("touchmove", move);
+            canvas.removeEventListener("touchend", mouseUp);
+            handInputUtil.start();
+        }
+        var handInputUtil = {
+            timer: false,
+            start: function () {
+                this.clearTimer();
+                var self = this;
+                this.timer = setTimeout(function () {
+                    self.getContext();
+                }, 2000)
+            },
+            clearTimer: function () {
+                clearTimeout(this.timer)
+            },
+            getContext: function () {
+                var base64Img = canvas.toDataURL('image/png');
+                recognize_image(base64Img);
+            }
+        }
+        async function recognize_image(img) {
+            console.log("shibie...");
+            await worker.load();
+            await worker.loadLanguage('chi_sim');
+            await worker.initialize('chi_sim');
+            const { data: { text } } = await worker.recognize(img);
+            //这里我使用了我自己的图片目录，
+            //在实际使用时需要改成你自己的图片路径
+            console.log(text);
+            await worker.terminate();
+        }	
+    </script>
+</body>
+
+</html>
